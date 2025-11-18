@@ -1,0 +1,493 @@
+{
+	"info": {
+		"_postman_id": "b27ad348-afc0-4a13-aff7-fd0cf2a5197d",
+		"name": "API PulseIT",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "48690678",
+		"_collection_link": "https://gaosorioor-9869323.postman.co/workspace/Gael-Osorio's-Workspace~bfa53648-d107-4fb5-8d2b-2d04565d491b/collection/48690678-b27ad348-afc0-4a13-aff7-fd0cf2a5197d?action=share&source=collection_link&creator=48690678"
+	},
+	"item": [
+		{
+			"name": "tecnico",
+			"item": [
+				{
+					"name": "Obtener Tecnicos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:81/PulseIT/api/tecnico",
+							"host": [
+								"localhost"
+							],
+							"port": "81",
+							"path": [
+								"PulseIT",
+								"api",
+								"tecnico"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener Detalle por Tecnico",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:81/PulseIT/api/tecnico/DetalleTecnico/4",
+							"host": [
+								"localhost"
+							],
+							"port": "81",
+							"path": [
+								"PulseIT",
+								"api",
+								"tecnico",
+								"DetalleTecnico",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Asignaciones por Tecnico",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:81/PulseIT/api/tecnico/Asignaciones/3/5",
+							"host": [
+								"localhost"
+							],
+							"port": "81",
+							"path": [
+								"PulseIT",
+								"api",
+								"tecnico",
+								"Asignaciones",
+								"3",
+								"5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Crear Tecnico",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nombre\": \"Carlos Gómez\",\r\n  \"correo\": \"carlosgomez@example.com\",\r\n  \"contrasena\": \"Test@1234\",\r\n  \"disponibilidad\": \"disponible\",\r\n  \"especialidades\": [11, 12]\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:81/PulseIT/api/tecnico",
+							"host": [
+								"localhost"
+							],
+							"port": "81",
+							"path": [
+								"PulseIT",
+								"api",
+								"tecnico"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar Tecnico",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nombre\": \"Gael Osorio\",\r\n  \"correo\": \"gael@example.com\",\r\n  \"contrasena\": \"Test@ydsad23\",\r\n  \"disponibilidad\": \"ocupado\",\r\n  \"especialidades\": [11, 12],\r\n  \"id\":15\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:81/PulseIT/api/tecnico",
+							"host": [
+								"localhost"
+							],
+							"port": "81",
+							"path": [
+								"PulseIT",
+								"api",
+								"tecnico"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "categoria",
+			"item": [
+				{
+					"name": "Obtener Categorias",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:81/PulseIT/api/categoria",
+							"host": [
+								"localhost"
+							],
+							"port": "81",
+							"path": [
+								"PulseIT",
+								"api",
+								"categoria"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener Detalle Por Categoria",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:81/PulseIT/api/categoria/DetalleCategoria/1",
+							"host": [
+								"localhost"
+							],
+							"port": "81",
+							"path": [
+								"PulseIT",
+								"api",
+								"categoria",
+								"DetalleCategoria",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Crear Categoria",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nombre\": \"Control Ambiental\",\r\n  \"descripcion\": \"Soporte a sensores y dispositivos de temperatura\",\r\n  \"id_sla\": null,\r\n  \"nuevoSla\": {\r\n    \"nombre\": \"SLA Ambiental\",\r\n    \"tiempo_respuesta_minutos\": 45,\r\n    \"tiempo_resolucion_minutos\": 180\r\n  },\r\n  \"etiquetas\": [8, 11],\r\n  \"especialidades\": [5, 6]\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:81/PulseIT/api/categoria",
+							"host": [
+								"localhost"
+							],
+							"port": "81",
+							"path": [
+								"PulseIT",
+								"api",
+								"categoria"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar Categoria",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "    {\r\n    \"nombre\": \"Prueba\",\r\n    \"descripcion\": \"Probando 2\",\r\n    \"especialidades\": [1, 2],\r\n    \"etiquetas\": [1, 2],\r\n    \"id_sla\":1,\r\n    \"id_categoria\": 9\r\n\r\n\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:81/PulseIT/api/categoria",
+							"host": [
+								"localhost"
+							],
+							"port": "81",
+							"path": [
+								"PulseIT",
+								"api",
+								"categoria"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "ticket",
+			"item": [
+				{
+					"name": "Listar Tickets segun Rol y Cliente",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:81/PulseIT/api/ticket/ListarTickets/3/5",
+							"host": [
+								"localhost"
+							],
+							"port": "81",
+							"path": [
+								"PulseIT",
+								"api",
+								"ticket",
+								"ListarTickets",
+								"3",
+								"5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Detalle Ticket",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:81/PulseIT/api/ticket/DetalleTicket/9",
+							"host": [
+								"localhost"
+							],
+							"port": "81",
+							"path": [
+								"PulseIT",
+								"api",
+								"ticket",
+								"DetalleTicket",
+								"9"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Crear Tickets",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"titulo\": \"prueba\",\r\n  \"descripcion\": \"probando\",\r\n  \"prioridad\": 1,\r\n  \"id_usuario_solicitante\": 1,\r\n  \"id_etiqueta\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:81/PulseIT/api/ticket",
+							"host": [
+								"localhost"
+							],
+							"port": "81",
+							"path": [
+								"PulseIT",
+								"api",
+								"ticket"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Usuario",
+			"item": [
+				{
+					"name": "Login",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:81/PulseIT/api/usuario/login/carlos@correo.com/hash123",
+							"host": [
+								"localhost"
+							],
+							"port": "81",
+							"path": [
+								"PulseIT",
+								"api",
+								"usuario",
+								"login",
+								"carlos@correo.com",
+								"hash123"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Especialidad",
+			"item": [
+				{
+					"name": "Obtener Especialidades",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:81/PulseIT/api/especialidad",
+							"host": [
+								"localhost"
+							],
+							"port": "81",
+							"path": [
+								"PulseIT",
+								"api",
+								"especialidad"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Etiqueta",
+			"item": [
+				{
+					"name": "Obtener Etiquetas",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:81/PulseIT/api/etiqueta",
+							"host": [
+								"localhost"
+							],
+							"port": "81",
+							"path": [
+								"PulseIT",
+								"api",
+								"etiqueta"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "SLA",
+			"item": [
+				{
+					"name": "Obtener sla",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:81/PulseIT/api/sla",
+							"host": [
+								"localhost"
+							],
+							"port": "81",
+							"path": [
+								"PulseIT",
+								"api",
+								"sla"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "ImagenesHistorial",
+			"item": [
+				{
+					"name": "Subir Imagenes",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "id_historial",
+									"value": "24",
+									"type": "text"
+								},
+								{
+									"key": "id_usuario",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "files[]",
+									"type": "file",
+									"src": [
+										"/C:/Users/Usuario1/Downloads/tron.jpeg",
+										"/C:/Users/Usuario1/Downloads/3.0 Catalogo.jpeg"
+									]
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:81/PulseIT/api/image/create",
+							"host": [
+								"localhost"
+							],
+							"port": "81",
+							"path": [
+								"PulseIT",
+								"api",
+								"image",
+								"create"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

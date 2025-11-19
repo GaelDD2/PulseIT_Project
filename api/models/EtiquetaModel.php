@@ -15,7 +15,7 @@ class EtiquetaModel
      */
     public function getEtiquetasByCategoria($idCategoria)
     {
-        $vSql = "SELECT e.nombre
+        $vSql = "SELECT e.nombre,e.id
         FROM etiqueta e,categoria_etiqueta ce 
         where ce.id_etiqueta=e.id and ce.id_categoria=$idCategoria";
 

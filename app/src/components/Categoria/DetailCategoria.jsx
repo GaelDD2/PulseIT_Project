@@ -5,6 +5,8 @@ import { ErrorAlert } from "../ui/custom/ErrorAlert";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
+
 import {
     Clock,
     Globe,
@@ -17,7 +19,8 @@ import {
     BriefcaseBusiness,
     MonitorCheck,
     UserX,
-    MonitorCog
+    MonitorCog,
+    Edit
 } from "lucide-react";
 import { LoadingGrid } from '../ui/custom/LoadingGrid';
 import { EmptyState } from '../ui/custom/EmptyState';
@@ -95,11 +98,17 @@ export function DetailCategoria() {
 
                 {/* Sección de los Detalles */}
                 <div className="flex-1 space-y-6">
-                    {/* Nombre de la categoria */}
-                    <div>
+                   {/* Nombre de la categoria con botón de editar */}
+                   <div className="flex items-center gap-4">
                         <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight">
                             {categoria.data.nombre}
                         </h1>
+                        <Link 
+                            to={`/categorias/detail/updateCategoria/${categoria.data.id}`} 
+                            className="inline-flex items-center justify-center p-2 text-primary hover:bg-accent/20 rounded-full transition-colors"
+                        >
+                            <Edit className="h-5 w-5" />
+                        </Link>
                     </div>
 
                     <Card>

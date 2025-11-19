@@ -49,7 +49,7 @@ class EspecialidadModel
      */
     public function getEspecialidadesByCategoria($idCategoria)
     {
-        $vSql = "SELECT e.nombre
+        $vSql = "SELECT e.nombre,e.id
         FROM especialidad e,categoria_especialidad ce 
         where ce.id_especialidad=e.id and ce.id_categoria=$idCategoria";
 

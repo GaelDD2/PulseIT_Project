@@ -24,6 +24,15 @@ class CategoriaService {
     return axios.get(BASE_URL+'/'+"getByEtiqueta"+'/'+idEtiqueta);
   }
 
+  updateCategoria(Categoria) {
+    return axios({
+      method: 'put',
+      url: BASE_URL,
+      data: JSON.stringify(Categoria)
+
+    })
+  }
+
 }
 
 export default new CategoriaService();

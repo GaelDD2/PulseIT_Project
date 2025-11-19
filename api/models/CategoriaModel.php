@@ -40,7 +40,7 @@ class CategoriaModel
         $especialidadM= new EspecialidadModel();
         $slaM= new SlaModel();
 
-        $vSql = "SELECT nombre,id, id_sla FROM categoria WHERE id=$idCategoria;";
+        $vSql = "SELECT nombre,descripcion,id, id_sla FROM categoria WHERE id=$idCategoria;";
 
         //Ejecutar la consulta
         $vResultado = $this->enlace->ExecuteSQL($vSql);
@@ -158,7 +158,7 @@ class CategoriaModel
                        JOIN sla s ON c.id_sla = s.id
                        WHERE c.id = $id_categoria";
     
-            return $this->enlace->ExecuteSQL($sqlGet);
+            return $this->enlace->ExecuteSQL($sqlGet)[0];
     
         } catch (Exception $e) {
             throw new Exception("Error al crear la categoría: " . $e->getMessage());

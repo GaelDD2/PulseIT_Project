@@ -66,20 +66,9 @@ class CategoriaModel
    
     public function createCategoria($objeto) {
         try {
-            // Verificar si se debe crear un nuevo SLA
-            if (empty($objeto->id_sla) && !empty($objeto->nuevoSla)) {
-                $nombreSLA = $objeto->nuevoSla->nombre;
-                $tiempoResp = $objeto->nuevoSla->tiempo_respuesta_minutos;
-                $tiempoRes = $objeto->nuevoSla->tiempo_resolucion_minutos;
-    
-                $sqlSLA = "INSERT INTO sla (nombre, tiempo_respuesta_minutos, tiempo_resolucion_minutos)
-                           VALUES ('$nombreSLA', $tiempoResp, $tiempoRes)";
-                $idSLA = $this->enlace->executeSQL_DML_last($sqlSLA);
-            } 
-            //  Si selecciona un SLA existente
-            else {
-                $idSLA = $objeto->id_sla;
-            }
+            
+            $idSLA = $objeto->id_sla;
+            
     
             // Insertar la categoría
             $sqlCat = "INSERT INTO categoria (nombre, descripcion, id_sla)

@@ -50,7 +50,7 @@ export default function Header() {
   // 🔹 Menús comunes
   const ticketItems = [
     { title: "Mis Tickets", href: "/tickets" },
-    { title: "Crear Ticket", href: "/tickets/create" },
+    { title: "Crear Ticket", href: "/createTicket" },
   ];
 
   const adminItems = [

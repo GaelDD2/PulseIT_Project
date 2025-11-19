@@ -18,6 +18,10 @@ class TicketService {
     return axios.get(BASE_URL+'/'+"DetalleTicket"+'/'+TicketID);
   }
 
+  createTicket(ticket) {
+    return axios.post(BASE_URL, JSON.stringify(ticket));
+  }
+
 }
 
 export default new TicketService();

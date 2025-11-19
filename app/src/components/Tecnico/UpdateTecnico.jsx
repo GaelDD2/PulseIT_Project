@@ -106,7 +106,7 @@ const TecnicoSchema = yup.object({
         // Si la petición es exitosa, se guardan los datos 
         setDataEspecialidades(EspecialidadesRes.data.data || []); 
         console.log(EspecialidadesRes) 
-        //Obtener pelicula y asignarla formulario
+        //Obtener tecnico y asignarla formulario
         if(tecnicoRes.data){
           const tecnico=tecnicoRes.data.data
           console.log("Datos del técnico:", tecnico) // Debug

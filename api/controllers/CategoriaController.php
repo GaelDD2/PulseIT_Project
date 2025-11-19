@@ -79,6 +79,24 @@ class categoria
        }
    }
 
+   //GET Obtener nombre de la categoria por id Etiqueta
+    // localhost:81/PulseIT/api/categoria/getByEtiqueta/1
+    public function getByEtiqueta($idEtiqueta)
+    {
+        try {
+            $response = new Response();
+            //Instancia del modelo
+            $categoriaM = new CategoriaModel();
+            //Acción del modelo a ejecutar
+            $result = $categoriaM->getNombreCategoriaByEtiqueta($idEtiqueta);
+            //Dar respuesta
+            $response->toJSON($result);
+        } catch (Exception $e) {
+            $response->toJSON($result);
+            handleException($e);
+        }
+    }
+
 
 
 

@@ -164,6 +164,21 @@ class CategoriaModel
             throw new Exception("Error al crear la categoría: " . $e->getMessage());
         }
     }
+
+    public function getNombreCategoriaByEtiqueta($idEtiqueta){
+
+         //Consulta SQL
+         $sqlCategoria = "SELECT id_categoria FROM categoria_etiqueta WHERE id_etiqueta=$idEtiqueta";
+         $ResultadoCategoria= $this->enlace->ExecuteSQL($sqlCategoria);
+         $idCategoria = (int)$ResultadoCategoria[0]->id_categoria;
+         $sqlObtenerNombre="SELECT nombre FROM categoria WHERE id=$idCategoria";
+         //Ejecutar la consulta
+         $vResultado = $this->enlace->ExecuteSQL($sqlObtenerNombre);
+ 
+         //Retornar la respuesta
+         return $vResultado;
+
+    }
     
 }
 

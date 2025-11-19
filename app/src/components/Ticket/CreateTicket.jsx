@@ -25,6 +25,7 @@ import TicketService from "@/services/TicketService";
 import { CustomMultiSelect } from "../ui/custom/custom-multiple-select";
 import { CustomInputField } from "../ui/custom/custom-input-field";
 import ImagesService from "@/services/ImagesService";
+import CategoriaService from "@/services/CategoriaService";
 
 export function CreateTicket() {
   const navigate = useNavigate();
@@ -33,6 +34,7 @@ export function CreateTicket() {
 
   /*** Estados para selects y preview de imagen ***/
   const [dataEtiqueta, setDataEtiqueta] = useState([]);
+  const [categoriaNombre, setCategoriaNombre] = useState("");
 
   const [files, setFiles] = useState([]);
   const [previewURLs, setPreviewURLs] = useState([]);
@@ -181,30 +183,47 @@ export function CreateTicket() {
             {errors.descripcion && <p className="text-sm text-red-500">{errors.descripcion.message}</p>}
           </div>
   
-          {/* Etiqueta */}
-          <div>
-            <Label>Etiqueta</Label>
-            <Controller
-              name="id_etiqueta"
-              control={control}
-              render={({ field }) => (
-                <Select onValueChange={field.onChange} value={field.value}>
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Seleccione una etiqueta" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {dataEtiqueta.map((etiqueta) => (
-                      <SelectItem key={etiqueta.id} value={String(etiqueta.id)}>
-                        {etiqueta.nombre} 
-                        
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              )}
-            />
-            {errors.id_etiqueta && <p className="text-sm text-red-500">{errors.id_etiqueta.message}</p>}
-          </div>
+          <Label>Etiqueta</Label>
+        <Controller
+          name="id_etiqueta"
+          control={control}
+          render={({ field }) => (
+            <Select
+              value={field.value}
+              onValueChange={async (value) => {
+                field.onChange(value);
+
+                try {
+                  const response = await CategoriaService.getByEtiqueta(value);
+                  setCategoriaNombre(
+                    response.data?.data?.[0]?.nombre ?? "Sin categoría"
+                  );
+                } catch {
+                  setCategoriaNombre("Error al cargar");
+                }
+              }}
+            >
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Seleccione una etiqueta" />
+              </SelectTrigger>
+              <SelectContent>
+                {dataEtiqueta.map((etq) => (
+                  <SelectItem key={etq.id} value={String(etq.id)}>
+                    {etq.nombre}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          )}
+        />
+
+        {/* Categoría debajo */}
+        <div className="mt-2">
+          <Label className="text-sm font-medium">Categoría:</Label>
+          <p className="text-sm mt-1">
+            {categoriaNombre || "Seleccione una etiqueta"}
+          </p>
+        </div>
 
               {/* Prioridad */}
               <div>

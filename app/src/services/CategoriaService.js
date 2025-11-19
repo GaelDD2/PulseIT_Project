@@ -20,6 +20,10 @@ class CategoriaService {
     return axios.post(BASE_URL, JSON.stringify(Categoria));
   }
 
+  getByEtiqueta(idEtiqueta){
+    return axios.get(BASE_URL+'/'+"getByEtiqueta"+'/'+idEtiqueta);
+  }
+
 }
 
 export default new CategoriaService();

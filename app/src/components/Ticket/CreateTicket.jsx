@@ -29,6 +29,7 @@ import CategoriaService from "@/services/CategoriaService";
 
 export function CreateTicket() {
   const navigate = useNavigate();
+  const correoUsuario = localStorage.getItem("correo");
   const idUsuario = localStorage.getItem("idUsuario");
   
 
@@ -159,6 +160,13 @@ export function CreateTicket() {
   return (
     <Card className="p-6 max-w-5xl mx-auto">
         <h2 className="text-2xl font-bold mb-6">Crear Ticket</h2>
+        {/* Usuario Solicitante */}
+        <div className="mt-2">
+          <Label className="text-sm font-medium">Usuario Solicitante:</Label>
+          <p className="text-sm mt-1">
+            {correoUsuario }
+          </p>
+        </div>
   
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           {/* Titulo */}
@@ -171,6 +179,7 @@ export function CreateTicket() {
             />
             {errors.titulo && <p className="text-sm text-red-500">{errors.titulo.message}</p>}
           </div>
+          
   
           {/* Descripción */}
           <div>

@@ -85,7 +85,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"nombre\": \"Carlos Gómez\",\r\n  \"correo\": \"carlosgomez@example.com\",\r\n  \"contrasena\": \"Test@1234\",\r\n  \"disponibilidad\": \"disponible\",\r\n  \"especialidades\": [11, 12]\r\n}\r\n",
+							"raw": "{\r\n  \"nombre\": \"Usuario de prueba Backend 2\",\r\n  \"correo\": \"testing2@example.com\",\r\n  \"contrasena\": \"Test@1234\",\r\n  \"disponibilidad\": \"disponible\",\r\n  \"especialidades\": [11, 12]\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -93,7 +93,7 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:81/PulseIT/api/tecnico",
+							"raw": "localhost:81/PulseIT/api/tecnico/createTecnico",
 							"host": [
 								"localhost"
 							],
@@ -101,7 +101,8 @@
 							"path": [
 								"PulseIT",
 								"api",
-								"tecnico"
+								"tecnico",
+								"createTecnico"
 							]
 						}
 					},

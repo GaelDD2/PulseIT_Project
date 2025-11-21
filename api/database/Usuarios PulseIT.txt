@@ -30,3 +30,37 @@ OatQZ@4Uf552
 
 alecod31@pulseit.com
 Lat3Z@dU5552
+
+
+DATOS DE PRUEBA
+
+TECNICO:
+{
+  "nombre": "Usuario de prueba FRONTEND",
+  "correo": "frontend432@example.com",
+  "contrasena": "Test@1234",
+  "disponibilidad": "disponible",
+  "especialidades": [11, 12]
+}
+
+
+TICKET:
+
+{
+  "titulo": "prueba de ticket frontend",
+  "descripcion": "probando",
+  "prioridad": 1,
+  "id_usuario_solicitante": 1,
+  "id_etiqueta": 1
+}
+
+
+CATEGORIA:
+
+{
+  "nombre": "TESTING CATEGORIA",
+  "descripcion": "Probando crear categoria",
+  "id_sla": 1,
+  "etiquetas": [8, 11],
+  "especialidades": [5, 6]
+}

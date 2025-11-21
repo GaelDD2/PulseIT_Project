@@ -72,7 +72,7 @@ CREATE TABLE `categoria` (
   PRIMARY KEY (`id`),
   KEY `id_sla` (`id_sla`),
   CONSTRAINT `categoria_ibfk_1` FOREIGN KEY (`id_sla`) REFERENCES `sla` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -81,7 +81,7 @@ CREATE TABLE `categoria` (
 
 LOCK TABLES `categoria` WRITE;
 /*!40000 ALTER TABLE `categoria` DISABLE KEYS */;
-INSERT INTO `categoria` VALUES (1,'Software Clínico','Incidentes relacionados con el software clínico del hospital.',1),(2,'Hardware y Equipos Tecnológicos','Problemas con hardware o equipos tecnológicos.',2),(3,'Redes y Conectividad','Fallas en la red interna o conectividad Wi-Fi.',3),(4,'Soporte a Usuario Interno','Soporte a usuarios internos del sistema.',4),(6,'Control Ambiental','Soporte a sensores y dispositivos de temperatura',6),(7,'Gestión de accesos y roles en sistemas clínicos','Gestión de accesos y roles en sistemas clínicos',7),(8,'Fallas en conexión Wi-Fi de áreas críticas','Gestión de incidencias relacionadas con la pérdida de conectividad Wi-Fi en zonas médicas o administrativas, afectando la comunicación con sistemas clínicos.',4),(9,'Prueba','Probando 2',1);
+INSERT INTO `categoria` VALUES (1,'Software Clínico','Incidentes relacionados con el software clínico del hospital.',1),(2,'Hardware y Equipos Tecnológicos','Problemas con hardware o equipos tecnológicos.',2),(3,'Redes y Conectividad','Fallas en la red interna o conectividad Wi-Fi.',3),(4,'Soporte a Usuario Interno','Soporte a usuarios internos del sistema.',4),(6,'Control Ambiental','Soporte a sensores y dispositivos de temperatura',6),(7,'Gestión de accesos y roles en sistemas clínicos','Gestión de accesos y roles en sistemas clínicos',7),(8,'Fallas en conexión Wi-Fi de áreas medicas','Gestión de pérdida de conectividad Wi-Fi en zonas médicas ',4);
 /*!40000 ALTER TABLE `categoria` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -108,7 +108,7 @@ CREATE TABLE `categoria_especialidad` (
 
 LOCK TABLES `categoria_especialidad` WRITE;
 /*!40000 ALTER TABLE `categoria_especialidad` DISABLE KEYS */;
-INSERT INTO `categoria_especialidad` VALUES (1,1),(1,2),(1,3),(2,4),(2,5),(2,6),(3,7),(3,8),(3,9),(4,10),(4,11),(4,12),(6,4),(6,6),(7,1),(7,11),(7,12),(8,7),(8,8),(8,9),(9,1),(9,2);
+INSERT INTO `categoria_especialidad` VALUES (1,1),(1,2),(1,3),(2,4),(2,5),(2,6),(3,7),(3,8),(3,9),(4,10),(4,11),(4,12),(6,4),(6,6),(7,1),(7,11),(7,12),(8,7),(8,8),(8,9);
 /*!40000 ALTER TABLE `categoria_especialidad` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -135,7 +135,7 @@ CREATE TABLE `categoria_etiqueta` (
 
 LOCK TABLES `categoria_etiqueta` WRITE;
 /*!40000 ALTER TABLE `categoria_etiqueta` DISABLE KEYS */;
-INSERT INTO `categoria_etiqueta` VALUES (1,1),(1,2),(1,3),(1,4),(2,5),(2,6),(2,7),(2,8),(3,9),(3,10),(3,11),(3,12),(4,13),(4,14),(4,15),(4,16),(6,6),(6,8),(7,13),(7,14),(7,16),(8,5),(8,9),(8,10),(9,1),(9,2);
+INSERT INTO `categoria_etiqueta` VALUES (1,1),(1,2),(1,3),(1,4),(2,5),(2,6),(2,7),(2,8),(3,9),(3,10),(3,11),(3,12),(4,13),(4,14),(4,15),(4,16),(6,6),(6,8),(7,13),(7,14),(7,16),(8,5),(8,9),(8,10);
 /*!40000 ALTER TABLE `categoria_etiqueta` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -244,7 +244,7 @@ CREATE TABLE `historial_tickets` (
   CONSTRAINT `historial_tickets_ibfk_3` FOREIGN KEY (`id_estado_nuevo`) REFERENCES `estados_ticket` (`id`),
   CONSTRAINT `historial_tickets_ibfk_4` FOREIGN KEY (`id_usuario_cambio`) REFERENCES `usuario` (`id`),
   CONSTRAINT `historial_tickets_ibfk_5` FOREIGN KEY (`id_asignacion`) REFERENCES `asignacion` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -278,7 +278,7 @@ CREATE TABLE `imagenes_historial_tickets` (
   KEY `id_usuario` (`id_usuario`),
   CONSTRAINT `imagenes_historial_tickets_ibfk_1` FOREIGN KEY (`id_historial`) REFERENCES `historial_tickets` (`id`) ON DELETE CASCADE,
   CONSTRAINT `imagenes_historial_tickets_ibfk_2` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -465,7 +465,7 @@ CREATE TABLE `ticket` (
   CONSTRAINT `ticket_ibfk_1` FOREIGN KEY (`id_categoria`) REFERENCES `categoria` (`id`),
   CONSTRAINT `ticket_ibfk_2` FOREIGN KEY (`id_usuario_solicitante`) REFERENCES `usuario` (`id`),
   CONSTRAINT `ticket_ibfk_3` FOREIGN KEY (`id_estado_actual`) REFERENCES `estados_ticket` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -533,7 +533,7 @@ CREATE TABLE `usuario` (
 
 LOCK TABLES `usuario` WRITE;
 /*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
-INSERT INTO `usuario` VALUES (1,'carlos@correo.com','$2y$10$reh7qnm400VCYxQHTWfsJev2c9jEzlBXqdgkPk.8uQGxJ74v0hpA.','Carlos Gómez',1,'2025-10-14 12:08:42',1,NULL,NULL),(2,'ana@correo.com','hash456','Ana Pérez',1,'2025-10-14 12:08:42',1,NULL,NULL),(3,'luis@correo.com','hash789','Luis Torres',2,'2025-10-14 12:08:42',1,'disponible',2),(4,'sofia@correo.com','$2y$10$.9k.XAc5J90TnHi1IgxxoeRZnc0Hx7u590C9dXRLTT.akscfC8AtK','Sofía Ramírez',2,'2025-10-14 12:08:42',1,'ocupado',5),(5,'admin@correo.com','$2y$10$pzhE1vVPb8wxZuo09HbCDejJfXCq32T.RVMq3ZGn/rRj6UBZppSN.','Administrador',3,'2025-10-14 12:08:42',1,NULL,NULL),(6,'Mlopez242@correo.com','hash078','María López',1,'2025-10-30 12:13:59',1,NULL,NULL),(8,'carlos.fernandez@pulseit.com','temporal123','Carlos Fernández',2,'2025-11-04 12:00:06',1,'disponible',0),(9,'angeliqueseguraaa@icloud.com','$2y$10$YbfXS.2R1o4oagk3vGrt7eWhmO4v.Sor/07HW0vzZLdGUHwFa62Xy','Angelique Segura',2,'2025-11-04 15:38:07',1,'disponible',0),(10,'andreypg12@gmail.com','$2y$10$rJJ2yzeUwEN3aQtslKFciO4u3iRoSPfWiQ1v54NztOTIIKJDFLIBO','Andrey Perez',2,'2025-11-04 15:53:34',1,'disponible',0),(11,'admin2@gmail.com','$2y$10$Ja3dPm1U7R3vGlj2SrQTf.1eRJxPmlErMDeUmdxv7KRzr3iMCnzPa','administrador 2.0',3,'2025-11-04 16:18:25',1,NULL,NULL),(12,'alecod31@pulseit.com','$2y$10$N3N.cJiXsVSIg8jkYi/Z..QCav6JwEnjhj5D8Y4HL056PbEjbOYse','Alejandro Serrano',2,'2025-11-04 16:20:15',1,'disponible',0),(15,'gael@421example.com','$2y$10$yg0kh/mL6cFbVqp1RUgh..puTWjEnGYOSLWuLTPslsm1lAzfTIr5m','Gael Osorio',2,'2025-11-10 14:55:15',1,'disponible',1);
+INSERT INTO `usuario` VALUES (1,'carlos@correo.com','$2y$10$reh7qnm400VCYxQHTWfsJev2c9jEzlBXqdgkPk.8uQGxJ74v0hpA.','Carlos Gómez',1,'2025-10-14 12:08:42',1,NULL,NULL),(2,'ana@correo.com','$2y$10$W81.MJVWqgAEjFoQFMlHjeSPSnpgLwTctGtF/qu1XZPEQUphs89Gy','Ana Pérez',1,'2025-10-14 12:08:42',1,NULL,NULL),(3,'luis@correo.com','hash789','Luis Torres',2,'2025-10-14 12:08:42',1,'disponible',2),(4,'sofia@correo.com','$2y$10$.9k.XAc5J90TnHi1IgxxoeRZnc0Hx7u590C9dXRLTT.akscfC8AtK','Sofía Ramírez',2,'2025-10-14 12:08:42',1,'ocupado',5),(5,'admin@correo.com','$2y$10$pzhE1vVPb8wxZuo09HbCDejJfXCq32T.RVMq3ZGn/rRj6UBZppSN.','Administrador',3,'2025-10-14 12:08:42',1,NULL,NULL),(6,'Mlopez242@correo.com','hash078','María López',1,'2025-10-30 12:13:59',1,NULL,NULL),(8,'carlos.fernandez@pulseit.com','temporal123','Carlos Fernández',2,'2025-11-04 12:00:06',1,'disponible',0),(9,'angeliqueseguraaa@icloud.com','$2y$10$YbfXS.2R1o4oagk3vGrt7eWhmO4v.Sor/07HW0vzZLdGUHwFa62Xy','Angelique Segura',2,'2025-11-04 15:38:07',1,'disponible',0),(10,'andreypg12@gmail.com','$2y$10$rJJ2yzeUwEN3aQtslKFciO4u3iRoSPfWiQ1v54NztOTIIKJDFLIBO','Andrey Perez',2,'2025-11-04 15:53:34',1,'disponible',0),(11,'admin2@gmail.com','$2y$10$Ja3dPm1U7R3vGlj2SrQTf.1eRJxPmlErMDeUmdxv7KRzr3iMCnzPa','administrador 2.0',3,'2025-11-04 16:18:25',1,NULL,NULL),(12,'alecod31@pulseit.com','$2y$10$N3N.cJiXsVSIg8jkYi/Z..QCav6JwEnjhj5D8Y4HL056PbEjbOYse','Alejandro Serrano',2,'2025-11-04 16:20:15',1,'disponible',0),(15,'gael@421example.com','$2y$10$yg0kh/mL6cFbVqp1RUgh..puTWjEnGYOSLWuLTPslsm1lAzfTIr5m','Gael Osorio',2,'2025-11-10 14:55:15',1,'disponible',1);
 /*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -578,4 +578,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-11-13 18:44:54
+-- Dump completed on 2025-11-19 15:38:39

@@ -120,14 +120,15 @@ class TecnicoModel
         // Encriptar contraseña 
         $nombre = $objeto->nombre;
         $correo = $objeto->correo;
-        $contrasena = password_hash($objeto->contrasena, PASSWORD_DEFAULT);
+        $passTemporal = "changeme";
+        $contrasenaHash = password_hash($passTemporal, PASSWORD_DEFAULT);
         $disponibilidad = $objeto->disponibilidad;
 
         // Insertar en usuario
         $sql = "INSERT INTO usuario 
             (correo, contrasena_hash, nombre, id_rol, ultimo_ingreso, activo, disponibilidad, carga_actual)
             VALUES 
-            ('$correo', '$contrasena', '$nombre', $idRolTecnico, NOW(), 1, '$disponibilidad', 0)";
+            ('$correo', '$contrasenaHash', '$nombre', $idRolTecnico, NOW(), 1, '$disponibilidad', 0)";
         $idUsuario = $this->enlace->executeSQL_DML_last($sql);
 
         // Relacionar especialidades

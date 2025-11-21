@@ -225,7 +225,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "    {\r\n    \"nombre\": \"Prueba\",\r\n    \"descripcion\": \"Probando 2\",\r\n    \"especialidades\": [1, 2],\r\n    \"etiquetas\": [1, 2],\r\n    \"id_sla\":1,\r\n    \"id_categoria\": 9\r\n\r\n\r\n    }",
+							"raw": "    {\r\n    \"nombre\": \"Fallas en conexión Wi-Fi de áreas medicas\",\r\n    \"descripcion\": \"Gestión de incidencias relacionadas con la pérdida de conectividad Wi-Fi en zonas médicas \",\r\n    \"especialidades\": [7, 8,9],\r\n    \"etiquetas\": [5, 9,10],\r\n    \"id_sla\":4,\r\n    \"id_categoria\": 8\r\n\r\n\r\n    }",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -242,6 +242,28 @@
 								"PulseIT",
 								"api",
 								"categoria"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener por Etiqueta",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:81/PulseIT/api/categoria/getByEtiqueta/13",
+							"host": [
+								"localhost"
+							],
+							"port": "81",
+							"path": [
+								"PulseIT",
+								"api",
+								"categoria",
+								"getByEtiqueta",
+								"13"
 							]
 						}
 					},

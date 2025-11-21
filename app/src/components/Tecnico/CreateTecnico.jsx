@@ -48,23 +48,7 @@ const TecnicoSchema = yup.object({
         'El formato del correo no es válido'
       ),
     
-    contrasena: yup
-      .string()
-      .required('La contraseña es obligatoria')
-      .min(8, 'La contraseña debe tener al menos 8 caracteres')
-      .matches(/[A-Z]/, 'Debe contener al menos una letra mayúscula')
-      .matches(/[a-z]/, 'Debe contener al menos una letra minúscula')
-      .matches(/[0-9]/, 'Debe contener al menos un número')
-      .matches(/[!@#$%^&*(),.?":{}|<>]/, 'Debe contener al menos un carácter especial')
-      .max(50, 'La contraseña no puede exceder los 50 caracteres'),
-    
-      disponibilidad: yup
-      .string()
-      .required('La disponibilidad es requerida')
-      .oneOf(
-        ['disponible', 'ocupado', 'desconectado', 'vacaciones'], 
-        'Seleccione una disponibilidad válida'
-      ),
+   
     
     especialidades: yup.array().min(1, 'La especialidad es requerida')
   });
@@ -78,7 +62,8 @@ const TecnicoSchema = yup.object({
         defaultValues: {
             nombre: "",
             correo: "",
-            contrasena: "",
+           
+            
             disponibilidad: "",
             especialidades: [],
         },
@@ -170,20 +155,7 @@ const TecnicoSchema = yup.object({
             } />
           </div>
 
-          {/*Contraseña*/}
-          <div>
-            <Controller
-              name="contrasena"
-              control={control}
-              render={({ field }) =>
-                <CustomInputField
-                  {...field}
-                  label="Contraseña"
-                  placeholder=""
-                  error={errors.contrasena?.message} />
-              }
-            />
-          </div>
+          
                   {/* Disponibilidad - Combobox */}
                   <div>
                       <Label className="block mb-1 text-sm font-medium" htmlFor="disponibilidad">

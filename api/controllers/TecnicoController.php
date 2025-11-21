@@ -57,8 +57,8 @@ class tecnico
     }
 
     //POST crear Tecnicos
-    // localhost:81/PulseIT/api/tecnico
-    public function create()
+    // localhost:81/PulseIT/api/tecnico/createTecnico
+    public function createTecnico()
     {
         try {
             $request = new Request();

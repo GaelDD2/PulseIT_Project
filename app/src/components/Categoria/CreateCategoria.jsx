@@ -95,7 +95,7 @@ export function CreateCategoria() {
     /*** Submit ***/
     const onSubmit = async (dataForm) => {
       try {
-        console.log("📤 Enviando datos:", dataForm);
+        console.log("Enviando datos:", dataForm);
         const response = await CategoriaService.createCategoria({
           nombre: dataForm.nombre,
           descripcion: dataForm.descripcion,

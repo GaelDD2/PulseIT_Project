@@ -23,7 +23,7 @@ class TecnicoService {
   }
 
   createTecnico(Tecnico) {
-    return axios.post(BASE_URL, Tecnico, {
+    return axios.post(`${BASE_URL}/createTecnico`, Tecnico, {
       headers: { "Content-Type": "application/json" }
     });
   }

@@ -203,4 +203,7 @@ class TecnicoModel
         //Retornar la respuesta
         return $vResultado;
     }
+
+
+    
 }

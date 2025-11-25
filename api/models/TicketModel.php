@@ -227,6 +227,67 @@ public function DetalleTicket($idTicket) {
 
 
     }
+
+    public function updateEstado($objeto){
+      $idTicket=$objeto->id_ticket;
+      $estadoNuevo=$objeto->estado;
+      $idUsuario=$objeto->id_usuario;
+      $observacion=$objeto->observacion;
+
+      switch ($estadoNuevo) {
+        case 1:
+          $estadoAnterior=4;
+
+          break;
+
+          case 2:
+            $estadoAnterior=1;
+  
+            break;
+            case 5:
+              $estadoAnterior=2;
+    
+              break;
+
+              case 3:
+                $estadoAnterior=5;
+      
+                break;
+        
+        default:
+          # code...
+          break;
+      }
+      
+
+      if ($estadoNuevo==3) {
+        $sqlTicket="UPDATE ticket
+        SET id_estado_actual = 3,
+            fecha_cierre = NOW()
+        WHERE id = $idTicket;";
+
+      } else {
+        $sqlTicket="UPDATE ticket SET id_estado_actual = $estadoNuevo WHERE id =  $idTicket;";
+      }
+
+      $cResults = $this->enlace->executeSQL_DML($sqlTicket);
+
+      
+      $sqlNuevoHistorial="INSERT INTO historial_tickets (id_ticket, id_estado_anterior, id_estado_nuevo, id_usuario_cambio, observaciones)
+      VALUES ($idTicket, $estadoAnterior, $estadoNuevo, $idUsuario,'$observacion' );";
+      
+      $idHIstorial = $this->enlace->executeSQL_DML_last($sqlNuevoHistorial);
+
+       // Retornar datos creados
+       $sqlGet = "SELECT * from ticket where id=$idTicket";
+
+       $vResultado = $this->enlace->ExecuteSQL($sqlGet)[0];
+       $vResultado->id_historial=$idHIstorial;
+       return  $vResultado;
+
+
+
+  }
     
 
 

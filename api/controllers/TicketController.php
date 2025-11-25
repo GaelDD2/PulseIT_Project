@@ -57,4 +57,26 @@ class ticket
         }
     }
 
+    //PUT actualizar Estado
+   // localhost:81/PulseIT/api/ticket/updateEstado
+
+   public function updateEstado()
+   {
+       try {
+           $request = new Request();
+           $response = new Response();
+           //Obtener json enviado
+           $inputJSON = $request->getJSON();
+           //Instancia del modelo
+           $model = new TicketModel();
+           //Acción del modelo a ejecutar
+           $result = $model->updateEstado($inputJSON);
+           //Dar respuesta
+           $response->toJSON($result);
+       } catch (Exception $e) {
+           $response->toJSON($result);
+           handleException($e);
+       }
+   }
+
 }

@@ -43,7 +43,9 @@ export function ListCardTickets({ data }) {
                     size="sm" 
                     className="bg-purple-600 text-white hover:bg-purple-700"
                 >
-                    Cerrar Ticket
+                    <Link to={`/tickets/updateEstado/${item.id}/3`}>
+                          Cerrar Ticket
+                        </Link>
                 </Button>
             );
         }
@@ -58,7 +60,9 @@ export function ListCardTickets({ data }) {
                             size="sm" 
                             className="bg-primary text-white hover:bg-primary/90"
                         >
-                            Resolver Ticket
+                           <Link to={`/tickets/updateEstado/${item.id}/2`}>
+                          Resolver Ticket
+                        </Link>
                         </Button>
                     );
                 case "En Proceso":
@@ -68,7 +72,7 @@ export function ListCardTickets({ data }) {
                             size="sm" 
                             className="bg-green-600 text-white hover:bg-green-700"
                         >
-                        <Link to="/modificarEstado">
+                        <Link to={`/tickets/updateEstado/${item.id}/5`}>
                           Finalizar Ticket
                         </Link>
                       </Button>
@@ -86,7 +90,7 @@ export function ListCardTickets({ data }) {
                     size="sm" 
                     className="bg-blue-600 text-white hover:bg-blue-700"
                 >
-                    Asignar Manualmente
+                    Asignar 
                 </Button>
             );
         }

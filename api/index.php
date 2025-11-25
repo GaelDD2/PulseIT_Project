@@ -28,6 +28,7 @@ require_once "models/EtiquetaModel.php";
 require_once "models/SlaModel.php";
 require_once "models/TicketModel.php";
 require_once "models/ImageHistorialModel.php";
+require_once "models/NotificacionModel.php";
 
 
 /***--- Agregar todos los controladores*/
@@ -40,6 +41,8 @@ require_once "models/ImageHistorialModel.php";
  require_once "controllers/EtiquetaController.php";
  require_once "controllers/slaController.php";
  require_once "controllers/ImageHistorialController.php";
+ require_once "controllers/NotificacionController.php";
+
 
 
 //Enrutador

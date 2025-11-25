@@ -22,6 +22,15 @@ class TicketService {
     return axios.post(BASE_URL, JSON.stringify(ticket));
   }
 
+  updateEstado(ticket) {
+    return axios({
+      method: 'put',
+      url: `${BASE_URL}/updateEstado`,
+      data: JSON.stringify(ticket)
+
+    })
+  }
+
 }
 
 export default new TicketService();

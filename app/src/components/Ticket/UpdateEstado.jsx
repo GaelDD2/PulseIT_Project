@@ -24,6 +24,7 @@ import ImagesService from "@/services/ImagesService";
 // Componentes personalizados
 import { CustomMultiSelect } from "../ui/custom/custom-multiple-select";
 import { CustomInputField } from "../ui/custom/custom-input-field";
+import NotificacionService from "@/services/NotificacionService";
 
 
 export function UpdateEstado() {
@@ -110,6 +111,31 @@ export function UpdateEstado() {
 
           // Enviar
           await ImagesService.uploadEvidence(formData);
+
+           //Generar Notificacion
+           const formDataNoti = new FormData();
+           formDataNoti.append("id_usuario", response.data.data.id_usuario_solicitante); 
+           formDataNoti.append("tipo_id", 2);
+           formDataNoti.append("id_usuario_origen", idUsuario);
+           let contenido = "";
+           switch (parseInt(estado)) {
+            case 2:
+             contenido = "Ticket puesto en proceso";
+              break;
+              case 5:
+             contenido = "El Ticket se ha resuelto";
+              break;
+              case 3:
+             contenido = "Ticket ha sido cerrado en proceso";
+              break;
+            
+           
+            default:
+              break;
+           }
+           formDataNoti.append("contenido", contenido);
+           formDataNoti.append("atendida", 0);
+           await NotificacionService.createNotificacion(formDataNoti);
           //Notificación de creación 
           toast.success(`Estado actualizado #${response.data.data.id} - ${response.data.data.titulo}`, { 
             duration: 4000, 

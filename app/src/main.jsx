@@ -21,6 +21,7 @@ import { CreateTicket } from './components/Ticket/CreateTicket'
 import { UpdateCategoria } from './components/Categoria/UpdateCategoria'
 import { UpdateEstado } from './components/Ticket/UpdateEstado'
 import { NotificationsPanel } from './components/Notificacion/PanelNotificaciones'
+import { ListTecnicosAsignacion } from './components/Tecnico/ListTecnicoAsignacion'
 
 
 const rutas = createBrowserRouter([
@@ -44,6 +45,7 @@ const rutas = createBrowserRouter([
       { path: "categorias/detail/updateCategoria/:id", element: <UpdateCategoria /> },
       { path: "tickets/updateEstado/:idTicket/:estado", element: <UpdateEstado /> },
       { path: "notificaciones", element: <NotificationsPanel /> },
+      { path: "tecnicosAsignaciones/:idTicket", element: <ListTecnicosAsignacion /> },
 
 
 

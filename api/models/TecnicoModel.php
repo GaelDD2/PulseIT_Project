@@ -31,6 +31,38 @@ class TecnicoModel
         return $vResultado;
     }
 
+    /**
+     * Listar Tecnicos con sus especialidades 
+     * @param 
+     * @return $vResultado - Lista de objetos
+     */
+    public function GetTecnicosEsp()
+    {
+        $especialidadM = new EspecialidadModel();
+        //Consulta SQL
+        
+        $vSQL = "SELECT 
+	    id,
+        nombre,
+        carga_actual,
+        disponibilidad
+        FROM usuario where id_rol=2";
+
+       $vResultadoTecnicos = $this->enlace->ExecuteSQL($vSQL);
+       
+       
+       
+       
+        foreach ($vResultadoTecnicos as $tecnico) {
+
+                $tecnico->especialidades = $especialidadM->getEspecialidadesByTecnico($tecnico->id);
+               
+            }
+        
+            return   $vResultadoTecnicos;
+        
+    }
+
 
     /**
      * Listar Detalles del tecnico seleccionado

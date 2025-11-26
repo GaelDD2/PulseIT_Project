@@ -90,7 +90,9 @@ export function ListCardTickets({ data }) {
                     size="sm" 
                     className="bg-blue-600 text-white hover:bg-blue-700"
                 >
-                    Asignar 
+                    <Link to={`/tecnicosAsignaciones/${item.id}`}>
+                          Asignar
+                        </Link>
                 </Button>
             );
         }

@@ -20,6 +20,24 @@ class tecnico
         }
     }
 
+    //GET Obtener Tecnicos
+    // localhost:81/PulseIT/api/tecnico/getTecnicos
+    public function getTecnicos()
+    {
+        try {
+            $response = new Response();
+            //Instancia del modelo
+            $tecnicoM = new TecnicoModel;
+            //Acción del modelo a ejecutar
+            $result = $tecnicoM->GetTecnicosEsp();
+            //Dar respuesta
+            $response->toJSON($result);
+        } catch (Exception $e) {
+            $response->toJSON($result);
+            handleException($e);
+        }
+    }
+
     //GET Obtener Detalles de un Tecnico
     // localhost:81/PulseIT/api/tecnico/DetalleTecnico/3
     public function DetalleTecnico($idTecnico)

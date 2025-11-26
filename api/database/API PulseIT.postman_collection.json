@@ -136,6 +136,27 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Obtener todos los tecnicos con sus especialidades",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:81/PulseIT/api/tecnico/getTecnicos",
+							"host": [
+								"localhost"
+							],
+							"port": "81",
+							"path": [
+								"PulseIT",
+								"api",
+								"tecnico",
+								"getTecnicos"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -354,6 +375,66 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Actualizar Estados",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id_ticket\": 22,\r\n  \"estado\": 3,\r\n  \"id_usuario\": 5,\r\n  \"observacion\": \"Se cambia el estado del ticket a CERRADO Prueba BACKEND\"\r\n  \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:81/PulseIT/api/ticket/updateEstado",
+							"host": [
+								"localhost"
+							],
+							"port": "81",
+							"path": [
+								"PulseIT",
+								"api",
+								"ticket",
+								"updateEstado"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Asignar Tecinco Manual",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id_ticket\": 27,\r\n  \"id_tecnico\": 3,\r\n  \"id_usuario\": 5,\r\n  \"observacion_historial\": \"Pasa a ser asignado\",\r\n\"observacion_asignacion\": \"Se asigna manualmente desde postman para prueba\"\r\n\r\n  \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:81/PulseIT/api/ticket/asignarTecnicoM",
+							"host": [
+								"localhost"
+							],
+							"port": "81",
+							"path": [
+								"PulseIT",
+								"api",
+								"ticket",
+								"asignarTecnicoM"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -505,6 +586,85 @@
 								"api",
 								"image",
 								"create"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Notificacion",
+			"item": [
+				{
+					"name": "Notificaciones por usuario",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:81/PulseIT/api/notificacion/getByUsuario/1",
+							"host": [
+								"localhost"
+							],
+							"port": "81",
+							"path": [
+								"PulseIT",
+								"api",
+								"notificacion",
+								"getByUsuario",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Crear notificacion",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id_usuario\": 1,\r\n  \"tipo_id\": 4,\r\n  \"id_usuario_origen\": 5,\r\n  \"contenido\": \"Esta notificacion es de prueba\",\r\n  \"atendida\": 0\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:81/PulseIT/api/notificacion/createNoti",
+							"host": [
+								"localhost"
+							],
+							"port": "81",
+							"path": [
+								"PulseIT",
+								"api",
+								"notificacion",
+								"createNoti"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cantidad De notificaciones",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:81/PulseIT/api/notificacion/getCantNoti/1",
+							"host": [
+								"localhost"
+							],
+							"port": "81",
+							"path": [
+								"PulseIT",
+								"api",
+								"notificacion",
+								"getCantNoti",
+								"1"
 							]
 						}
 					},

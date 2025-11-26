@@ -9,6 +9,12 @@ class TecnicoService {
     return axios.get(BASE_URL);
   }
 
+   // Obtener todos los técnicos con especialidades
+   getTecnicosEsp(){
+    return axios.get(BASE_URL+'/'+"getTecnicos");
+  }
+  
+
 
     //Obtener Detalle Tecnico
   //http://localhost:81/PulseIT/api/tecnico/DetalleTecnico/4

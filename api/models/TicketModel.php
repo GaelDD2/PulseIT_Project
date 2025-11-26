@@ -288,6 +288,43 @@ public function DetalleTicket($idTicket) {
 
 
   }
+
+  public function asignarTecnicoManual($objeto){
+    $idTicket=$objeto->id_ticket;
+    $idTecnico=$objeto->id_tecnico;
+    $EstadoAnterior=4;
+    $idUsuario=$objeto->id_usuario;
+    $observacionHistorial=$objeto->observacion_historial;
+    $observacionAsignacion=$objeto->observacion_asignacion;
+
+    $sqlTicket="UPDATE ticket SET id_estado_actual = 1 WHERE id = $idTicket;";
+    
+
+    $cResults = $this->enlace->executeSQL_DML($sqlTicket);
+
+    
+    $sqlNuevoHistorial="INSERT INTO historial_tickets (id_ticket, id_estado_anterior, id_estado_nuevo, id_usuario_cambio,fecha_cambio, observaciones)
+    VALUES ($idTicket, $EstadoAnterior, 1, $idUsuario,NOW(),'$observacionHistorial' );";
+    
+    $idHIstorial = $this->enlace->executeSQL_DML_last($sqlNuevoHistorial);
+
+    $sqlAsignacion="INSERT INTO asignacion (id_ticket, id_usuario_tecnico, id_usuario_asignador, fecha_asignacion, metodo, observaciones, activo)
+    VALUES ($idTicket, $idTecnico, $idUsuario, NOW(), 'manual', '$observacionAsignacion', 1);";
+    
+    $idAsignacion = $this->enlace->executeSQL_DML_last($sqlAsignacion);
+
+     // Retornar datos creados
+     $sqlGet = "SELECT * from ticket where id=$idTicket";
+
+     $vResultado = $this->enlace->ExecuteSQL($sqlGet)[0];
+     $vResultado->id_historial=$idHIstorial;
+     $vResultado->id_asignacion=$idAsignacion;
+
+     return  $vResultado;
+
+
+
+}
     
 
 

@@ -57,10 +57,10 @@ class ticket
         }
     }
 
-    //PUT actualizar Estado
-   // localhost:81/PulseIT/api/ticket/updateEstado
+    //PUT asignar
+   // localhost:81/PulseIT/api/ticket/asignarTecnicoM
 
-   public function updateEstado()
+   public function asignarTecnicoM()
    {
        try {
            $request = new Request();
@@ -70,7 +70,7 @@ class ticket
            //Instancia del modelo
            $model = new TicketModel();
            //Acción del modelo a ejecutar
-           $result = $model->updateEstado($inputJSON);
+           $result = $model->asignarTecnicoManual($inputJSON);
            //Dar respuesta
            $response->toJSON($result);
        } catch (Exception $e) {

@@ -26,6 +26,7 @@ import { CustomMultiSelect } from "../ui/custom/custom-multiple-select";
 import { CustomInputField } from "../ui/custom/custom-input-field";
 import ImagesService from "@/services/ImagesService";
 import CategoriaService from "@/services/CategoriaService";
+import NotificacionService from "@/services/NotificacionService";
 
 export function CreateTicket() {
   const navigate = useNavigate();
@@ -138,6 +139,17 @@ export function CreateTicket() {
 
           // Enviar
           await ImagesService.uploadEvidence(formData);
+
+          //Generar Notificacion
+          const formDataNoti = new FormData();
+          formDataNoti.append("id_usuario", idUsuario); 
+          formDataNoti.append("tipo_id", 1);
+          formDataNoti.append("id_usuario_origen", 5);
+          formDataNoti.append("contenido", `Ticket creado #${response.data.data.id} - ${response.data.data.titulo}`);
+          formDataNoti.append("atendida", 0);
+
+          await NotificacionService.createNotificacion(formDataNoti);
+
           //Notificación de creación 
           toast.success(`Ticket creado #${response.data.data.id} - ${response.data.data.titulo}`, { 
             duration: 4000, 

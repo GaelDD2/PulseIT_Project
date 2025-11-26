@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   Layers,
@@ -26,10 +26,12 @@ import {
   MenubarContent,
   MenubarItem,
 } from "@/components/ui/menubar";
+import NotificacionService from "@/services/NotificacionService";
 
 export default function Header() {
   const navigate = useNavigate();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [numeroNotificaciones, setNumeroNotificaciones] = useState(0);
 
   // 🔹 Cargar datos del usuario logueado desde localStorage
   const idUsuario = localStorage.getItem("idUsuario");
@@ -40,6 +42,29 @@ export default function Header() {
     correo: correo || "Invitado",
     rol: idRol,
   };
+
+  // 🔹 Obtener número de notificaciones
+  useEffect(() => {
+    const fetchNotificaciones = async () => {
+      if (idUsuario) {
+        try {
+          const response = await NotificacionService.getNumeroNotis(idUsuario);
+          if (response.data.success) {
+            setNumeroNotificaciones(response.data.data);
+          }
+        } catch (error) {
+          console.error("Error al obtener notificaciones:", error);
+        }
+      }
+    };
+
+    fetchNotificaciones();
+    
+    // Opcional: Actualizar cada 30 segundos
+    const interval = setInterval(fetchNotificaciones, 30000);
+    
+    return () => clearInterval(interval);
+  }, [idUsuario]);
 
   // 🔹 Función para cerrar sesión
   const handleLogout = () => {
@@ -188,6 +213,12 @@ export default function Header() {
         <div className="flex items-center gap-4">
           <Link to="/notificaciones" className="relative hover:opacity-80">
             <Bell className="h-6 w-6" />
+            {/* Burbuja de notificaciones */}
+            {numeroNotificaciones > 0 && (
+              <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center animate-pulse">
+                {numeroNotificaciones > 99 ? '99+' : numeroNotificaciones}
+              </span>
+            )}
           </Link>
 
           {/* Menú móvil */}

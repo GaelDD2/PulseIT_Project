@@ -2,6 +2,10 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import PropTypes from "prop-types";
 import TecnicoIcon from "../../assets/TecnicoIcon2.png";
+import TicketService from "@/services/TicketService";
+import {  useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
+
 
 ListCardTecnicosAsignacion.propTypes = {
   data: PropTypes.array.isRequired,
@@ -9,6 +13,9 @@ ListCardTecnicosAsignacion.propTypes = {
 };
 
 export function ListCardTecnicosAsignacion({ data, onSelect }) {
+  const {idTicket} = useParams();
+
+  
   return (
     
     <div className="grid gap-4 p-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -62,7 +69,9 @@ export function ListCardTecnicosAsignacion({ data, onSelect }) {
             className="mt-3 w-full"
             onClick={() => onSelect(item)}
           >
-            Seleccionar
+            <Link to={`/AsignarTecnicoManual/${idTicket}/${item.id}`}>
+              Seleccionar
+            </Link>
           </Button>
         </Card>
       ))}

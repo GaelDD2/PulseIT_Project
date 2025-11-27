@@ -31,6 +31,17 @@ class TicketService {
     })
   }
 
+  asignarTecnicoManual(ticket) {
+    return axios({
+      method: 'put',
+      url: `${BASE_URL}/asignarTecnicoM`,
+      data: JSON.stringify(ticket)
+
+    })
+  }
+
+  
+
 }
 
 export default new TicketService();

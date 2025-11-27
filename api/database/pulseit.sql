@@ -44,7 +44,7 @@ CREATE TABLE `asignacion` (
   CONSTRAINT `asignacion_ibfk_2` FOREIGN KEY (`id_usuario_tecnico`) REFERENCES `usuario` (`id`),
   CONSTRAINT `asignacion_ibfk_3` FOREIGN KEY (`id_usuario_asignador`) REFERENCES `usuario` (`id`),
   CONSTRAINT `fk_asignacion_regla_autotriage` FOREIGN KEY (`id_regla_autotriage`) REFERENCES `reglas_autotriage` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -53,7 +53,7 @@ CREATE TABLE `asignacion` (
 
 LOCK TABLES `asignacion` WRITE;
 /*!40000 ALTER TABLE `asignacion` DISABLE KEYS */;
-INSERT INTO `asignacion` VALUES (1,1,3,5,1,'2025-10-15 10:48:26','automatico',NULL,'Asignado automáticamente por prioridad alta (software clínico).',1),(2,2,4,5,1,'2025-10-15 10:48:26','automatico',NULL,'Asignado automáticamente por regla de equipos tecnológicos.',1),(3,3,3,5,2,'2025-10-15 10:48:26','automatico',NULL,'Asignado por carga y especialidad de redes.',1),(4,4,4,5,NULL,'2025-10-15 10:48:26','manual',NULL,'Asignado manualmente por administrador.',1),(5,5,3,5,NULL,'2025-10-16 11:09:49','manual',NULL,'Ejemplo de ticket resuelto para la vista semanal.',1),(6,7,4,5,NULL,'2025-10-30 12:46:21','manual',NULL,'Asignado manualmente por el administrador.',1),(7,8,4,5,NULL,'2025-10-30 14:35:36','manual',NULL,'Asignado manualmente por el administrador.',1),(8,9,4,5,NULL,'2025-10-30 14:46:03','manual',NULL,'Asignado manualmente a técnico.',1);
+INSERT INTO `asignacion` VALUES (1,1,3,5,1,'2025-10-15 10:48:26','automatico',NULL,'Asignado automáticamente por prioridad alta (software clínico).',1),(2,2,4,5,1,'2025-10-15 10:48:26','automatico',NULL,'Asignado automáticamente por regla de equipos tecnológicos.',1),(3,3,3,5,2,'2025-10-15 10:48:26','automatico',NULL,'Asignado por carga y especialidad de redes.',1),(4,4,4,5,NULL,'2025-10-15 10:48:26','manual',NULL,'Asignado manualmente por administrador.',1),(5,5,3,5,NULL,'2025-10-16 11:09:49','manual',NULL,'Ejemplo de ticket resuelto para la vista semanal.',1),(6,7,4,5,NULL,'2025-10-30 12:46:21','manual',NULL,'Asignado manualmente por el administrador.',1),(7,8,4,5,NULL,'2025-10-30 14:35:36','manual',NULL,'Asignado manualmente por el administrador.',1),(8,9,4,5,NULL,'2025-10-30 14:46:03','manual',NULL,'Asignado manualmente a técnico.',1),(9,23,12,5,NULL,'2025-11-25 14:57:47','manual',NULL,'Asignado manualmente por el administrador.',1),(10,25,4,5,NULL,'2025-11-25 21:26:19','manual',NULL,'Asignado manualmente por el administrador.',1),(11,26,15,5,NULL,'2025-11-25 21:36:31','manual',NULL,'Asignado manualmente por el administrador.',1),(12,27,3,5,NULL,'2025-11-26 14:18:31','manual',NULL,'Se asigna manualmente desde postman para prueba',1),(13,10,12,5,NULL,'2025-11-27 15:47:30','manual',NULL,'Es el tecnico mas adecuado para el proceso',1);
 /*!40000 ALTER TABLE `asignacion` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -187,7 +187,7 @@ CREATE TABLE `estados_ticket` (
 
 LOCK TABLES `estados_ticket` WRITE;
 /*!40000 ALTER TABLE `estados_ticket` DISABLE KEYS */;
-INSERT INTO `estados_ticket` VALUES (1,'Abierto','Ticket recién creado'),(2,'En Proceso','Asignado a un técnico'),(3,'Cerrado','Resuelto o finalizado'),(4,'Pendiente','Ticket creado y esperando asignación'),(5,'Resuelto','Ticket atendido y pendiente de validación del cliente');
+INSERT INTO `estados_ticket` VALUES (1,'Asignado','ticket asignado'),(2,'En Proceso','Asignado a un técnico'),(3,'Cerrado','Resuelto o finalizado'),(4,'Pendiente','Ticket creado y esperando asignación'),(5,'Resuelto','Ticket atendido y pendiente de validación del cliente');
 /*!40000 ALTER TABLE `estados_ticket` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -244,7 +244,7 @@ CREATE TABLE `historial_tickets` (
   CONSTRAINT `historial_tickets_ibfk_3` FOREIGN KEY (`id_estado_nuevo`) REFERENCES `estados_ticket` (`id`),
   CONSTRAINT `historial_tickets_ibfk_4` FOREIGN KEY (`id_usuario_cambio`) REFERENCES `usuario` (`id`),
   CONSTRAINT `historial_tickets_ibfk_5` FOREIGN KEY (`id_asignacion`) REFERENCES `asignacion` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=53 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -253,7 +253,7 @@ CREATE TABLE `historial_tickets` (
 
 LOCK TABLES `historial_tickets` WRITE;
 /*!40000 ALTER TABLE `historial_tickets` DISABLE KEYS */;
-INSERT INTO `historial_tickets` VALUES (1,1,NULL,1,1,'2025-10-15 10:48:26','Ticket creado por el cliente.',NULL,0),(2,1,1,2,5,'2025-10-15 10:48:26','Administrador asignó al técnico Luis.',NULL,1),(3,2,NULL,1,2,'2025-10-15 10:48:26','Cliente abrió un nuevo ticket.',NULL,0),(4,2,1,2,5,'2025-10-15 10:48:26','Administrador asignó a Sofía.',NULL,1),(5,3,NULL,1,1,'2025-10-15 10:48:26','Ticket de conectividad abierto.',NULL,0),(6,3,1,2,5,'2025-10-15 10:48:26','Técnico asignado automáticamente.',NULL,1),(7,4,NULL,1,2,'2025-10-15 10:48:26','Ticket de soporte interno abierto.',NULL,0),(8,7,NULL,4,6,'2025-10-30 12:37:57','Cliente creó el ticket en estado Pendiente.',NULL,0),(9,7,4,1,5,'2025-10-30 12:41:19','Administrador abrió el ticket.',NULL,0),(10,7,1,2,3,'2025-10-30 12:48:45','Técnico inicia trabajo.',NULL,0),(11,7,2,5,3,'2025-10-30 13:54:13','Técnico resolvió el ticket.',NULL,0),(12,7,5,3,6,'2025-10-30 13:56:42','Cliente revisó la solución y cerró el ticket.',NULL,0),(13,8,NULL,4,6,'2025-10-30 14:14:08','Cliente creó el ticket en estado Pendiente.',NULL,0),(14,8,4,1,5,'2025-10-30 14:34:39','Administrador abrió el ticket.',NULL,0),(15,8,1,2,3,'2025-10-30 14:38:07','Técnico inicia trabajo.',NULL,0),(16,8,2,5,4,'2025-10-30 14:39:39','Técnico resolvió el ticket.',NULL,0),(17,9,NULL,4,6,'2025-10-30 14:44:52','Cliente creó el ticket con estado Pendiente.',NULL,0),(18,9,4,1,5,'2025-10-30 14:45:35','Administrador abrió el ticket.',NULL,0),(19,9,1,2,4,'2025-10-30 14:49:41','Técnico inicia el diagnóstico.',NULL,0),(20,10,NULL,4,2,'2025-10-30 16:14:35','Cliente creó el ticket con estado Pendiente.',NULL,0),(21,11,NULL,4,2,'2025-10-31 09:16:14','Cliente creó el ticket con estado Pendiente.',NULL,0);
+INSERT INTO `historial_tickets` VALUES (1,1,NULL,1,1,'2025-10-15 10:48:26','Ticket creado por el cliente.',NULL,0),(2,1,1,2,5,'2025-10-15 10:48:26','Administrador asignó al técnico Luis.',NULL,1),(3,2,NULL,1,2,'2025-10-15 10:48:26','Cliente abrió un nuevo ticket.',NULL,0),(4,2,1,2,5,'2025-10-15 10:48:26','Administrador asignó a Sofía.',NULL,1),(5,3,NULL,1,1,'2025-10-15 10:48:26','Ticket de conectividad abierto.',NULL,0),(6,3,1,2,5,'2025-10-15 10:48:26','Técnico asignado automáticamente.',NULL,1),(7,4,NULL,1,2,'2025-10-15 10:48:26','Ticket de soporte interno abierto.',NULL,0),(8,7,NULL,4,6,'2025-10-30 12:37:57','Cliente creó el ticket en estado Pendiente.',NULL,0),(9,7,4,1,5,'2025-10-30 12:41:19','Administrador abrió el ticket.',NULL,0),(10,7,1,2,3,'2025-10-30 12:48:45','Técnico inicia trabajo.',NULL,0),(11,7,2,5,3,'2025-10-30 13:54:13','Técnico resolvió el ticket.',NULL,0),(12,7,5,3,6,'2025-10-30 13:56:42','Cliente revisó la solución y cerró el ticket.',NULL,0),(13,8,NULL,4,6,'2025-10-30 14:14:08','Cliente creó el ticket en estado Pendiente.',NULL,0),(14,8,4,1,5,'2025-10-30 14:34:39','Administrador abrió el ticket.',NULL,0),(15,8,1,2,3,'2025-10-30 14:38:07','Técnico inicia trabajo.',NULL,0),(16,8,2,5,4,'2025-10-30 14:39:39','Técnico resolvió el ticket.',NULL,0),(17,9,NULL,4,6,'2025-10-30 14:44:52','Cliente creó el ticket con estado Pendiente.',NULL,0),(18,9,4,1,5,'2025-10-30 14:45:35','Administrador abrió el ticket.',NULL,0),(19,9,1,2,4,'2025-10-30 14:49:41','Técnico inicia el diagnóstico.',NULL,0),(20,10,NULL,4,2,'2025-10-30 16:14:35','Cliente creó el ticket con estado Pendiente.',NULL,0),(21,11,NULL,4,2,'2025-10-31 09:16:14','Cliente creó el ticket con estado Pendiente.',NULL,0),(30,22,NULL,4,4,'2025-11-25 10:29:27','Cliente creó el ticket con estado Pendiente.',NULL,0),(31,22,1,2,3,'2025-11-25 13:23:41','Se cambia el estado del ticket Prueba BACKEND',NULL,0),(32,22,2,5,3,'2025-11-25 14:07:05','Se cambia el estado del ticket a resuelto Prueba BACKEND',NULL,0),(33,22,5,3,5,'2025-11-25 14:09:09','Se cambia el estado del ticket a CERRADO Prueba BACKEND',NULL,0),(34,23,NULL,4,2,'2025-11-25 14:53:41','Cliente creó el ticket con estado Pendiente.',NULL,0),(35,23,4,1,5,'2025-11-25 14:56:37','Administrador asigno el ticket.',NULL,0),(36,23,1,2,12,'2025-11-25 15:04:34','Empece con la revision de las conexiones. En proceso',NULL,0),(37,23,2,5,12,'2025-11-25 15:09:57','Ticket resuelto. Problema con las conexiones internas solucionado',NULL,0),(38,23,5,3,2,'2025-11-25 15:12:52','El ticket esta resuelto a tiempo',NULL,0),(39,24,NULL,4,1,'2025-11-25 19:04:10','Cliente creó el ticket con estado Pendiente.',NULL,0),(40,5,5,3,5,'2025-11-25 21:14:32','El tecnico ha finalizado con el ticket ',NULL,0),(41,8,5,3,5,'2025-11-25 21:15:13','El tecnico ha resuelto el ticket ',NULL,0),(42,25,NULL,4,1,'2025-11-25 21:23:14','Cliente creó el ticket con estado Pendiente.',NULL,0),(43,25,4,1,5,'2025-11-25 21:25:40','Administrador abrió el ticket.',NULL,0),(44,25,1,2,4,'2025-11-25 21:28:47','Empece con el trabajo. en proceso',NULL,0),(45,26,NULL,4,2,'2025-11-25 21:34:30','Cliente creó el ticket con estado Pendiente.',NULL,0),(46,26,4,1,5,'2025-11-25 21:35:29','Administrador abrió el ticket.',NULL,0),(47,26,1,2,15,'2025-11-25 21:39:01','En proceso de resolucion',NULL,0),(48,26,2,5,15,'2025-11-25 21:39:40','Ticket resuelto',NULL,0),(49,26,5,3,2,'2025-11-25 21:41:01','Cerrado',NULL,0),(50,27,NULL,4,3,'2025-11-26 14:13:26','Cliente creó el ticket con estado Pendiente.',NULL,0),(51,27,4,1,5,'2025-11-26 14:18:31','Pasa a ser asignado',NULL,0),(52,10,4,1,5,'2025-11-27 15:47:30','Asignar para prueba',NULL,0);
 /*!40000 ALTER TABLE `historial_tickets` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -278,7 +278,7 @@ CREATE TABLE `imagenes_historial_tickets` (
   KEY `id_usuario` (`id_usuario`),
   CONSTRAINT `imagenes_historial_tickets_ibfk_1` FOREIGN KEY (`id_historial`) REFERENCES `historial_tickets` (`id`) ON DELETE CASCADE,
   CONSTRAINT `imagenes_historial_tickets_ibfk_2` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -287,7 +287,7 @@ CREATE TABLE `imagenes_historial_tickets` (
 
 LOCK TABLES `imagenes_historial_tickets` WRITE;
 /*!40000 ALTER TABLE `imagenes_historial_tickets` DISABLE KEYS */;
-INSERT INTO `imagenes_historial_tickets` VALUES (1,1,'error_historia.png','/uploads/1/error_historia.png','image/png',250000,1,'2025-10-15 10:48:26'),(2,3,'equipo_medico.png','/uploads/2/equipo_medico.png','image/png',180000,2,'2025-10-15 10:48:26'),(3,5,'wifi_down.png','/uploads/3/wifi_down.png','image/png',200000,1,'2025-10-15 10:48:26'),(4,17,'falloImpresora.png','http://localhost:81/PulseIT/api/uploads/falloImpresora.png','png',276783,6,'2025-10-30 15:46:33'),(5,19,'procesoImpresora.png','http://localhost:81/PulseIT/api/uploads/procesoImpresora.png','png',276783,4,'2025-10-30 15:50:52');
+INSERT INTO `imagenes_historial_tickets` VALUES (1,1,'error_historia.png','/uploads/1/error_historia.png','image/png',250000,1,'2025-10-15 10:48:26'),(2,3,'equipo_medico.png','/uploads/2/equipo_medico.png','image/png',180000,2,'2025-10-15 10:48:26'),(3,5,'wifi_down.png','/uploads/3/wifi_down.png','image/png',200000,1,'2025-10-15 10:48:26'),(4,17,'falloImpresora.png','http://localhost:81/PulseIT/api/uploads/falloImpresora.png','png',276783,6,'2025-10-30 15:46:33'),(5,19,'procesoImpresora.png','http://localhost:81/PulseIT/api/uploads/procesoImpresora.png','png',276783,4,'2025-10-30 15:50:52'),(14,30,'evidencia_6925d967ad3ec.png',' http://localhost:81/PulseIT/api/uploads/evidencia_6925d967ad3ec.png','',573932,4,'2025-11-25 10:29:27'),(15,30,'evidencia_6925d967ae000.png',' http://localhost:81/PulseIT/api/uploads/evidencia_6925d967ae000.png','',836783,4,'2025-11-25 10:29:27'),(16,34,'evidencia_6926175614a28.png',' http://localhost:81/PulseIT/api/uploads/evidencia_6926175614a28.png','',175531,2,'2025-11-25 14:53:42'),(17,36,'evidencia_692619e2df147.png',' http://localhost:81/PulseIT/api/uploads/evidencia_692619e2df147.png','',343364,12,'2025-11-25 15:04:34'),(18,37,'evidencia_69261b264ba4b.png',' http://localhost:81/PulseIT/api/uploads/evidencia_69261b264ba4b.png','',103402,12,'2025-11-25 15:09:58'),(19,37,'evidencia_69261b26504a0.png',' http://localhost:81/PulseIT/api/uploads/evidencia_69261b26504a0.png','',46003,12,'2025-11-25 15:09:58'),(20,38,'evidencia_69261bd475f56.png',' http://localhost:81/PulseIT/api/uploads/evidencia_69261bd475f56.png','',15047,2,'2025-11-25 15:12:52'),(21,39,'evidencia_6926520ad526e.png',' http://localhost:81/PulseIT/api/uploads/evidencia_6926520ad526e.png','',83133,1,'2025-11-25 19:04:10'),(22,41,'evidencia_692670c2117eb.png',' http://localhost:81/PulseIT/api/uploads/evidencia_692670c2117eb.png','',3585,5,'2025-11-25 21:15:14'),(23,42,'evidencia_692672a366d6c.png',' http://localhost:81/PulseIT/api/uploads/evidencia_692672a366d6c.png','',2050175,1,'2025-11-25 21:23:15'),(24,44,'evidencia_692673ef9dfb3.png',' http://localhost:81/PulseIT/api/uploads/evidencia_692673ef9dfb3.png','',178331,4,'2025-11-25 21:28:47'),(25,45,'evidencia_6926754726278.jpg',' http://localhost:81/PulseIT/api/uploads/evidencia_6926754726278.jpg','',18220,2,'2025-11-25 21:34:31'),(26,47,'evidencia_69267655d7598.png',' http://localhost:81/PulseIT/api/uploads/evidencia_69267655d7598.png','',573932,15,'2025-11-25 21:39:01'),(27,48,'evidencia_6926767d2a3ba.png',' http://localhost:81/PulseIT/api/uploads/evidencia_6926767d2a3ba.png','',836783,15,'2025-11-25 21:39:41'),(28,50,'evidencia_69275f6737e3d.jpeg',' http://localhost:81/PulseIT/api/uploads/evidencia_69275f6737e3d.jpeg','',188977,3,'2025-11-26 14:13:27'),(29,52,'evidencia_6928c6f339e22.png',' http://localhost:81/PulseIT/api/uploads/evidencia_6928c6f339e22.png','',1492,5,'2025-11-27 15:47:31');
 /*!40000 ALTER TABLE `imagenes_historial_tickets` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -303,7 +303,7 @@ CREATE TABLE `notificacion` (
   `id_usuario` int(10) unsigned NOT NULL,
   `tipo_id` int(10) unsigned NOT NULL,
   `id_usuario_origen` int(10) unsigned DEFAULT NULL,
-  `contenido` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`contenido`)),
+  `contenido` text NOT NULL,
   `atendida` tinyint(1) DEFAULT 0,
   `fecha_creacion` datetime DEFAULT current_timestamp(),
   PRIMARY KEY (`id`),
@@ -313,7 +313,7 @@ CREATE TABLE `notificacion` (
   CONSTRAINT `notificacion_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id`),
   CONSTRAINT `notificacion_ibfk_2` FOREIGN KEY (`id_usuario_origen`) REFERENCES `usuario` (`id`),
   CONSTRAINT `notificacion_ibfk_3` FOREIGN KEY (`tipo_id`) REFERENCES `tipos_notificacion` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -322,7 +322,7 @@ CREATE TABLE `notificacion` (
 
 LOCK TABLES `notificacion` WRITE;
 /*!40000 ALTER TABLE `notificacion` DISABLE KEYS */;
-INSERT INTO `notificacion` VALUES (1,3,3,5,'{\"mensaje\": \"Se te asignó el ticket 1\"}',0,'2025-10-14 12:08:42'),(2,1,2,5,'{\"mensaje\": \"Tu ticket cambió a En Proceso\"}',1,'2025-10-14 12:08:42'),(3,2,1,5,'{\"mensaje\": \"Se creó tu ticket exitosamente\"}',0,'2025-10-14 12:08:42');
+INSERT INTO `notificacion` VALUES (1,3,3,5,'{\"mensaje\": \"Se te asignó el ticket 1\"}',0,'2025-10-14 12:08:42'),(2,1,2,5,'{\"mensaje\": \"Tu ticket cambió a En Proceso\"}',1,'2025-10-14 12:08:42'),(3,2,1,5,'{\"mensaje\": \"Se creó tu ticket exitosamente\"}',0,'2025-10-14 12:08:42'),(5,1,4,5,'Esta notificacion es de prueba',0,'2025-11-25 18:50:59'),(6,1,1,5,'Ticket creado #24 - Sistema de inventario no responde ',0,'2025-11-25 19:04:11'),(7,1,1,5,'Ticket creado #25 - Prueba para notis',0,'2025-11-25 21:23:16'),(8,1,2,4,'',0,'2025-11-25 21:28:48'),(9,2,1,5,'Ticket creado #26 - Gotera en el techo del lab',0,'2025-11-25 21:34:32'),(10,2,2,15,'Ticket puesto en proceso',0,'2025-11-25 21:39:02'),(11,2,2,15,'El Ticket se ha resuelto',0,'2025-11-25 21:39:42'),(12,3,1,5,'Ticket creado #27 - prueba para la asignacion',0,'2025-11-26 14:13:28'),(13,12,3,5,'Se te ha asignado un nuevo ticket:Cables de conexion no responden',0,'2025-11-27 15:47:32');
 /*!40000 ALTER TABLE `notificacion` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -433,7 +433,7 @@ CREATE TABLE `tecnico_especialidad` (
 
 LOCK TABLES `tecnico_especialidad` WRITE;
 /*!40000 ALTER TABLE `tecnico_especialidad` DISABLE KEYS */;
-INSERT INTO `tecnico_especialidad` VALUES (3,7),(3,8),(3,9),(3,10),(4,4),(4,5),(4,6),(4,12),(8,4),(8,6),(8,7),(9,4),(9,5),(9,6),(10,1),(10,2),(12,7),(12,8),(12,9),(15,9),(15,11),(15,12);
+INSERT INTO `tecnico_especialidad` VALUES (3,7),(3,8),(3,9),(3,10),(4,4),(4,5),(4,6),(4,12),(8,4),(8,6),(8,7),(9,4),(9,5),(9,6),(10,1),(10,2),(12,7),(12,8),(12,9),(15,10),(15,11),(15,12);
 /*!40000 ALTER TABLE `tecnico_especialidad` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -465,7 +465,7 @@ CREATE TABLE `ticket` (
   CONSTRAINT `ticket_ibfk_1` FOREIGN KEY (`id_categoria`) REFERENCES `categoria` (`id`),
   CONSTRAINT `ticket_ibfk_2` FOREIGN KEY (`id_usuario_solicitante`) REFERENCES `usuario` (`id`),
   CONSTRAINT `ticket_ibfk_3` FOREIGN KEY (`id_estado_actual`) REFERENCES `estados_ticket` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -474,7 +474,7 @@ CREATE TABLE `ticket` (
 
 LOCK TABLES `ticket` WRITE;
 /*!40000 ALTER TABLE `ticket` DISABLE KEYS */;
-INSERT INTO `ticket` VALUES (1,'Error en módulo de historia clínica','El sistema no guarda correctamente los registros médicos.',2,1,1,1,'2025-10-15 10:48:26','2025-10-15 12:48:26','2025-10-15 18:48:26',NULL,NULL,NULL),(2,'Monitor de signos vitales no enciende','El equipo médico no responde al encenderlo.',1,2,2,1,'2025-10-15 10:48:26','2025-10-15 14:48:26','2025-10-16 10:48:26',NULL,NULL,NULL),(3,'Pérdida de conexión Wi-Fi en consultorios','Los consultorios 3 y 4 no tienen acceso a la red Wi-Fi institucional.',3,3,1,1,'2025-10-15 10:48:26','2025-10-15 11:48:26','2025-10-15 16:48:26',NULL,NULL,NULL),(4,'No puedo ingresar al sistema','El usuario no puede acceder al sistema interno del hospital.',2,4,2,1,'2025-10-15 10:48:26','2025-10-15 11:48:26','2025-10-15 14:48:26',NULL,NULL,NULL),(5,'Actualización de software de laboratorio','El sistema de control de muestras requiere una actualización de versión para resolver un bug.',2,1,1,5,'2025-10-16 11:09:40','2025-10-16 13:09:40','2025-10-16 19:09:40',NULL,NULL,NULL),(7,'Solicitud de instalación de software','Se requiere instalar software en nuevo equipo',2,1,6,3,'2025-10-30 12:23:16','2025-10-30 14:23:16','2025-10-30 20:23:16',1,1,'2025-10-30 13:56:42'),(8,'Error en acceso remoto','No se puede acceder al sistema desde casa.',2,4,6,5,'2025-10-30 14:13:32','2025-10-30 16:13:32','2025-10-30 22:13:32',NULL,NULL,NULL),(9,'Revision de impresora sala 2B','Impresora no esta funcionando',1,2,6,2,'2025-10-30 14:44:16','2025-10-30 16:44:16','2025-10-30 22:44:16',NULL,NULL,NULL),(10,'Cables de conexion no responden','Los cables UTP del laboratorio 9-1 no funcionan',3,3,2,4,'2025-10-30 16:12:05','2025-10-30 18:12:05','2025-10-31 00:12:05',NULL,NULL,NULL),(11,'Datos del sistema de urgencias corruptos ','Los datos ingresedos recientemente estan corruptos',3,1,2,4,'2025-10-31 09:15:28','2025-10-31 11:15:28','2025-10-31 17:15:28',NULL,NULL,NULL);
+INSERT INTO `ticket` VALUES (1,'Error en módulo de historia clínica','El sistema no guarda correctamente los registros médicos.',2,1,1,1,'2025-10-15 10:48:26','2025-10-15 12:48:26','2025-10-15 18:48:26',NULL,NULL,NULL),(2,'Monitor de signos vitales no enciende','El equipo médico no responde al encenderlo.',1,2,2,1,'2025-10-15 10:48:26','2025-10-15 14:48:26','2025-10-16 10:48:26',NULL,NULL,NULL),(3,'Pérdida de conexión Wi-Fi en consultorios','Los consultorios 3 y 4 no tienen acceso a la red Wi-Fi institucional.',3,3,1,1,'2025-10-15 10:48:26','2025-10-15 11:48:26','2025-10-15 16:48:26',NULL,NULL,NULL),(4,'No puedo ingresar al sistema','El usuario no puede acceder al sistema interno del hospital.',2,4,2,1,'2025-10-15 10:48:26','2025-10-15 11:48:26','2025-10-15 14:48:26',NULL,NULL,NULL),(5,'Actualización de software de laboratorio','El sistema de control de muestras requiere una actualización de versión para resolver un bug.',2,1,1,3,'2025-10-16 11:09:40','2025-10-16 13:09:40','2025-10-16 19:09:40',NULL,NULL,'2025-11-25 21:14:32'),(7,'Solicitud de instalación de software','Se requiere instalar software en nuevo equipo',2,1,6,3,'2025-10-30 12:23:16','2025-10-30 14:23:16','2025-10-30 20:23:16',1,1,'2025-10-30 13:56:42'),(8,'Error en acceso remoto','No se puede acceder al sistema desde casa.',2,4,6,3,'2025-10-30 14:13:32','2025-10-30 16:13:32','2025-10-30 22:13:32',NULL,NULL,'2025-11-25 21:15:13'),(9,'Revision de impresora sala 2B','Impresora no esta funcionando',1,2,6,2,'2025-10-30 14:44:16','2025-10-30 16:44:16','2025-10-30 22:44:16',NULL,NULL,NULL),(10,'Cables de conexion no responden','Los cables UTP del laboratorio 9-1 no funcionan',3,3,2,1,'2025-10-30 16:12:05','2025-10-30 18:12:05','2025-10-31 00:12:05',NULL,NULL,NULL),(11,'Datos del sistema de urgencias corruptos ','Los datos ingresedos recientemente estan corruptos',3,1,2,4,'2025-10-31 09:15:28','2025-10-31 11:15:28','2025-10-31 17:15:28',NULL,NULL,NULL),(22,'Prueba desde Frontend','Probando ticket imagenes',1,6,4,3,'2025-11-25 10:29:27','2025-11-25 18:14:27','2025-11-25 20:29:27',NULL,NULL,'2025-11-25 14:09:09'),(23,'Sin conexion a internet en la recepcion','La conexion se fue desde hace 20 minutos',1,8,2,3,'2025-11-25 14:53:41','2025-11-25 22:53:41','2025-11-26 01:53:41',NULL,NULL,'2025-11-25 15:12:52'),(24,'Sistema de inventario no responde ','El sistema no responde en ninguno de los modulos',2,1,1,4,'2025-11-25 19:04:10','2025-11-26 04:04:10','2025-11-26 10:04:10',NULL,NULL,NULL),(25,'Prueba para notis','Prueba para notis',2,8,1,2,'2025-11-25 21:23:14','2025-11-26 05:23:14','2025-11-26 08:23:14',NULL,NULL,NULL),(26,'Gotera en el techo del lab','Gotera sin reparacion',1,6,2,3,'2025-11-25 21:34:30','2025-11-26 05:19:30','2025-11-26 07:34:30',NULL,NULL,'2025-11-25 21:41:01'),(27,'prueba para la asignacion','probando para la asignacion',1,7,3,1,'2025-11-26 14:13:26','2025-11-26 21:58:26','2025-11-26 23:18:26',NULL,NULL,NULL);
 /*!40000 ALTER TABLE `ticket` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -490,7 +490,7 @@ CREATE TABLE `tipos_notificacion` (
   `tipo` varchar(50) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `tipo` (`tipo`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -499,7 +499,7 @@ CREATE TABLE `tipos_notificacion` (
 
 LOCK TABLES `tipos_notificacion` WRITE;
 /*!40000 ALTER TABLE `tipos_notificacion` DISABLE KEYS */;
-INSERT INTO `tipos_notificacion` VALUES (2,'Cambio de Estado'),(1,'Nuevo Ticket'),(3,'Ticket Asignado');
+INSERT INTO `tipos_notificacion` VALUES (2,'Cambio de Estado'),(4,'Inicio de sesion'),(1,'Nuevo Ticket'),(3,'Ticket Asignado');
 /*!40000 ALTER TABLE `tipos_notificacion` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -533,7 +533,7 @@ CREATE TABLE `usuario` (
 
 LOCK TABLES `usuario` WRITE;
 /*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
-INSERT INTO `usuario` VALUES (1,'carlos@correo.com','$2y$10$reh7qnm400VCYxQHTWfsJev2c9jEzlBXqdgkPk.8uQGxJ74v0hpA.','Carlos Gómez',1,'2025-10-14 12:08:42',1,NULL,NULL),(2,'ana@correo.com','$2y$10$W81.MJVWqgAEjFoQFMlHjeSPSnpgLwTctGtF/qu1XZPEQUphs89Gy','Ana Pérez',1,'2025-10-14 12:08:42',1,NULL,NULL),(3,'luis@correo.com','hash789','Luis Torres',2,'2025-10-14 12:08:42',1,'disponible',2),(4,'sofia@correo.com','$2y$10$.9k.XAc5J90TnHi1IgxxoeRZnc0Hx7u590C9dXRLTT.akscfC8AtK','Sofía Ramírez',2,'2025-10-14 12:08:42',1,'ocupado',5),(5,'admin@correo.com','$2y$10$pzhE1vVPb8wxZuo09HbCDejJfXCq32T.RVMq3ZGn/rRj6UBZppSN.','Administrador',3,'2025-10-14 12:08:42',1,NULL,NULL),(6,'Mlopez242@correo.com','hash078','María López',1,'2025-10-30 12:13:59',1,NULL,NULL),(8,'carlos.fernandez@pulseit.com','temporal123','Carlos Fernández',2,'2025-11-04 12:00:06',1,'disponible',0),(9,'angeliqueseguraaa@icloud.com','$2y$10$YbfXS.2R1o4oagk3vGrt7eWhmO4v.Sor/07HW0vzZLdGUHwFa62Xy','Angelique Segura',2,'2025-11-04 15:38:07',1,'disponible',0),(10,'andreypg12@gmail.com','$2y$10$rJJ2yzeUwEN3aQtslKFciO4u3iRoSPfWiQ1v54NztOTIIKJDFLIBO','Andrey Perez',2,'2025-11-04 15:53:34',1,'disponible',0),(11,'admin2@gmail.com','$2y$10$Ja3dPm1U7R3vGlj2SrQTf.1eRJxPmlErMDeUmdxv7KRzr3iMCnzPa','administrador 2.0',3,'2025-11-04 16:18:25',1,NULL,NULL),(12,'alecod31@pulseit.com','$2y$10$N3N.cJiXsVSIg8jkYi/Z..QCav6JwEnjhj5D8Y4HL056PbEjbOYse','Alejandro Serrano',2,'2025-11-04 16:20:15',1,'disponible',0),(15,'gael@421example.com','$2y$10$yg0kh/mL6cFbVqp1RUgh..puTWjEnGYOSLWuLTPslsm1lAzfTIr5m','Gael Osorio',2,'2025-11-10 14:55:15',1,'disponible',1);
+INSERT INTO `usuario` VALUES (1,'carlos@correo.com','$2y$10$reh7qnm400VCYxQHTWfsJev2c9jEzlBXqdgkPk.8uQGxJ74v0hpA.','Carlos Gómez',1,'2025-10-14 12:08:42',1,NULL,NULL),(2,'ana@correo.com','$2y$10$W81.MJVWqgAEjFoQFMlHjeSPSnpgLwTctGtF/qu1XZPEQUphs89Gy','Ana Pérez',1,'2025-10-14 12:08:42',1,NULL,NULL),(3,'luis@correo.com','$2y$10$ZjCqGUjCn3LYQJMKTDAIWuWhyzFOlj7x1NpJsXxXTRhADQCjHiepq','Luis Torres',2,'2025-10-14 12:08:42',1,'disponible',2),(4,'sofia@correo.com','$2y$10$.9k.XAc5J90TnHi1IgxxoeRZnc0Hx7u590C9dXRLTT.akscfC8AtK','Sofía Ramírez',2,'2025-10-14 12:08:42',1,'ocupado',5),(5,'admin@correo.com','$2y$10$pzhE1vVPb8wxZuo09HbCDejJfXCq32T.RVMq3ZGn/rRj6UBZppSN.','Administrador',3,'2025-10-14 12:08:42',1,NULL,NULL),(6,'Mlopez242@correo.com','$2y$10$J7m2jrwQU9i3o1iE9AGsNOZC396Y2De3qJibZKlSQGG4XqMEWOEv.','María López',1,'2025-10-30 12:13:59',1,NULL,NULL),(8,'carlos.fernandez@pulseit.com','$2y$10$iZspdvhsYR.8KGmaf5Y/GuYRnaOqe4OKipCW.hGHotOm6cYMUCH4W','Carlos Fernández',2,'2025-11-04 12:00:06',1,'disponible',0),(9,'angeliqueseguraaa@icloud.com','$2y$10$YbfXS.2R1o4oagk3vGrt7eWhmO4v.Sor/07HW0vzZLdGUHwFa62Xy','Angelique Segura',2,'2025-11-04 15:38:07',1,'disponible',0),(10,'andreyperez109@gmail.com','$2y$10$aNAWGbQh9ckBpdVTM7H4S.ZidChhuWxbbql7x3Zy3kuC19C3oMyGm','Andrey Perez',2,'2025-11-04 15:53:34',1,'vacaciones',0),(11,'admin2@gmail.com','$2y$10$Ja3dPm1U7R3vGlj2SrQTf.1eRJxPmlErMDeUmdxv7KRzr3iMCnzPa','administrador 2.0',3,'2025-11-04 16:18:25',1,NULL,NULL),(12,'alecod31@pulseit.com','$2y$10$N3N.cJiXsVSIg8jkYi/Z..QCav6JwEnjhj5D8Y4HL056PbEjbOYse','Alejandro Serrano',2,'2025-11-04 16:20:15',1,'disponible',0),(15,'gael@421example.com','$2y$10$sNhClglsFsK7g7di17K72O2U6lJRQ7JUprUgFRbRjKfaZA400uG2a','Gael Osorio',2,'2025-11-10 14:55:15',1,'disponible',1);
 /*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -578,4 +578,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-11-20 21:41:37
+-- Dump completed on 2025-11-27 15:50:31

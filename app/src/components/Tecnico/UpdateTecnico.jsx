@@ -24,55 +24,55 @@ import TecnicoService from "@/services/TecnicoService";
 import { CustomMultiSelect } from "../ui/custom/custom-multiple-select"; // select multi con chips
 import { CustomInputField } from "../ui/custom/custom-input-field";
 
+import { useTranslation } from 'react-i18next';
+
 export function UpdateTecnico() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
-  //Obtener parámetro del id del tecnico
-  const { id }=useParams();
+  const { id } = useParams();
 
   const [dataEspecialidades, setDataEspecialidades] = useState([]);
   const [dataTecnico, setDatatecnico] = useState([]);
-
   const [error, setError] = useState("");
 
-  /*** Esquema de validación Yup ***/
-const TecnicoSchema = yup.object({
+  const TecnicoSchema = yup.object({
     nombre: yup
       .string()
-      .required('El nombre es requerido')
-      .min(2, "El nombre debe tener al menos 2 caracteres"),
+      .required(t('validation.required', { field: t('technicians.name') }))
+      .min(2, t('validation.min', { field: t('technicians.name'), min: 2 })),
     
     correo: yup
       .string()
-      .email('Ingresa un correo electrónico válido')
-      .required('El correo electrónico es obligatorio')
+      .email(t('validation.email'))
+      .required(t('validation.required', { field: t('technicians.email') }))
       .matches(
         /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-        'El formato del correo no es válido'
+        t('validation.email')
       ),
     
     contrasena: yup
       .string()
-      .required('La contraseña es obligatoria')
-      .min(8, 'La contraseña debe tener al menos 8 caracteres')
-      .matches(/[A-Z]/, 'Debe contener al menos una letra mayúscula')
-      .matches(/[a-z]/, 'Debe contener al menos una letra minúscula')
-      .matches(/[0-9]/, 'Debe contener al menos un número')
-      .matches(/[!@#$%^&*(),.?":{}|<>]/, 'Debe contener al menos un carácter especial')
-      .max(50, 'La contraseña no puede exceder los 50 caracteres'),
+      .notRequired()
+      .min(8, t('validation.password.min'))
+      .matches(/[A-Z]/, t('validation.password.uppercase'))
+      .matches(/[a-z]/, t('validation.password.lowercase'))
+      .matches(/[0-9]/, t('validation.password.number'))
+      .matches(/[!@#$%^&*(),.?":{}|<>]/, t('validation.password.special'))
+      .max(50, t('validation.password.max'))
+      .nullable()
+      .transform((value) => value === '' ? null : value),
     
-      disponibilidad: yup
+    disponibilidad: yup
       .string()
-      .required('La disponibilidad es requerida')
+      .required(t('validation.required', { field: t('technicians.availability') }))
       .oneOf(
         ['disponible', 'ocupado', 'desconectado', 'vacaciones'], 
-        'Seleccione una disponibilidad válida'
+        t('validation.invalidAvailability')
       ),
     
-    especialidades: yup.array().min(1, 'La especialidad es requerida')
-    
+    especialidades: yup.array().min(1, t('categories.validation.minOneSpecialty'))
   });
 
-  /*** React Hook Form ***/
   const {
     control,
     handleSubmit,
@@ -80,86 +80,66 @@ const TecnicoSchema = yup.object({
     formState: { errors },
   } = useForm({
     defaultValues: {
-          id: "",
-          nombre: "",
-          correo: "",
-          contrasena: "",
-          disponibilidad: "",
-          especialidades: [],
+      id: "",
+      nombre: "",
+      correo: "",
+      contrasena: "",
+      disponibilidad: "",
+      especialidades: [],
     },
     values: dataTecnico,
-    resolver:yupResolver(TecnicoSchema)
+    resolver: yupResolver(TecnicoSchema)
   });
-  
 
-
-  /***Listados de carga en el formulario ***/
-  useEffect(()=>{
-    const fechData=async()=>{
+  useEffect(() => {
+    const fechData = async () => {
       try {
-        //Lista de especialidades
-        const EspecialidadesRes= await EspecialidadService.getAll()
+        const EspecialidadesRes = await EspecialidadService.getAll();
+        const tecnicoRes = await TecnicoService.getDetalleById(id);
 
-        //Obtener tecnico a actualizar
-        const tecnicoRes=await TecnicoService.getDetalleById(id)
+        setDataEspecialidades(EspecialidadesRes.data.data || []);
 
-        // Si la petición es exitosa, se guardan los datos 
-        setDataEspecialidades(EspecialidadesRes.data.data || []); 
-        console.log(EspecialidadesRes) 
-        //Obtener tecnico y asignarla formulario
-        if(tecnicoRes.data){
-          const tecnico=tecnicoRes.data.data
-          console.log("Datos del técnico:", tecnico) // Debug
-          
+        if (tecnicoRes.data) {
+          const tecnico = tecnicoRes.data.data;
           reset({
-              id: tecnico.id,
-              nombre: tecnico.nombre,
-              correo: tecnico.correo,
-              contrasena: tecnico.contrasena ,
-              disponibilidad: tecnico.disponibilidad ,
-              especialidades: tecnico.especialidades.map(e => e.id),
-
-          }) 
-          setDatatecnico(tecnico)
+            id: tecnico.id,
+            nombre: tecnico.nombre,
+            correo: tecnico.correo,
+            contrasena: "",
+            disponibilidad: tecnico.disponibilidad,
+            especialidades: tecnico.especialidades.map(e => e.id),
+          });
+          setDatatecnico(tecnico);
         }
       } catch (error) {
-        console.log(error)
-        if(error.name != "AbortError") setError(error.message)
+        console.log(error);
+        if (error.name != "AbortError") setError(error.message);
       }
-    }
-    fechData()
-  },[id])
+    };
+    fechData();
+  }, [id]);
 
-  /*** Submit ***/
   const onSubmit = async (dataForm) => {
-    /* if (!file) {
-      toast.error("Debes seleccionar una imagen para la película");
-      return;
-    }
- */
     try {
-      console.log(dataForm)
-      if (TecnicoSchema.isValid()) { 
-        //Verificar datos del formulario 
-        console.log("Dataform",dataForm) 
-        //Crear tecnico en el API 
-        const response = await TecnicoService.updateTecnico(dataForm); 
-        if (response.data) { 
-         
-          //Notificación de creación 
-          toast.success(`Tecnico actualizado #${response.data.data.id} - ${response.data.data.nombre}`, { 
-            duration: 4000, 
-            position: "top-center", 
-          }); 
-          //Redireccionar al listado del mantenimiento 
-          navigate("/tecnicos"); 
-        } else if (response.error) { 
-          setError(response.error); 
-        } 
-      } 
+      const isValid = await TecnicoSchema.isValid(dataForm);
+      if (isValid) {
+        const response = await TecnicoService.updateTecnico(dataForm);
+        if (response.data) {
+          toast.success(t('technicians.success.updated', {
+            id: response.data.data.id,
+            name: response.data.data.nombre
+          }), {
+            duration: 4000,
+            position: "top-center",
+          });
+          navigate("/tecnicos");
+        } else if (response.error) {
+          setError(response.error);
+        }
+      }
     } catch (err) {
       console.error(err);
-      setError("Error al crear tecnico");
+      setError(t('technicians.errors.update'));
     }
   };
 
@@ -167,111 +147,114 @@ const TecnicoSchema = yup.object({
 
   return (
     <Card className="p-6 max-w-5xl mx-auto">
-    <h2 className="text-2xl font-bold mb-6">Crear Tecnico</h2>
+      <h2 className="text-2xl font-bold mb-6">{t('technicians.update')}</h2>
 
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-      {/* Nombre */}
-      <div>
-        <Label className="block mb-1 text-sm font-medium" htmlFor="title">Nombre</Label>
-        {/* Controller entrada título */}
-        <Controller name="nombre" control={control} render={({field})=>
-          <Input {...field} id="nombre" placeholder="Ingrese el nombre" />
-        } />
-        {/* Error entrada título */}
-        {errors.nombre && <p className="text-sm text-red-500">{errors.nombre.message}</p>}
-      </div>
-
-      {/* Correo*/}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         <div>
-          {/* Controller entrada correo */}
-          <Controller name="correo" control={control} render={({field})=>
-            <CustomInputField 
-              {...field} 
-              label="Correo" 
-              placeholder="ejemplo@gmail.com"
-              error={errors.correo?.message}
-            />
-          } />
-        </div>
-
-        {/*Contraseña*/}
-        <div>
-          <Controller
-            name="contrasena"
-            control={control}
+          <Label className="block mb-1 text-sm font-medium" htmlFor="title">
+            {t('technicians.name')}
+          </Label>
+          <Controller 
+            name="nombre" 
+            control={control} 
             render={({ field }) =>
-              <CustomInputField
-                {...field}
-                label="Contraseña"
-                placeholder=""
-                error={errors.contrasena?.message} />
-            }
+              <Input {...field} id="nombre" placeholder={t('technicians.placeholders.name')} />
+            } 
+          />
+          {errors.nombre && <p className="text-sm text-red-500">{errors.nombre.message}</p>}
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div>
+            <Controller 
+              name="correo" 
+              control={control} 
+              render={({ field }) =>
+                <CustomInputField 
+                  {...field} 
+                  label={t('technicians.email')}
+                  placeholder={t('technicians.placeholders.email')}
+                  error={errors.correo?.message}
+                />
+              } 
+            />
+          </div>
+
+          <div>
+            <Controller
+              name="contrasena"
+              control={control}
+              render={({ field }) =>
+                <CustomInputField
+                  {...field}
+                  label={t('technicians.password')}
+                  placeholder={t('technicians.placeholders.password')}
+                  error={errors.contrasena?.message} />
+              }
+            />
+          </div>
+
+          <div>
+            <Label className="block mb-1 text-sm font-medium" htmlFor="disponibilidad">
+              {t('technicians.availability')}
+            </Label>
+            <Controller
+              name="disponibilidad"
+              control={control}
+              render={({ field }) => (
+                <Select onValueChange={field.onChange} value={field.value}>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder={t('technicians.placeholders.selectAvailability')} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="disponible">{t('technicians.availabilityOptions.available')}</SelectItem>
+                    <SelectItem value="ocupado">{t('technicians.availabilityOptions.busy')}</SelectItem>
+                    <SelectItem value="desconectado">{t('technicians.availabilityOptions.offline')}</SelectItem>
+                    <SelectItem value="vacaciones">{t('technicians.availabilityOptions.vacation')}</SelectItem>
+                  </SelectContent>
+                </Select>
+              )}
+            />
+            {errors.disponibilidad && (
+              <p className="text-sm text-red-500">{errors.disponibilidad.message}</p>
+            )}
+          </div>
+        </div>
+
+        <div>
+          <Controller 
+            name="especialidades" 
+            control={control} 
+            render={({ field }) => 
+              <CustomMultiSelect
+                field={field}
+                data={dataEspecialidades}
+                label={t('technicians.specialties')}
+                getOptionLabel={(item) => item.nombre}
+                getOptionValue={(item) => item.id}
+                error={errors.especialidades?.message}
+                placeholder={t('technicians.placeholders.selectSpecialties')}
+              />
+            } 
           />
         </div>
-                {/* Disponibilidad - Combobox */}
-                <div>
-                    <Label className="block mb-1 text-sm font-medium" htmlFor="disponibilidad">
-                        Disponibilidad
-                    </Label>
-                    <Controller
-                        name="disponibilidad"
-                        control={control}
-                        render={({ field }) => (
-                            <Select onValueChange={field.onChange} value={field.value}>
-                                <SelectTrigger className="w-full">
-                                    <SelectValue placeholder="Seleccione la disponibilidad" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="disponible">Disponible</SelectItem>
-                                    <SelectItem value="ocupado">Ocupado</SelectItem>
-                                    <SelectItem value="desconectado">Desconectado</SelectItem>
-                                    <SelectItem value="vacaciones">Vacaciones</SelectItem>
-                                </SelectContent>
-                            </Select>
-                        )}
-                    />
-                    {errors.disponibilidad && (
-                        <p className="text-sm text-red-500">{errors.disponibilidad.message}</p>
-                    )}
-                </div>
-      </div>
 
-      
-      {/* Especialidades */}
-      <div>
-        {/* Controller entrada Especialidades */}
-        <Controller name="especialidades" control={control} render={({field})=> 
-          <CustomMultiSelect
-            field={field}
-            data={dataEspecialidades}
-            label="Especialidades"
-            getOptionLabel={(item)=>item.nombre}
-            getOptionValue={(item)=> item.id} 
-            error={errors.especialidades?.message}
-            placeholder="Seleccione especialidades"
-          />
-        } />
-      </div>
-     
-
-      <div className="flex justify-between gap-4 mt-6">
-        <Button
-          type="button"
-          variant="default" // sólido
-          className="flex items-center gap-2 bg-destructive text-white"
-          onClick={() => navigate(-1)}
-        >
-          <ArrowLeft className="w-4 h-4" />
-          Regresar
-        </Button>
-        {/* Botón Guardar */}
-        <Button type="submit" className="flex-1 ">
-          <Save className="w-4 h-4" />
-          Guardar
-        </Button>
-      </div>
-    </form>
-  </Card>
+        <div className="flex justify-between gap-4 mt-6">
+          <Button
+            type="button"
+            variant="default"
+            className="flex items-center gap-2 bg-destructive text-white"
+            onClick={() => navigate(-1)}
+          >
+            <ArrowLeft className="w-4 h-4" />
+            {t('common.back')}
+          </Button>
+          <Button type="submit" className="flex-1">
+            <Save className="w-4 h-4" />
+            {t('common.save')}
+          </Button>
+        </div>
+      </form>
+    </Card>
   );
 }

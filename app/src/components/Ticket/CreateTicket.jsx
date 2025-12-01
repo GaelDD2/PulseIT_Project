@@ -28,142 +28,123 @@ import ImagesService from "@/services/ImagesService";
 import CategoriaService from "@/services/CategoriaService";
 import NotificacionService from "@/services/NotificacionService";
 
+import { useTranslation } from 'react-i18next';
+
 export function CreateTicket() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const correoUsuario = localStorage.getItem("correo");
   const idUsuario = localStorage.getItem("idUsuario");
-  
 
-  /*** Estados para selects y preview de imagen ***/
   const [dataEtiqueta, setDataEtiqueta] = useState([]);
   const [categoriaNombre, setCategoriaNombre] = useState("");
-
   const [files, setFiles] = useState([]);
   const [previewURLs, setPreviewURLs] = useState([]);
   const [error, setError] = useState("");
 
- /*** Validación Yup ***/
- const TicketSchema = yup.object({
+  const TicketSchema = yup.object({
     titulo: yup
       .string()
-      .required("El titulo del ticket es obligatorio")
-      .min(2, "Debe tener al menos 2 caracteres"),
+      .required(t('validation.required', { field: t('tickets.title') }))
+      .min(2, t('validation.min', { field: t('tickets.title'), min: 2 })),
     descripcion: yup
       .string()
-      .required("La descripción es obligatoria")
-      .min(5, "Debe tener al menos 5 caracteres"),
-    prioridad: yup.string().required("Debe seleccionar la prioridad"),
-    
-    id_etiqueta: yup.string().required("Debe seleccionar la etiqueta"),
-    
+      .required(t('validation.required', { field: t('tickets.description') }))
+      .min(5, t('validation.min', { field: t('tickets.description'), min: 5 })),
+    prioridad: yup.string().required(t('validation.required', { field: t('tickets.priority.label') })),
+    id_etiqueta: yup.string().required(t('validation.required', { field: t('tickets.tag') })),
   });
 
-  /*** React Hook Form ***/
   const {
     control,
     handleSubmit,
     formState: { errors },
   } = useForm({
     defaultValues: {
-        titulo: "",
-        descripcion: "",
-        prioridad: "",
-        id_usuario_solicitante: idUsuario,
-        id_etiqueta: "",
-     
+      titulo: "",
+      descripcion: "",
+      prioridad: "",
+      id_usuario_solicitante: idUsuario,
+      id_etiqueta: "",
     },
-    resolver:yupResolver(TicketSchema)
+    resolver: yupResolver(TicketSchema)
   });
-  
 
-
-  /*** Manejo de imagen ***/
   const handleChangeImage = (e) => {
     const selectedFiles = Array.from(e.target.files);
-  
     setFiles((prev) => [...prev, ...selectedFiles]);
-  
-    // Generar previews
+
     const newPreviews = selectedFiles.map((file) =>
       URL.createObjectURL(file)
     );
-  
     setPreviewURLs((prev) => [...prev, ...newPreviews]);
   };
-  
-  /***Listados de carga en el formulario ***/
-  useEffect(()=>{
-    const fechData=async()=>{
+
+  useEffect(() => {
+    const fechData = async () => {
       try {
-        //lista de etiquetas
-        const etiquetasRes= await EtiquetasService.getAll()
-       
-        // Si la petición es exitosa, se guardan los datos 
-        setDataEtiqueta(etiquetasRes.data.data || []); 
-       
-        console.log(etiquetasRes) 
-        
+        const etiquetasRes = await EtiquetasService.getAll();
+        setDataEtiqueta(etiquetasRes.data.data || []);
       } catch (error) {
-        console.log(error)
-        if(error.name != "AbortError") setError(error.message)
+        console.log(error);
+        if (error.name != "AbortError") setError(error.message);
       }
-    }
-    fechData()
-  },[])
+    };
+    fechData();
+  }, []);
 
-  /*** Submit ***/
+  const getPriorityText = (priorityValue) => {
+    const priorities = {
+      1: t('tickets.priority.normal'),
+      2: t('tickets.priority.high'),
+      3: t('tickets.priority.urgent')
+    };
+    return priorities[priorityValue] || priorityValue;
+  };
+
   const onSubmit = async (dataForm) => {
-    /* if (!file) {
-      toast.error("Debes seleccionar una imagen para la película");
-      return;
-    } */
-
     try {
-      console.log(dataForm)
-      if (TicketSchema.isValid()) { 
-        //Verificar datos del formulario 
-        console.log(dataForm) 
-        //Crear ticket en el API 
-        const response = await TicketService.createTicket(dataForm); 
-        if (response.data) { 
-          
-          //FormData para guardar imagen 
+      const isValid = await TicketSchema.isValid(dataForm);
+      if (isValid) {
+        const response = await TicketService.createTicket(dataForm);
+        if (response.data) {
           const formData = new FormData();
           formData.append("id_historial", response.data.data.id_historial);
           formData.append("id_usuario", idUsuario);
 
-          // Adjuntar todas las imágenes
           files.forEach((file) => {
             formData.append("files[]", file);
           });
 
-          // Enviar
           await ImagesService.uploadEvidence(formData);
 
-          //Generar Notificacion
           const formDataNoti = new FormData();
-          formDataNoti.append("id_usuario", idUsuario); 
+          formDataNoti.append("id_usuario", idUsuario);
           formDataNoti.append("tipo_id", 1);
           formDataNoti.append("id_usuario_origen", 5);
-          formDataNoti.append("contenido", `Ticket creado #${response.data.data.id} - ${response.data.data.titulo}`);
+          formDataNoti.append("contenido", t('notifications.ticketCreated', {
+            id: response.data.data.id,
+            title: response.data.data.titulo
+          }));
           formDataNoti.append("atendida", 0);
 
           await NotificacionService.createNotificacion(formDataNoti);
 
-          //Notificación de creación 
-          toast.success(`Ticket creado #${response.data.data.id} - ${response.data.data.titulo}`, { 
-            duration: 4000, 
-            position: "top-center", 
-          }); 
-          //Redireccionar al listado del mantenimiento 
-          navigate("/tickets"); 
-        } else if (response.error) { 
-          setError(response.error); 
-        } 
-      } 
+          toast.success(t('tickets.success.created', {
+            id: response.data.data.id,
+            title: response.data.data.titulo
+          }), {
+            duration: 4000,
+            position: "top-center",
+          });
+          navigate("/tickets");
+        } else if (response.error) {
+          setError(response.error);
+        }
+      }
     } catch (err) {
       console.error(err);
-      setError("Error al crear ticket");
+      setError(t('tickets.errors.create'));
     }
   };
 
@@ -171,40 +152,41 @@ export function CreateTicket() {
 
   return (
     <Card className="p-6 max-w-5xl mx-auto">
-        <h2 className="text-2xl font-bold mb-6">Crear Ticket</h2>
-        {/* Usuario Solicitante */}
-        <div className="mt-2">
-          <Label className="text-sm font-medium">Usuario Solicitante:</Label>
-          <p className="text-sm mt-1">
-            {correoUsuario }
-          </p>
+      <h2 className="text-2xl font-bold mb-6">{t('tickets.createTicket')}</h2>
+      
+      <div className="mt-2">
+        <Label className="text-sm font-medium">
+          {t('tickets.requestingUser')}:
+        </Label>
+        <p className="text-sm mt-1">{correoUsuario}</p>
+      </div>
+
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+        <div>
+          <Label htmlFor="nombre">{t('tickets.title')}</Label>
+          <Controller
+            name="titulo"
+            control={control}
+            render={({ field }) => 
+              <Input {...field} placeholder={t('tickets.placeholders.title')} />
+            }
+          />
+          {errors.titulo && <p className="text-sm text-red-500">{errors.titulo.message}</p>}
         </div>
-  
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-          {/* Titulo */}
-          <div>
-            <Label htmlFor="nombre">Titulo</Label>
-            <Controller
-              name="titulo"
-              control={control}
-              render={({ field }) => <Input {...field} placeholder="Ingrese el titulo" />}
-            />
-            {errors.titulo && <p className="text-sm text-red-500">{errors.titulo.message}</p>}
-          </div>
-          
-  
-          {/* Descripción */}
-          <div>
-            <Label htmlFor="descripcion">Descripción</Label>
-            <Controller
-              name="descripcion"
-              control={control}
-              render={({ field }) => <Textarea {...field} placeholder="Descripción breve" />}
-            />
-            {errors.descripcion && <p className="text-sm text-red-500">{errors.descripcion.message}</p>}
-          </div>
-  
-          <Label>Etiqueta</Label>
+
+        <div>
+          <Label htmlFor="descripcion">{t('tickets.description')}</Label>
+          <Controller
+            name="descripcion"
+            control={control}
+            render={({ field }) => 
+              <Textarea {...field} placeholder={t('tickets.placeholders.description')} />
+            }
+          />
+          {errors.descripcion && <p className="text-sm text-red-500">{errors.descripcion.message}</p>}
+        </div>
+
+        <Label>{t('tickets.tag')}</Label>
         <Controller
           name="id_etiqueta"
           control={control}
@@ -213,19 +195,18 @@ export function CreateTicket() {
               value={field.value}
               onValueChange={async (value) => {
                 field.onChange(value);
-
                 try {
                   const response = await CategoriaService.getByEtiqueta(value);
                   setCategoriaNombre(
-                    response.data?.data?.[0]?.nombre ?? "Sin categoría"
+                    response.data?.data?.[0]?.nombre ?? t('tickets.noCategory')
                   );
                 } catch {
-                  setCategoriaNombre("Error al cargar");
+                  setCategoriaNombre(t('tickets.errorLoadingCategory'));
                 }
               }}
             >
               <SelectTrigger className="w-full">
-                <SelectValue placeholder="Seleccione una etiqueta" />
+                <SelectValue placeholder={t('tickets.placeholders.selectTag')} />
               </SelectTrigger>
               <SelectContent>
                 {dataEtiqueta.map((etq) => (
@@ -238,53 +219,45 @@ export function CreateTicket() {
           )}
         />
 
-        {/* Categoría debajo */}
         <div className="mt-2">
-          <Label className="text-sm font-medium">Categoría:</Label>
+          <Label className="text-sm font-medium">{t('tickets.category')}:</Label>
           <p className="text-sm mt-1">
-            {categoriaNombre || "Seleccione una etiqueta"}
+            {categoriaNombre || t('tickets.selectTagFirst')}
           </p>
         </div>
 
-              {/* Prioridad */}
-              <div>
-                  <Label>Prioridad</Label>
-                  <Controller
-                      name="prioridad"
-                      control={control}
-                      render={({ field }) => (
-                          <Select onValueChange={field.onChange} value={field.value}>
-                              <SelectTrigger className="w-full">
-                                  <SelectValue placeholder="Seleccione la prioridad" />
-                              </SelectTrigger>
+        <div>
+          <Label>{t('tickets.priority.label')}</Label>
+          <Controller
+            name="prioridad"
+            control={control}
+            render={({ field }) => (
+              <Select onValueChange={field.onChange} value={field.value}>
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder={t('tickets.placeholders.selectPriority')} />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="1">{t('tickets.priority.normal')}</SelectItem>
+                  <SelectItem value="2">{t('tickets.priority.high')}</SelectItem>
+                  <SelectItem value="3">{t('tickets.priority.urgent')}</SelectItem>
+                </SelectContent>
+              </Select>
+            )}
+          />
+          {errors.prioridad && <p className="text-sm text-red-500">{errors.prioridad.message}</p>}
+        </div>
 
-                              <SelectContent>
-                                  <SelectItem value="1">Normal</SelectItem>
-                                  <SelectItem value="2">Alta</SelectItem>
-                                  <SelectItem value="3">Urgente</SelectItem>
-                              </SelectContent>
-                          </Select>
-                      )}
-                  />
-
-                  {errors.prioridad && (
-                      <p className="text-sm text-red-500">{errors.prioridad.message}</p>
-                  )}
-              </div>
-
-        {/* Evidencias */}
         <div className="mb-6">
           <Label htmlFor="image" className="block mb-1 text-sm font-medium">
-            Evidencias
+            {t('tickets.evidence')}
           </Label>
-
           <div
             className="relative border-2 border-dashed border-muted/50 rounded-lg p-20 flex flex-col gap-3 cursor-pointer hover:border-primary transition-colors"
             onClick={() => document.getElementById("image").click()}
           >
             {previewURLs.length === 0 && (
               <p className="text-sm text-muted-foreground">
-                Haz clic o selecciona una o varias imágenes (jpg, png, 5MB máx.)
+                {t('tickets.evidenceInstructions')}
               </p>
             )}
 
@@ -300,7 +273,6 @@ export function CreateTicket() {
               </div>
             )}
           </div>
-
           <input
             type="file"
             id="image"
@@ -311,28 +283,22 @@ export function CreateTicket() {
           />
         </div>
 
-  
-          
-  
-          
-  
-          {/* Botones */}
-          <div className="flex justify-between gap-4 mt-6">
-            <Button
-              type="button"
-              variant="default"
-              className="flex items-center gap-2 bg-destructive text-white"
-              onClick={() => navigate(-1)}
-            >
-              <ArrowLeft className="w-4 h-4" />
-              Regresar
-            </Button>
-            <Button type="submit" className="flex-1">
-              <Save className="w-4 h-4" />
-              Guardar
-            </Button>
-          </div>
-        </form>
-      </Card>
-    );
+        <div className="flex justify-between gap-4 mt-6">
+          <Button
+            type="button"
+            variant="default"
+            className="flex items-center gap-2 bg-destructive text-white"
+            onClick={() => navigate(-1)}
+          >
+            <ArrowLeft className="w-4 h-4" />
+            {t('common.back')}
+          </Button>
+          <Button type="submit" className="flex-1">
+            <Save className="w-4 h-4" />
+            {t('common.save')}
+          </Button>
+        </div>
+      </form>
+    </Card>
+  );
 }

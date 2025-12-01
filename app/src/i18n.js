@@ -113,7 +113,7 @@ notifications: {
   markAsRead: "Marcar como leído",
   markAllAsRead: "Marcar todas como leídas",
   delete: "Eliminar",
-  deleteAll: "Eliminar todas"
+  deleteAll: "Eliminar todas",
 },
 assignments: {
   dashboard: "Tablero de Asignaciones",
@@ -145,7 +145,29 @@ tickets: {
     normal: "Normal",
     high: "Alta",
     urgent: "Urgente"
-}
+},
+    title: "Título",
+    description: "Descripción",
+    requestingUser: "Usuario Solicitante",
+    tag: "Etiqueta",
+    category: "Categoría",
+    evidence: "Evidencias",
+    placeholders: {
+        title: "Ingrese el título",
+        description: "Descripción breve",
+        selectTag: "Seleccione una etiqueta",
+        selectPriority: "Seleccione la prioridad"
+    },
+    noCategory: "Sin categoría",
+    errorLoadingCategory: "Error al cargar",
+    selectTagFirst: "Seleccione una etiqueta",
+    evidenceInstructions: "Haz clic o selecciona una o varias imágenes (jpg, png, 5MB máx.)",
+    success: {
+      created: "Ticket creado #{{id}} - {{title}}"
+  },
+  errors: {
+      create: "Error al crear ticket"
+  }
 
 },
 technicians: {
@@ -154,11 +176,15 @@ technicians: {
   email: "Correo",
   availability: "Disponibilidad",
   specialties: "Especialidades",
+  update: "Actualizar Técnico",
+  password:"Contraseña",
+
   placeholders: {
       name: "Ingrese el nombre",
       email: "ejemplo@gmail.com",
       selectAvailability: "Seleccione la disponibilidad",
-      selectSpecialties: "Seleccione especialidades"
+      selectSpecialties: "Seleccione especialidades",
+      password: "Dejar vacío para mantener la actual",
   },
   availabilityOptions: {
       available: "Disponible",
@@ -167,17 +193,28 @@ technicians: {
       vacation: "Vacaciones"
   },
   success: {
-      created: "Técnico creado #{{id}} - {{name}}"
+      created: "Técnico creado #{{id}} - {{name}}",
+      updated: "Técnico actualizado #{{id}} - {{name}}"
   },
   errors: {
-      create: "Error al crear técnico"
+      create: "Error al crear técnico",
+      update: "Error al actualizar técnico",
   },
   currentLoad: "Carga Actual",
+  listName:"Lista de Técnicos",
 },
 
 validation: {
   
-  invalidAvailability: "Seleccione una disponibilidad válida"
+  invalidAvailability: "Seleccione una disponibilidad válida",
+  password: {
+    min: "La contraseña debe tener al menos 8 caracteres",
+    uppercase: "Debe contener al menos una letra mayúscula",
+    lowercase: "Debe contener al menos una letra minúscula",
+    number: "Debe contener al menos un número",
+    special: "Debe contener al menos un carácter especial",
+    max: "La contraseña no puede exceder los 50 caracteres"
+}
 },
   
 };
@@ -259,6 +296,14 @@ categories: {
   validation: {
       minOneTag: "Must select at least one tag",
       minOneSpecialty: "Must select at least one specialty",
+      password: {
+        min: "Password must be at least 8 characters",
+        uppercase: "Must contain at least one uppercase letter",
+        lowercase: "Must contain at least one lowercase letter",
+        number: "Must contain at least one number",
+        special: "Must contain at least one special character",
+        max: "Password cannot exceed 50 characters"
+    }
       
   },
   errors: {
@@ -326,7 +371,29 @@ tickets: {
     normal: "Normal",
     high: "High",
     urgent: "Urgent"
-} 
+} ,
+    title: "Title",
+    description: "Description",
+    requestingUser: "Requesting User",
+    tag: "Tag",
+    category: "Category",
+    evidence: "Evidence",
+    placeholders: {
+        title: "Enter title",
+        description: "Brief description",
+        selectTag: "Select a tag",
+        selectPriority: "Select priority"
+    },
+    noCategory: "No category",
+    errorLoadingCategory: "Error loading",
+    selectTagFirst: "Select a tag first",
+    evidenceInstructions: "Click or select one or multiple images (jpg, png, 5MB max.)",
+    success: {
+        created: "Ticket created #{{id}} - {{title}}"
+    },
+    errors: {
+        create: "Error creating ticket"
+    }
 },
 validation: {
   
@@ -338,11 +405,14 @@ technicians: {
   email: "Email",
   availability: "Availability",
   specialties: "Specialties",
+  update: "Update Technician",
+  password: "Password",
   placeholders: {
       name: "Enter name",
       email: "example@gmail.com",
       selectAvailability: "Select availability",
-      selectSpecialties: "Select specialties"
+      selectSpecialties: "Select specialties",
+      password: "Leave empty to keep current",  
   },
   availabilityOptions: {
       available: "Available",
@@ -351,12 +421,15 @@ technicians: {
       vacation: "Vacation"
   },
   success: {
-      created: "Technician created #{{id}} - {{name}}"
+      created: "Technician created #{{id}} - {{name}}",
+      password: "Leave empty to keep current",
   },
   errors: {
-      create: "Error creating technician"
+      create: "Error creating technician",
+      update: "Error updating technician"
   },
   currentLoad: "Current Load",
+  listName:"Technicians",
 },
 
 

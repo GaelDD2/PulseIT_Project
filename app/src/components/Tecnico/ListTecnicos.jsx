@@ -6,9 +6,11 @@ import { EmptyState } from "../ui/custom/EmptyState";
 import { ErrorAlert } from "../ui/custom/ErrorAlert";
 import { Plus } from 'lucide-react';
 import { Link } from "react-router-dom";
+import { useTranslation } from 'react-i18next';
 
 
 export function ListTecnicos() {
+  const { t } = useTranslation();
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -40,7 +42,7 @@ export function ListTecnicos() {
     <div className="mx-auto max-w-5xl p-6">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-3xl font-bold text-primary">
-          Lista de Técnicos
+        {t('technicians.listName')}
         </h2>
         <Link to={"/createTecnico"} className="bg-primary text-white p-3 rounded-full hover:bg-primary/90 transition-colors shadow-md">
             <Plus size={24} className="h-4 w-4 mr-1" />

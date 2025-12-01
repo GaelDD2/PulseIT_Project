@@ -6,9 +6,11 @@ import CategoriaService from "@/services/CategoriaService";
 import { ListCardCategorias } from "./ListCardCategorias";
 import { Link } from "react-router-dom";
 import { Plus } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 
 export function ListCategorias() {
+  const { t } = useTranslation();
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -40,7 +42,7 @@ export function ListCategorias() {
     <div className="mx-auto max-w-5xl p-6">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-3xl font-bold text-primary">
-          Categorias
+        {t('categories.categoryTittle')}
         </h2>
         <Link 
           to={"/createCategoria"} 

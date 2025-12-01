@@ -4,6 +4,7 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useNavigate, useParams } from "react-router-dom";
 import toast from "react-hot-toast";
+import { useTranslation } from 'react-i18next';
 
 // shadcn/ui
 import { Button } from "@/components/ui/button";
@@ -28,6 +29,7 @@ import { CustomMultiSelect } from "../ui/custom/custom-multiple-select"; // sele
 import { CustomInputField } from "../ui/custom/custom-input-field";
 
 export function UpdateCategoria() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   //Obtener parámetro del id del tecnico
   const { id }=useParams();
@@ -153,47 +155,47 @@ export function UpdateCategoria() {
 
   return (
     <Card className="p-6 max-w-5xl mx-auto">
-      <h2 className="text-2xl font-bold mb-6">Crear Categoría</h2>
+      <h2 className="text-2xl font-bold mb-6">{t('categories.update')}</h2>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         {/* Nombre */}
         <div>
-          <Label htmlFor="nombre">Nombre</Label>
+          <Label htmlFor="nombre">{t('categories.name')}</Label>
           <Controller
             name="nombre"
             control={control}
-            render={({ field }) => <Input {...field} placeholder="Nombre de la categoría" />}
+            render={({ field }) => <Input {...field} placeholder={t('categories.placeholders.name')} />}
           />
           {errors.nombre && <p className="text-sm text-red-500">{errors.nombre.message}</p>}
         </div>
 
         {/* Descripción */}
         <div>
-          <Label htmlFor="descripcion">Descripción</Label>
+          <Label htmlFor="descripcion">{t('categories.description')}</Label>
           <Controller
             name="descripcion"
             control={control}
-            render={({ field }) => <Textarea {...field} placeholder="Descripción breve" />}
+            render={({ field }) => <Textarea {...field} placeholder={t('categories.placeholders.description')} />}
           />
           {errors.descripcion && <p className="text-sm text-red-500">{errors.descripcion.message}</p>}
         </div>
 
         {/* SLA */}
         <div>
-          <Label>SLA</Label>
+          <Label>{t('categories.sla')}</Label>
           <Controller
             name="id_sla"
             control={control}
             render={({ field }) => (
               <Select onValueChange={field.onChange} value={field.value}>
                 <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Seleccione un SLA" />
+                  <SelectValue placeholder={t('categories.placeholders.selectSLA')} />
                 </SelectTrigger>
                 <SelectContent>
                   {dataSLA.map((sla) => (
                     <SelectItem key={sla.id} value={String(sla.id)}>
-                      {sla.nombre} — ({sla.tiempo_respuesta_minutos}m resp /{" "}
-                      {sla.tiempo_resolucion_minutos}m res)
+                      {sla.nombre} — ({sla.tiempo_respuesta_minutos}m {t('common.response')} /{" "}
+                      {sla.tiempo_resolucion_minutos}m {t('common.resolution')})
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -202,8 +204,6 @@ export function UpdateCategoria() {
           />
           {errors.id_sla && <p className="text-sm text-red-500">{errors.id_sla.message}</p>}
         </div>
-
-        
 
         {/* Etiquetas */}
         <div>
@@ -214,11 +214,11 @@ export function UpdateCategoria() {
               <CustomMultiSelect
                 field={field}
                 data={dataEtiquetas}
-                label="Etiquetas"
+                label={t('categories.tags')}
                 getOptionLabel={(item) => item.nombre}
                 getOptionValue={(item) => item.id}
                 error={errors.etiquetas?.message}
-                placeholder="Seleccione etiquetas"
+                placeholder={t('categories.placeholders.selectTags')}
               />
             )}
           />
@@ -233,11 +233,11 @@ export function UpdateCategoria() {
               <CustomMultiSelect
                 field={field}
                 data={dataEspecialidades}
-                label="Especialidades"
+                label={t('categories.specialties')}
                 getOptionLabel={(item) => item.nombre}
                 getOptionValue={(item) => item.id}
                 error={errors.especialidades?.message}
-                placeholder="Seleccione especialidades"
+                placeholder={t('categories.placeholders.selectSpecialties')}
               />
             )}
           />
@@ -252,11 +252,11 @@ export function UpdateCategoria() {
             onClick={() => navigate(-1)}
           >
             <ArrowLeft className="w-4 h-4" />
-            Regresar
+            {t('common.back')}
           </Button>
           <Button type="submit" className="flex-1">
             <Save className="w-4 h-4" />
-            Guardar
+            {t('common.save')}
           </Button>
         </div>
       </form>

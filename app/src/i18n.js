@@ -14,7 +14,17 @@ const translationES = {
     edit: "Editar",
     view: "Ver",
     back: "Regresar",
-    details: "Detalle"
+    details: "Detalle",
+    moreInfo: "Más info",
+    response: "resp",  
+    resolution: "res", 
+    errorLoading: "Error al cargar",
+    date: "Fecha",
+    hours: "hrs",
+    errorLoadingDetail: "Error al cargar detalle",
+    select: "Seleccionar",
+    category: "Categoría",
+    errorLoadingData: "Error cargando datos"
   },
   header: {
     title: "PulseIT",
@@ -49,18 +59,126 @@ const translationES = {
     }
   },
   
-  tickets: {
-    myTickets: "Mis Tickets",
-    createTicket: "Crear Ticket",
-    title: "Título",
+  categories: {
+    create: "Crear Categoría",
+    name: "Nombre",
     description: "Descripción",
-    priority: "Prioridad",
-    status: "Estado",
-    assign: "Asignar",
-    resolve: "Resolver",
-    close: "Cerrar",
-    finish: "Finalizar"
+    sla: "SLA",
+    tags: "Etiquetas",
+    specialties: "Especialidades",
+    imageAlt: "Imagen de {{name}}",
+    categoryTittle: "Categorias",
+
+    placeholders: {
+        name: "Nombre de la categoría",
+        description: "Descripción breve",
+        selectSLA: "Seleccione un SLA",
+        selectTags: "Seleccione etiquetas",
+        selectSpecialties: "Seleccione especialidades"
+    },
+    validation: {
+        minOneTag: "Debe seleccionar al menos una etiqueta",
+        minOneSpecialty: "Debe seleccionar al menos una especialidad"
+
+    },
+    errors: {
+        loadData: "Error cargando datos iniciales",
+        create: "Error al crear categoría",
+        update: "Error al actualizar categoría"
+    },
+    success: {
+        created: "Categoría creada #{{id}} - {{name}}",
+        updated: "Categoría actualizada #{{id}} - {{name}}"
+    },
+    update: "Actualizar Categoría",
+   
+},
+login: {
+  title: "Iniciar Sesión",
+  email: "Correo electrónico",
+  emailPlaceholder: "ejemplo@correo.com",
+  password: "Contraseña",
+  passwordPlaceholder: "********",
+  submit: "Ingresar",
+  logoAlt: "Logo PulseIT",
+  errors: {
+      invalidCredentials: "Correo o contraseña incorrectos.",
+      serverError: "Error al conectar con el servidor."
+  }
+},
+notifications: {
+  title: "Notificaciones",
+  empty: "No tienes notificaciones.",
+  new: "Nuevo",
+  markAsRead: "Marcar como leído",
+  markAllAsRead: "Marcar todas como leídas",
+  delete: "Eliminar",
+  deleteAll: "Eliminar todas"
+},
+assignments: {
+  dashboard: "Tablero de Asignaciones",
+  subtitle: "Visualiza los tickets asignados organizados por estado",
+  noAssignments: "No hay asignaciones",
+  noTicketsAssigned: "No tienes tickets asignados actualmente.",
+  noTickets: "Sin tickets",
+  slaRemaining: "SLA restante",
+  errors: {
+      noUserInfo: "No se encontró información de usuario o rol"
   },
+  selectTechnicianFor: "Seleccionar Técnico para",
+    noTechniciansAvailable: "No hay técnicos disponibles",
+    slaResponse: "SLA Respuesta",
+    slaResolution: "SLA Resolución"
+},
+tickets: {
+  status: {
+      open: "Abierto",
+      inProcess: "En Proceso",
+      closed: "Cerrado",
+      pending: "Pendiente",
+      resolved: "Resuelto"
+  },
+  myTickets: "Mis tickets",
+  createTicket: "Crear Ticket",
+  priority: {
+    label: "Prioridad",
+    normal: "Normal",
+    high: "Alta",
+    urgent: "Urgente"
+}
+
+},
+technicians: {
+  create: "Crear Técnico",
+  name: "Nombre",
+  email: "Correo",
+  availability: "Disponibilidad",
+  specialties: "Especialidades",
+  placeholders: {
+      name: "Ingrese el nombre",
+      email: "ejemplo@gmail.com",
+      selectAvailability: "Seleccione la disponibilidad",
+      selectSpecialties: "Seleccione especialidades"
+  },
+  availabilityOptions: {
+      available: "Disponible",
+      busy: "Ocupado",
+      offline: "Desconectado",
+      vacation: "Vacaciones"
+  },
+  success: {
+      created: "Técnico creado #{{id}} - {{name}}"
+  },
+  errors: {
+      create: "Error al crear técnico"
+  },
+  currentLoad: "Carga Actual",
+},
+
+validation: {
+  
+  invalidAvailability: "Seleccione una disponibilidad válida"
+},
   
 };
 
@@ -75,7 +193,18 @@ const translationEN = {
     edit: "Edit",
     view: "View",
     back: "Back",
-    details: "Details"
+    details: "Details",
+    moreInfo: "More info",
+    response: "resp",  
+    resolution: "res", 
+    
+    errorLoading: "Error loading",
+    date: "Date",
+    hours: "hrs",
+    errorLoadingDetail: "Error loading detail",
+    select: "Select",
+    category: "Category",
+    errorLoadingData: "Error loading data",
   },
   header: {
     title: "PulseIT",
@@ -91,7 +220,7 @@ const translationEN = {
     techinicians: "Techinicians",
   },
 
-  // Agrega esta sección después de 'header':
+  
 home: {
     title: "PulseIT",
     subtitle: "Register, assign and control technical support tickets efficiently.",
@@ -110,20 +239,128 @@ home: {
     }
   },
 
-  // Agrega esta sección después de 'header':
+  
+categories: {
+  create: "Create Category",
+  name: "Name",
+  description: "Description",
+  sla: "SLA",
+  tags: "Tags",
+  specialties: "Specialties",
+  categoryTittle: "Categories",
 
-  tickets: {
-    myTickets: "My Tickets",
-    createTicket: "Create Ticket",
-    title: "Title",
-    description: "Description",
-    priority: "Priority",
-    status: "Status",
-    assign: "Assign",
-    resolve: "Resolve",
-    close: "Close",
-    finish: "Finish"
+  placeholders: {
+      name: "Category name",
+      description: "Brief description",
+      selectSLA: "Select an SLA",
+      selectTags: "Select tags",
+      selectSpecialties: "Select specialties"
   },
+  validation: {
+      minOneTag: "Must select at least one tag",
+      minOneSpecialty: "Must select at least one specialty",
+      
+  },
+  errors: {
+      loadData: "Error loading initial data",
+      create: "Error creating category",
+      update: "Error updating category",
+  },
+  success: {
+      created: "Category created #{{id}} - {{name}}",
+      updated: "Category updated #{{id}} - {{name}}"
+  },
+  update: "Update Category",
+ 
+},
+
+login: {
+  title: "Login",
+  email: "Email",
+  emailPlaceholder: "example@email.com",
+  password: "Password",
+  passwordPlaceholder: "********",
+  submit: "Sign In",
+  logoAlt: "PulseIT Logo",
+  errors: {
+      invalidCredentials: "Incorrect email or password.",
+      serverError: "Error connecting to server."
+  }
+},
+notifications: {
+  title: "Notifications",
+  empty: "You have no notifications.",
+  new: "New",
+  markAsRead: "Mark as read",
+  markAllAsRead: "Mark all as read",
+  delete: "Delete",
+  deleteAll: "Delete all"
+},
+assignments: {
+  dashboard: "Assignments Dashboard",
+  subtitle: "View assigned tickets organized by status",
+  noAssignments: "No assignments",
+  noTicketsAssigned: "You have no tickets assigned at the moment.",
+  noTickets: "No tickets",
+  slaRemaining: "SLA remaining",
+  errors: {
+      noUserInfo: "No user or role information found"
+  },
+  selectTechnicianFor: "Select Technician for",
+    noTechniciansAvailable: "No technicians available",
+    slaResponse: "SLA Response",
+    slaResolution: "SLA Resolution"
+},
+tickets: {
+  status: {
+      open: "Open",
+      inProcess: "In Process",
+      closed: "Closed",
+      pending: "Pending",
+      resolved: "Resolved"
+  },
+  myTickets: "My tickets",
+  createTicket: "Create Ticket",
+  priority: {
+    label: "Priority",
+    normal: "Normal",
+    high: "High",
+    urgent: "Urgent"
+} 
+},
+validation: {
+  
+  invalidAvailability: "Select a valid availability"},
+  
+technicians: {
+  create: "Create Technician",
+  name: "Name",
+  email: "Email",
+  availability: "Availability",
+  specialties: "Specialties",
+  placeholders: {
+      name: "Enter name",
+      email: "example@gmail.com",
+      selectAvailability: "Select availability",
+      selectSpecialties: "Select specialties"
+  },
+  availabilityOptions: {
+      available: "Available",
+      busy: "Busy",
+      offline: "Offline",
+      vacation: "Vacation"
+  },
+  success: {
+      created: "Technician created #{{id}} - {{name}}"
+  },
+  errors: {
+      create: "Error creating technician"
+  },
+  currentLoad: "Current Load",
+},
+
+
+
   
 };
 

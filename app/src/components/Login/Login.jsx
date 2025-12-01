@@ -6,8 +6,10 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import PulseITLogo from "../../assets/PulseITLogo.png";
+import { useTranslation } from 'react-i18next'; 
 
 export function Login() {
+  const { t } = useTranslation(); // <- NUEVO
   const navigate = useNavigate();
   const [correo, setCorreo] = useState("");
   const [contrasena, setContrasena] = useState("");
@@ -29,25 +31,22 @@ export function Login() {
         localStorage.setItem("nombre", nombre);
         localStorage.setItem("correo", correo);
 
-
-
-        navigate("/home"); // Redirige al Home
+        navigate("/home");
       } else {
-        setError("Correo o contraseña incorrectos.");
+        setError(t('login.errors.invalidCredentials')); // <- TRADUCIDO
       }
-    // eslint-disable-next-line no-unused-vars
     } catch (err) {
-      setError("Error al conectar con el servidor.");
+      setError(t('login.errors.serverError')); // <- TRADUCIDO
     }
   };
 
   return (
     <div className="flex min-h-screen bg-gray-900">
       {/* Panel Izquierdo: Logo */}
-      <div className="hidden md:flex md:w-1/2  bg-white items-center justify-center">
+      <div className="hidden md:flex md:w-1/2 bg-white items-center justify-center">
         <img
           src={PulseITLogo}
-          alt="Logo PulseIT"
+          alt={t('login.logoAlt')} // <- TRADUCIDO
           className="w-3/5 max-w-md drop-shadow-lg"
         />
       </div>
@@ -57,14 +56,14 @@ export function Login() {
         <Card className="w-full max-w-md bg-gray-100 border-none shadow-lg">
           <CardHeader>
             <CardTitle className="text-2xl font-bold text-center text-primary">
-              Iniciar Sesión
+              {t('login.title')} {/* <- TRADUCIDO */}
             </CardTitle>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-primary mb-1">
-                  Correo electrónico
+                  {t('login.email')} {/* <- TRADUCIDO */}
                 </label>
                 <Input
                   type="email"
@@ -72,13 +71,13 @@ export function Login() {
                   onChange={(e) => setCorreo(e.target.value)}
                   required
                   className="bg-gray-700 text-black"
-                  placeholder="ejemplo@correo.com"
+                  placeholder={t('login.emailPlaceholder')} // <- TRADUCIDO
                 />
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-primary mb-1">
-                  Contraseña
+                  {t('login.password')} {/* <- TRADUCIDO */}
                 </label>
                 <Input
                   type="password"
@@ -86,7 +85,7 @@ export function Login() {
                   onChange={(e) => setContrasena(e.target.value)}
                   required
                   className="bg-gray-700 text-black"
-                  placeholder="********"
+                  placeholder={t('login.passwordPlaceholder')} // <- TRADUCIDO
                 />
               </div>
 
@@ -97,7 +96,7 @@ export function Login() {
               )}
 
               <Button type="submit" className="w-full mt-2">
-                Ingresar
+                {t('login.submit')} {/* <- TRADUCIDO */}
               </Button>
             </form>
           </CardContent>
@@ -105,4 +104,4 @@ export function Login() {
       </div>
     </div>
   );
-}
+} 

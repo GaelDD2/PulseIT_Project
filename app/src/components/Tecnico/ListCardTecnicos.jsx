@@ -9,17 +9,21 @@ ListCardTecnicos.propTypes = {
   data: PropTypes.array.isRequired,
 };
 
+import { useTranslation } from 'react-i18next';
+
 export function ListCardTecnicos({ data }) {
+  const { t } = useTranslation();
+
   return (
     <div className="grid gap-6 p-4 sm:grid-cols-2 lg:grid-cols-3">
       {data.map((item, index) => (
         <Card key={index} className="flex flex-col justify-between">
           <CardHeader>
-          <img
-          src={TecnicoIcon}
-          alt="Foto del técnico"
-          className="w-24 h-24 mx-auto rounded-full object-cover"
-          />
+            <img
+              src={TecnicoIcon}
+              alt={t('technicians.photoAlt')}
+              className="w-24 h-24 mx-auto rounded-full object-cover"
+            />
             <CardTitle className="text-lg font-semibold text-primary">
               {item.nombre}
             </CardTitle>
@@ -31,7 +35,7 @@ export function ListCardTecnicos({ data }) {
           <CardContent className="flex justify-end pt-2 border-t">
             <Button variant="outline" size="sm" asChild>
               <Link to={`/tecnicos/detail/${item.id}`}>
-                <Info className="h-4 w-4 mr-1" /> Ver Detalle
+                <Info className="h-4 w-4 mr-1" /> {t('common.view')} {t('common.details')}
               </Link>
             </Button>
           </CardContent>

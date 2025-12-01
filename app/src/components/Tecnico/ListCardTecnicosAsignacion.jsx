@@ -12,51 +12,57 @@ ListCardTecnicosAsignacion.propTypes = {
   onSelect: PropTypes.func.isRequired,
 };
 
-export function ListCardTecnicosAsignacion({ data, onSelect }) {
-  const {idTicket} = useParams();
+import { useTranslation } from 'react-i18next';
 
-  
+export function ListCardTecnicosAsignacion({ data, onSelect }) {
+  const { t } = useTranslation();
+  const { idTicket } = useParams();
+
+  const getAvailabilityColor = (disponibilidad) => {
+    switch (disponibilidad) {
+      case "disponible": return "text-green-600";
+      case "ocupado": return "text-red-600";
+      case "vacaciones": return "text-yellow-600";
+      case "desconectado": return "text-gray-600";
+      default: return "text-gray-600";
+    }
+  };
+
+  const getAvailabilityText = (disponibilidad) => {
+    switch (disponibilidad) {
+      case "disponible": return t('technicians.availabilityOptions.available');
+      case "ocupado": return t('technicians.availabilityOptions.busy');
+      case "vacaciones": return t('technicians.availabilityOptions.vacation');
+      case "desconectado": return t('technicians.availabilityOptions.offline');
+      default: return disponibilidad;
+    }
+  };
+
   return (
-    
     <div className="grid gap-4 p-4 sm:grid-cols-2 lg:grid-cols-3">
       {data.map((item) => (
         <Card
           key={item.id}
           className="p-4 flex flex-col gap-3 border shadow-sm hover:shadow-md transition-all"
         >
-          {/* Foto */}
           <img
             src={TecnicoIcon}
-            alt="Foto técnico"
+            alt={t('technicians.photoAlt')}
             className="w-16 h-16 mx-auto rounded-full object-cover"
           />
 
-          {/* Nombre */}
           <h3 className="text-center text-lg font-semibold">{item.nombre}</h3>
 
-          
-
-          {/* Disponibilidad */}
-          <p
-            className={`text-center text-sm font-medium ${
-              item.disponibilidad === "disponible"
-                ? "text-green-600"
-                : item.disponibilidad === "ocupado"
-                ? "text-red-600"
-                : "text-yellow-600"
-            }`}
-          >
-            {item.disponibilidad.toUpperCase()}
+          <p className={`text-center text-sm font-medium ${getAvailabilityColor(item.disponibilidad)}`}>
+            {getAvailabilityText(item.disponibilidad).toUpperCase()}
           </p>
 
-          {/* Carga actual */}
           <p className="text-xs text-center text-muted-foreground">
-            Carga actual: {item.carga_actual}
+            {t('technicians.currentLoad')}: {item.carga_actual}
           </p>
 
-          {/* Especialidades */}
           <div className="text-xs text-muted-foreground mt-2">
-            <p className="font-semibold text-center">Especialidades:</p>
+            <p className="font-semibold text-center">{t('technicians.specialties')}:</p>
             <ul className="list-disc ml-4">
               {item.especialidades.map((esp) => (
                 <li key={esp.id}>{esp.nombre}</li>
@@ -64,13 +70,12 @@ export function ListCardTecnicosAsignacion({ data, onSelect }) {
             </ul>
           </div>
 
-          {/* Botón seleccionar */}
           <Button
             className="mt-3 w-full"
-            onClick={() => onSelect(item)}
+            onClick={() => onSelect && onSelect(item)}
           >
             <Link to={`/AsignarTecnicoManual/${idTicket}/${item.id}`}>
-              Seleccionar
+              {t('common.select')}
             </Link>
           </Button>
         </Card>

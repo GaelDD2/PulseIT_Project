@@ -9,16 +9,18 @@ import { EmptyState } from "../ui/custom/EmptyState";
 import { Clock, Layers, Eye, MessageSquarePlus } from "lucide-react";
 import TecnicoService from "@/services/TecnicoService";
 import TecnicoIcon from "../../assets/TecnicoIcon2.png";
+import { useTranslation } from 'react-i18next';
 
 export function AsignacionesTecnico() {
-  const { id } = useParams(); 
+  const { t } = useTranslation(); // <- NUEVO
+  const { id } = useParams();
   const navigate = useNavigate();
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   
-  const idRol = localStorage.getItem("idRol"); 
-  const idUsuario = id; 
+  const idRol = localStorage.getItem("idRol");
+  const idUsuario = id;
 
   // 🎨 Colores por estado (incluye “Abierto”)
   const estadoColor = {
@@ -46,18 +48,18 @@ export function AsignacionesTecnico() {
     if (idRol && idUsuario) {
       fetchData();
     } else {
-      setError("No se encontró información de usuario o rol");
+      setError(t('assignments.errors.noUserInfo')); // <- TRADUCIDO
       setLoading(false);
     }
   }, [idRol, idUsuario]);
 
   if (loading) return <LoadingGrid count={3} type="grid" />;
-  if (error) return <ErrorAlert title="Error al cargar" message={error} />;
+  if (error) return <ErrorAlert title={t('common.errorLoading')} message={error} />; // <- TRADUCIDO
   if (!data || data.length === 0)
     return (
       <EmptyState
-        title="No hay asignaciones"
-        message="No tienes tickets asignados actualmente."
+        title={t('assignments.noAssignments')} // <- TRADUCIDO
+        message={t('assignments.noTicketsAssigned')} // <- TRADUCIDO
       />
     );
 
@@ -80,15 +82,15 @@ export function AsignacionesTecnico() {
       <div className="flex items-center gap-4 mb-10">
         <img
           src={TecnicoIcon}
-          alt="Técnico"
+          alt={t('technicians.photoAlt')} // <- TRADUCIDO
           className="w-16 h-16 rounded-full bg-blue-900/40 p-2 shadow-md"
         />
         <div>
           <h1 className="text-3xl font-bold tracking-tight text-primary">
-            Tablero de Asignaciones
+            {t('assignments.dashboard')} {/* <- TRADUCIDO */}
           </h1>
           <p className="text-black/70 text-sm">
-            Visualiza los tickets asignados organizados por estado
+            {t('assignments.subtitle')} {/* <- TRADUCIDO */}
           </p>
         </div>
       </div>
@@ -107,7 +109,9 @@ export function AsignacionesTecnico() {
             </h2>
 
             {columna.tickets.length === 0 ? (
-              <p className="text-center text-white/50 text-sm mt-4">Sin tickets</p>
+              <p className="text-center text-white/50 text-sm mt-4">
+                {t('assignments.noTickets')} {/* <- TRADUCIDO */}
+              </p>
             ) : (
               columna.tickets.map((item) => {
                 const urgente = parseInt(item.horas_restantes) < 0;
@@ -133,7 +137,9 @@ export function AsignacionesTecnico() {
 
                     <CardContent className="text-xs space-y-1">
                       <p className="text-white/60">ID: #{item.id_ticket}</p>
-                      <p className="text-white/60">Fecha: {item.fecha_creacion}</p>
+                      <p className="text-white/60">
+                        {t('common.date')}: {item.fecha_creacion} {/* <- TRADUCIDO */}
+                      </p>
 
                       <div className="flex items-center gap-1 text-white/80">
                         <Layers className="h-3 w-3" />
@@ -143,13 +149,13 @@ export function AsignacionesTecnico() {
                       <div className="flex items-center gap-1 text-white/60">
                         <Clock className="h-3 w-3" />
                         <span>
-                          SLA restante:{" "}
+                          {t('assignments.slaRemaining')}:{" "} {/* <- TRADUCIDO */}
                           <span
                             className={`${
                               urgente ? "text-red-400" : "text-green-400"
                             }`}
                           >
-                            {item.horas_restantes} hrs
+                            {item.horas_restantes} {t('common.hours')} {/* <- TRADUCIDO */}
                           </span>
                         </span>
                       </div>
@@ -173,29 +179,12 @@ export function AsignacionesTecnico() {
                             navigate(`/tickets/detail/${item.id_ticket}`)
                           }
                         >
-                          <Eye className="h-3 w-3 mr-1" /> Ver
+                          <Eye className="h-3 w-3 mr-1" /> {t('common.view')} {/* <- TRADUCIDO */}
                         </Button>
 
-                        {/* Select de estado visual */}
-                        <select
-                          className="text-xs bg-blue-950/60 border border-blue-600 rounded-md px-2 py-1 text-white focus:outline-none focus:ring-1 focus:ring-blue-400 cursor-pointer"
-                          defaultValue={item.estado_actual}
-                        >
-                          <option>Abierto</option>
-                          <option>En Proceso</option>
-                          <option>Cerrado</option>
-                          <option>Pendiente</option>
-                          <option>Resuelto</option>
-                        </select>
+                        
 
-                        {/* Botón comentario */}
-                        <Button
-                          size="xs"
-                          variant="outline"
-                          className="border-green-600/50 text-green-300 hover:bg-green-700/40"
-                        >
-                          <MessageSquarePlus className="h-3 w-3" />
-                        </Button>
+                        
                       </div>
                     </CardContent>
                   </Card>

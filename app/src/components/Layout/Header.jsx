@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useTranslation } from 'react-i18next'; // <- NUEVO IMPORT
 import {
   Layers,
   Ticket,
@@ -27,8 +28,10 @@ import {
   MenubarItem,
 } from "@/components/ui/menubar";
 import NotificacionService from "@/services/NotificacionService";
+import { LanguageSwitcher } from "../ui/custom/LanguageSwitcher";
 
 export default function Header() {
+  const { t } = useTranslation(); // <- NUEVO HOOK
   const navigate = useNavigate();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [numeroNotificaciones, setNumeroNotificaciones] = useState(0);
@@ -39,7 +42,7 @@ export default function Header() {
   const correo = localStorage.getItem("correo");
 
   const userData = {
-    correo: correo || "Invitado",
+    correo: correo || t('common.guest'), // <- MODIFICADO
     rol: idRol,
   };
 
@@ -72,21 +75,21 @@ export default function Header() {
     navigate("/"); // Redirige al login
   };
 
-  // 🔹 Menús comunes
+  // 🔹 Menús comunes (ahora con traducciones)
   const ticketItems = [
-    { title: "Mis Tickets", href: "/tickets" },
-    { title: "Crear Ticket", href: "/createTicket" },
+    { title: t('tickets.myTickets'), href: "/tickets" }, // <- MODIFICADO
+    { title: t('tickets.createTicket'), href: "/createTicket" }, // <- MODIFICADO
   ];
 
   const adminItems = [
-    { title: "Gestión de Técnicos", href: "/tecnicos" },
-    { title: "Categorías y SLA", href: "/categorias" },
-    { title: "Reglas de Asignación", href: "/reglas" },
+    { title: t('header.techinicians'), href: "/tecnicos" },
+    { title: t('header.categoriesSLA'), href: "/categorias" }, // <- MODIFICADO
+    { title: t('header.assignmentRules'), href: "/reglas" }, // <- MODIFICADO
     { title: "Dashboard", href: "/dashboard" },
   ];
 
   const tecnicoItems = [
-    { title: "Ver mis asignaciones", href: `/asignaciones/${idUsuario}` },
+    { title: t('header.assignments'), href: `/asignaciones/${idUsuario}` }, // <- MODIFICADO
   ];
 
   return (
@@ -97,7 +100,7 @@ export default function Header() {
           to="/home"
           className="flex items-center gap-2 text-xl font-semibold tracking-wide hover:opacity-90 transition"
         >
-          <span className="hidden sm:inline">PulseIT</span>
+          <span className="hidden sm:inline">{t('header.title')}</span> {/* <- MODIFICADO */}
           <Activity className="h-5 w-5" />
         </Link>
 
@@ -108,7 +111,7 @@ export default function Header() {
             {/* Tickets */}
             <MenubarMenu>
               <MenubarTrigger className="text-white font-medium flex items-center gap-1 hover:text-secondary transition">
-                <Ticket className="h-4 w-4" /> Tickets
+                <Ticket className="h-4 w-4" /> {t('header.tickets')} {/* <- MODIFICADO */}
                 <ChevronDown className="h-3 w-3" />
               </MenubarTrigger>
               <MenubarContent className="bg-white backdrop-blur-md border-white/10">
@@ -129,7 +132,7 @@ export default function Header() {
             {idRol === "3" && (
               <MenubarMenu>
                 <MenubarTrigger className="text-white font-medium flex items-center gap-1 hover:text-secondary transition">
-                  <Settings className="h-4 w-4" /> Administración
+                  <Settings className="h-4 w-4" /> {t('header.administration')} {/* <- MODIFICADO */}
                   <ChevronDown className="h-3 w-3" />
                 </MenubarTrigger>
                 <MenubarContent className="bg-white backdrop-blur-md border-white/10">
@@ -152,7 +155,7 @@ export default function Header() {
             {(idRol === "2" || idRol === "3") && (
               <MenubarMenu>
                 <MenubarTrigger className="text-white font-medium flex items-center gap-1 hover:text-secondary transition">
-                  <BriefcaseBusiness className="h-4 w-4" /> Asignaciones
+                  <BriefcaseBusiness className="h-4 w-4" /> {t('header.assignments')} {/* <- MODIFICADO */}
                   <ChevronDown className="h-3 w-3" />
                 </MenubarTrigger>
                 <MenubarContent className="bg-white backdrop-blur-md border-white/10">
@@ -184,7 +187,7 @@ export default function Header() {
                         to="/user/login"
                         className="flex items-center gap-2 py-2 px-3 rounded-md text-sm hover:bg-blue-600/40 transition"
                       >
-                        <LogIn className="h-4 w-4" /> Iniciar Sesión
+                        <LogIn className="h-4 w-4" /> {t('header.login')} {/* <- MODIFICADO */}
                       </Link>
                     </MenubarItem>
                     <MenubarItem asChild>
@@ -192,7 +195,7 @@ export default function Header() {
                         to="/user/create"
                         className="flex items-center gap-2 py-2 px-3 rounded-md text-sm hover:bg-blue-600/40 transition"
                       >
-                        <UserPlus className="h-4 w-4" /> Registrarse
+                        <UserPlus className="h-4 w-4" /> {t('header.register')} {/* <- MODIFICADO */}
                       </Link>
                     </MenubarItem>
                   </>
@@ -201,7 +204,7 @@ export default function Header() {
                     onClick={handleLogout}
                     className="flex items-center gap-2 py-2 px-3 rounded-md text-sm hover:bg-red-600/40 transition cursor-pointer"
                   >
-                    <LogOut className="h-4 w-4" /> Cerrar Sesión
+                    <LogOut className="h-4 w-4" /> {t('header.logout')} {/* <- MODIFICADO */}
                   </MenubarItem>
                 )}
               </MenubarContent>
@@ -210,7 +213,10 @@ export default function Header() {
         </div>
 
         {/* Notificaciones y menú móvil */}
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3"> {/* <- Cambiado gap-4 a gap-3 */}
+          {/* Selector de idioma */}
+          <LanguageSwitcher />
+          
           <Link to="/notificaciones" className="relative hover:opacity-80">
             <Bell className="h-6 w-6" />
             {/* Burbuja de notificaciones */}
@@ -233,14 +239,14 @@ export default function Header() {
               <nav className="mt-8 px-4 space-y-6">
                 <div>
                   <Link to="/" className="flex items-center gap-2 text-lg font-semibold">
-                    <Ticket /> PulseIT
+                    <Ticket /> {t('header.title')} {/* <- MODIFICADO */}
                   </Link>
                 </div>
 
                 {/* Tickets */}
                 <div>
                   <h4 className="mb-2 text-lg font-semibold flex items-center gap-2">
-                    <Ticket /> Tickets
+                    <Ticket /> {t('header.tickets')} {/* <- MODIFICADO */}
                   </h4>
                   {ticketItems.map((item) => (
                     <Link
@@ -258,7 +264,7 @@ export default function Header() {
                 {idRol === "3" && (
                   <div>
                     <h4 className="mb-2 text-lg font-semibold flex items-center gap-2">
-                      <Settings /> Administración
+                      <Settings /> {t('header.administration')} {/* <- MODIFICADO */}
                     </h4>
                     {adminItems.map((item) => (
                       <Link
@@ -277,7 +283,7 @@ export default function Header() {
                 {(idRol === "2" || idRol === "3") && (
                   <div>
                     <h4 className="mb-2 text-lg font-semibold flex items-center gap-2">
-                      <BriefcaseBusiness /> Asignaciones
+                      <BriefcaseBusiness /> {t('header.assignments')} {/* <- MODIFICADO */}
                     </h4>
                     {tecnicoItems.map((item) => (
                       <Link
@@ -304,14 +310,14 @@ export default function Header() {
                         onClick={() => setMobileOpen(false)}
                         className="flex items-center gap-2 py-2 px-3 rounded-md text-white/90 hover:bg-white/10 transition"
                       >
-                        <LogIn className="h-4 w-4" /> Iniciar Sesión
+                        <LogIn className="h-4 w-4" /> {t('header.login')} {/* <- MODIFICADO */}
                       </Link>
                       <Link
                         to="/user/create"
                         onClick={() => setMobileOpen(false)}
                         className="flex items-center gap-2 py-2 px-3 rounded-md text-white/90 hover:bg-white/10 transition"
                       >
-                        <UserPlus className="h-4 w-4" /> Registrarse
+                        <UserPlus className="h-4 w-4" /> {t('header.register')} {/* <- MODIFICADO */}
                       </Link>
                     </>
                   ) : (
@@ -322,7 +328,7 @@ export default function Header() {
                       }}
                       className="flex items-center gap-2 py-2 px-3 rounded-md text-white/90 hover:bg-red-600/30 transition w-full text-left"
                     >
-                      <LogOut className="h-4 w-4" /> Cerrar Sesión
+                      <LogOut className="h-4 w-4" /> {t('header.logout')} {/* <- MODIFICADO */}
                     </button>
                   )}
                 </div>

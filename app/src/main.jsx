@@ -23,7 +23,8 @@ import { UpdateEstado } from './components/Ticket/UpdateEstado'
 import { NotificationsPanel } from './components/Notificacion/PanelNotificaciones'
 import { ListTecnicosAsignacion } from './components/Tecnico/ListTecnicoAsignacion'
 import { AsignarTecnicoManual } from './components/Ticket/AsignarTecnicoManual'
-
+import { I18nextProvider } from 'react-i18next';  // <- Ya la tienes
+import i18n from './i18n';  // <- Ya la tienes
 
 const rutas = createBrowserRouter([
   { path: "/", element: <Login /> }, 
@@ -48,16 +49,14 @@ const rutas = createBrowserRouter([
       { path: "notificaciones", element: <NotificationsPanel /> },
       { path: "tecnicosAsignaciones/:idTicket", element: <ListTecnicosAsignacion /> },
       { path: "AsignarTecnicoManual/:idTicket/:idTecnico", element: <AsignarTecnicoManual /> },
-
-
-
-
     ],
   },
 ]);
 
 createRoot(document.getElementById('root')).render( 
   <StrictMode> 
-    <RouterProvider router={rutas} /> 
+    <I18nextProvider i18n={i18n}>  {/* <- ENVOLVER TODO CON ESTO */}
+      <RouterProvider router={rutas} /> 
+    </I18nextProvider>
   </StrictMode>, 
 )

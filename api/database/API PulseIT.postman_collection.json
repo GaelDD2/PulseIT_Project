@@ -435,6 +435,14 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Asignar Automaticamente",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
 				}
 			]
 		},

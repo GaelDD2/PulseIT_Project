@@ -325,6 +325,252 @@ public function DetalleTicket($idTicket) {
 
 
 }
+
+public function asignacionAutomaticaBatch($objeto)
+{
+    // extraer parámetros del objeto
+    $idRegla = isset($objeto->id_regla) ? (int)$objeto->id_regla : null;
+    $idUsuarioAsignador = isset($objeto->id_usuario_asignador) ? (int)$objeto->id_usuario_asignador : null;
+    $limite = isset($objeto->limite) ? (int)$objeto->limite : null;
+
+    if (!$idRegla) {
+        return ['success' => false, 'message' => 'Debe enviar id_regla'];
+    }
+
+    // obtener la regla
+    $sqlRegla = "SELECT * FROM reglas_autotriage WHERE id = $idRegla AND activo = 1";
+    $reglaRes = $this->enlace->ExecuteSQL($sqlRegla);
+    if (!is_array($reglaRes) || count($reglaRes) == 0) {
+        return ['success' => false, 'message' => "La regla con ID $idRegla no existe o está inactiva"];
+    }
+    $regla = $reglaRes[0];
+
+    // multiplicadores por nivel de prioridad (1=Normal,2=Alta,3=Urgente)
+    $nivelFactor = [
+        1 => 1.0,
+        2 => 1.5,
+        3 => 2.0
+    ];
+
+    // obtener tickets pendientes (posible limite)
+    $sqlTickets = "SELECT * FROM ticket WHERE id_estado_actual = 4 ORDER BY fecha_creacion ASC";
+    if ($limite && $limite > 0) {
+        $sqlTickets .= " LIMIT $limite";
+    }
+    $tickets = $this->enlace->ExecuteSQL($sqlTickets);
+    if (!is_array($tickets) || count($tickets) == 0) {
+        return ['success' => true, 'message' => 'No hay tickets pendientes para asignar', 'asignaciones' => []];
+    }
+
+    // obtener técnicos disponibles y sus especialidades
+    $sqlTecnicos = "
+        SELECT u.id, u.nombre, IFNULL(u.carga_actual,0) AS carga_actual,
+               GROUP_CONCAT(te.id_especialidad) AS especialidades
+        FROM usuario u
+        LEFT JOIN tecnico_especialidad te ON te.id_usuario_tecnico = u.id
+        WHERE u.id_rol = 2 AND u.disponibilidad = 'disponible' AND u.activo = 1
+        GROUP BY u.id
+    ";
+    $tecnicos = $this->enlace->ExecuteSQL($sqlTecnicos);
+    if (!is_array($tecnicos) || count($tecnicos) == 0) {
+        return ['success' => false, 'message' => 'No existen técnicos disponibles', 'asignaciones' => []];
+    }
+
+    $resultados = [];
+
+    foreach ($tickets as $t) {
+        $ticketId = (int)$t->id;
+
+        // obtener id_categoria y tiempos SLA (si los necesitas)
+        $sqlCat = "SELECT id_categoria, fecha_limite_resolucion, prioridad, id_usuario_solicitante FROM ticket WHERE id = $ticketId";
+        $catRes = $this->enlace->ExecuteSQL($sqlCat);
+        if (!is_array($catRes) || count($catRes) == 0) {
+            $resultados[] = ['ticket' => $ticketId, 'assigned' => false, 'reason' => 'Ticket no encontrado'];
+            continue;
+        }
+        $ticketRow = $catRes[0];
+        $idCategoria = isset($ticketRow->id_categoria) ? (int)$ticketRow->id_categoria : null;
+        $prioridadTicket = isset($ticketRow->prioridad) ? (int)$ticketRow->prioridad : 1;
+        $idSolicitante = isset($ticketRow->id_usuario_solicitante) ? (int)$ticketRow->id_usuario_solicitante : 0;
+
+        // tiempo restante SLA (en minutos) - puede ser negativo si vencido
+        $sqlRestante = "SELECT TIMESTAMPDIFF(MINUTE, NOW(), fecha_limite_resolucion) AS minutos_restantes FROM ticket WHERE id = $ticketId";
+        $restRes = $this->enlace->ExecuteSQL($sqlRestante);
+        $tiempoRestante = 0;
+        if (is_array($restRes) && count($restRes) > 0) {
+            $tiempoRestante = (int)$restRes[0]->minutos_restantes;
+        }
+
+        // obtener especialidades de la categoria (si existen)
+        $sqlEspCat = "SELECT id_especialidad FROM categoria_especialidad WHERE id_categoria = " . ($idCategoria ? $idCategoria : 0);
+        $espCatRes = $this->enlace->ExecuteSQL($sqlEspCat);
+        $espCategoria = [];
+        if (is_array($espCatRes) && count($espCatRes) > 0) {
+            foreach ($espCatRes as $er) {
+                $espCategoria[] = (int)$er->id_especialidad;
+            }
+        }
+
+        // si no hay especialidades asociadas a la categoria, opcionalmente permitir todos los técnicos
+        $requiereEspecialidad = true;
+        if (count($espCategoria) == 0) {
+            // decidir comportamiento: si prefieres asignar sin filtrar por especialidad, cambia a false
+            $requiereEspecialidad = false;
+        }
+
+        // buscar mejor técnico
+        $mejorTecnico = null;
+        $mejorDetalle = null;
+
+        foreach ($tecnicos as $tec) {
+            $tecId = (int)$tec->id;
+            $carga = (int)$tec->carga_actual;
+            $tecEspecialidades = $tec->especialidades ? explode(',', $tec->especialidades) : [];
+
+            // si se requiere especialidad, validar que el técnico tenga alguna coincidencia
+            if ($requiereEspecialidad) {
+                $match = false;
+                foreach ($tecEspecialidades as $se) {
+                    if (in_array((int)$se, $espCategoria, true)) {
+                        $match = true;
+                        break;
+                    }
+                }
+                if (!$match) continue; // este técnico no tiene la especialidad requerida
+            }
+
+            // calcular componentes
+            $factorNivel = isset($nivelFactor[$prioridadTicket]) ? (float)$nivelFactor[$prioridadTicket] : 1.0;
+            $basePrioridadScore = $prioridadTicket * 1000.0;
+            $componentPrioridad = $basePrioridadScore * $factorNivel * (float)($regla->peso_prioridad ?? 1.0);
+            $componentTiempo = (float)$tiempoRestante * (float)($regla->peso_tiempo_restante ?? 1.0);
+            $componentCarga = ($carga * 100.0) * (float)($regla->peso_carga ?? 1.0);
+
+            $puntajeFinal = $componentPrioridad - $componentTiempo - $componentCarga;
+
+            // almacenar detalle para justificación
+            $detalleTec = (object)[
+                'id' => $tecId,
+                'nombre' => $tec->nombre,
+                'carga' => $carga,
+                'componentPrioridad' => $componentPrioridad,
+                'componentTiempo' => $componentTiempo,
+                'componentCarga' => $componentCarga,
+                'puntaje_final' => $puntajeFinal
+            ];
+
+            if (!$mejorTecnico || $puntajeFinal > $mejorTecnico->puntaje_final) {
+                $mejorTecnico = $detalleTec;
+            }
+        } // end foreach tecnicos
+
+        if (!$mejorTecnico) {
+            $resultados[] = [
+                'ticket' => $ticketId,
+                'assigned' => false,
+                'reason' => 'No hay técnicos compatibles o disponibles'
+            ];
+            continue;
+        }
+
+        // preparar observaciones con justificación
+        $observData = [
+            'regla_id' => $idRegla,
+            'prioridad' => $prioridadTicket,
+            'tiempo_restante_min' => $tiempoRestante,
+            'componentPrioridad' => $mejorTecnico->componentPrioridad,
+            'componentTiempo' => $mejorTecnico->componentTiempo,
+            'componentCarga' => $mejorTecnico->componentCarga,
+            'puntaje_final' => $mejorTecnico->puntaje_final
+        ];
+        $observJson = addslashes(json_encode($observData));
+
+        // -------------- Aplicar cambios en BD --------------
+        // Insert asignacion
+        $idUsuarioAsignadorSQL = $idUsuarioAsignador ? $idUsuarioAsignador : "NULL";
+        $puntajeEsc = (float)$mejorTecnico->puntaje_final;
+        $sqlAsig = "
+            INSERT INTO asignacion (
+                id_ticket, id_usuario_tecnico, id_usuario_asignador,
+                id_regla_autotriage, metodo, puntuacion, observaciones, activo
+            ) VALUES (
+                $ticketId,
+                {$mejorTecnico->id},
+                " . ($idUsuarioAsignador ? $idUsuarioAsignador : "NULL") . ",
+                $idRegla,
+                'automatico',
+                $puntajeEsc,
+                '$observJson',
+                1
+            )
+        ";
+        $idAsignacion = $this->enlace->executeSQL_DML_last($sqlAsig);
+
+        // Insert historial
+        $sqlHist = "
+            INSERT INTO historial_tickets (
+                id_ticket, id_estado_anterior, id_estado_nuevo,
+                id_usuario_cambio, fecha_cambio, observaciones, id_asignacion, es_sistema
+            ) VALUES (
+                $ticketId, 4, 1,
+                " . ($idUsuarioAsignador ? $idUsuarioAsignador : 0) . ",
+                NOW(),
+                '$observJson',
+                $idAsignacion,
+                1
+            )
+        ";
+        $idHist = $this->enlace->executeSQL_DML_last($sqlHist);
+
+        // Update estado del ticket a Asignado (1)
+        $this->enlace->executeSQL_DML("UPDATE ticket SET id_estado_actual = 1 WHERE id = $ticketId");
+
+        // Update carga del técnico +1
+        $this->enlace->executeSQL_DML("UPDATE usuario SET carga_actual = IFNULL(carga_actual,0) + 1 WHERE id = {$mejorTecnico->id}");
+
+        // Notificación técnico
+        $msgTec =
+            "Se te ha asignado el ticket #$ticketId".'puntaje'.$puntajeEsc;
+           
+        
+        $this->enlace->executeSQL_DML("
+            INSERT INTO notificacion (id_usuario, tipo_id, id_usuario_origen, contenido)
+            VALUES ({$mejorTecnico->id}, 3, " . ($idUsuarioAsignador ? $idUsuarioAsignador : "NULL") . ", '$msgTec')
+        ");
+
+        // Notificación cliente
+        $msgCli = addslashes(json_encode([
+            'mensaje' => "Tu ticket #$ticketId ha sido asignado al técnico {$mejorTecnico->nombre}"
+        ]));
+        $this->enlace->executeSQL_DML("
+            INSERT INTO notificacion (id_usuario, tipo_id, id_usuario_origen, contenido)
+            VALUES ({$idSolicitante}, 2, " . ($idUsuarioAsignador ? $idUsuarioAsignador : "NULL") . ", '$msgCli')
+        ");
+
+        // resultado del ticket
+        $resultados[] = [
+            'ticket' => $ticketId,
+            'tecnico_id' => $mejorTecnico->id,
+            'tecnico_nombre' => $mejorTecnico->nombre,
+            'puntaje_final' => $mejorTecnico->puntaje_final,
+            'components' => [
+                'prioridad' => $mejorTecnico->componentPrioridad,
+                'tiempo' => $mejorTecnico->componentTiempo,
+                'carga' => $mejorTecnico->componentCarga
+            ],
+            'assigned' => true,
+            'id_asignacion' => $idAsignacion,
+            'id_historial' => $idHist
+        ];
+    } // end foreach tickets
+
+    return ['success' => true, 'assigned' => count($resultados), 'asignaciones' => $resultados];
+}
+
+
+
+
+
     
 
 

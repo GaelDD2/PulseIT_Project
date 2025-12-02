@@ -114,6 +114,8 @@ notifications: {
   markAllAsRead: "Marcar todas como leídas",
   delete: "Eliminar",
   deleteAll: "Eliminar todas",
+  ticketCreated:"Ticket Creado"
+
 },
 assignments: {
   dashboard: "Tablero de Asignaciones",
@@ -339,7 +341,8 @@ notifications: {
   markAsRead: "Mark as read",
   markAllAsRead: "Mark all as read",
   delete: "Delete",
-  deleteAll: "Delete all"
+  deleteAll: "Delete all",
+  ticketCreated:"Ticket Created"
 },
 assignments: {
   dashboard: "Assignments Dashboard",

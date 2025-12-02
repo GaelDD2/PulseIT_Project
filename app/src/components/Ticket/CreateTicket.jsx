@@ -122,10 +122,7 @@ export function CreateTicket() {
           formDataNoti.append("id_usuario", idUsuario);
           formDataNoti.append("tipo_id", 1);
           formDataNoti.append("id_usuario_origen", 5);
-          formDataNoti.append("contenido", t('notifications.ticketCreated', {
-            id: response.data.data.id,
-            title: response.data.data.titulo
-          }));
+          formDataNoti.append("contenido", `Ticket creado #${response.data.data.id} - ${response.data.data.titulo}`);
           formDataNoti.append("atendida", 0);
 
           await NotificacionService.createNotificacion(formDataNoti);

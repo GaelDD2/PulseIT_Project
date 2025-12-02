@@ -79,4 +79,25 @@ class ticket
        }
    }
 
+   // PUT asignación automática
+// localhost:81/PulseIT/api/ticket/asignacionAutomatica
+public function asignacionAutomatica()
+{
+    try {
+        $request = new Request();
+        $response = new Response();
+
+        // JSON enviado desde frontend o Postman
+        $inputJSON = $request->getJSON();
+
+        $model = new TicketModel();
+        $result = $model->asignacionAutomaticaBatch($inputJSON);
+
+        $response->toJSON($result);
+    } catch (Exception $e) {
+        handleException($e);
+    }
+}
+
+
 }

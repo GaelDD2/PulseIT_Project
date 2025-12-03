@@ -40,6 +40,15 @@ class TicketService {
     })
   }
 
+  asignarTecnicoAutomatico(ticket) {
+    return axios({
+      method: 'put',
+      url: `${BASE_URL}/asignacionAutomatica`,
+      data: JSON.stringify(ticket)
+
+    })
+  }
+
   
 
 }

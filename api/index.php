@@ -29,7 +29,7 @@ require_once "models/SlaModel.php";
 require_once "models/TicketModel.php";
 require_once "models/ImageHistorialModel.php";
 require_once "models/NotificacionModel.php";
-
+require_once "models/ReglaAutotriageModel.php";
 
 /***--- Agregar todos los controladores*/
 
@@ -42,6 +42,7 @@ require_once "models/NotificacionModel.php";
  require_once "controllers/slaController.php";
  require_once "controllers/ImageHistorialController.php";
  require_once "controllers/NotificacionController.php";
+ require_once "controllers/ReglaAutotriageController.php";
 
 
 

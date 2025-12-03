@@ -169,7 +169,9 @@ tickets: {
   },
   errors: {
       create: "Error al crear ticket"
-  }
+  },
+
+  rule:"Reglas Autotriage",
 
 },
 technicians: {
@@ -396,7 +398,9 @@ tickets: {
     },
     errors: {
         create: "Error creating ticket"
-    }
+    },
+    rule:"Autotriage Rules",
+
 },
 validation: {
   

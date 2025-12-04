@@ -1,6 +1,6 @@
 import axios from "axios";
 
-// http://localhost:81/PulseIT/api/ticket
+// http://localhost:81/PulseIT/api/notificacion
 const BASE_URL = import.meta.env.VITE_BASE_URL + "notificacion";
 
 class NotificacionService {
@@ -22,6 +22,15 @@ class NotificacionService {
   //http://localhost:81/PulseIT/api/notificacion/getCantNoti/1
   getNumeroNotis(idUsuario){
     return axios.get(BASE_URL+'/'+"getCantNoti"+'/'+idUsuario);
+  }
+
+  marcarAtendida(notificacion) {
+    return axios({
+      method: 'put',
+      url: `${BASE_URL}/marcarAtendida`,
+      data: JSON.stringify(notificacion)
+
+    })
   }
 
  

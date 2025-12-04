@@ -54,6 +54,23 @@ class NotificacionModel
     }
 
 
+    public function marcarAtendida($objeto)
+    {
+        $idNotificacion= $objeto->id;
+        $idUsuario=$objeto->id_usuario;
+        
+        
+
+        $sql = "UPDATE notificacion SET atendida=1 WHERE id=$idNotificacion AND id_usuario=$idUsuario ";
+        $vresultado = $this->enlace->executeSQL_DML($sql);
+
+
+        $sqlGet = "SELECT * FROM notificacion WHERE id=$idNotificacion";
+        return $this->enlace->ExecuteSQL($sqlGet)[0];
+
+    }
+
+
 
 
 

@@ -25,7 +25,6 @@ import { ListTecnicosAsignacion } from './components/Tecnico/ListTecnicoAsignaci
 import { AsignarTecnicoManual } from './components/Ticket/AsignarTecnicoManual'
 import { I18nextProvider } from 'react-i18next';  // <- Ya la tienes
 import i18n from './i18n';  // <- Ya la tienes
-import { AutoAssignDialog } from './components/Ticket/AutoAsignDialog'
 
 const rutas = createBrowserRouter([
   { path: "/", element: <Login /> }, 
@@ -50,8 +49,6 @@ const rutas = createBrowserRouter([
       { path: "notificaciones", element: <NotificationsPanel /> },
       { path: "tecnicosAsignaciones/:idTicket", element: <ListTecnicosAsignacion /> },
       { path: "AsignarTecnicoManual/:idTicket/:idTecnico", element: <AsignarTecnicoManual /> },
-      { path: "AsignarTecnicoAutomatico", element: <AutoAssignDialog /> },
-
     ],
   },
 ]);

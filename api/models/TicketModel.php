@@ -328,21 +328,15 @@ public function DetalleTicket($idTicket) {
 
 public function asignacionAutomaticaBatch($objeto)
 {
-    // extraer parámetros del objeto
     $idRegla = isset($objeto->id_regla) ? (int)$objeto->id_regla : null;
     $idUsuarioAsignador = isset($objeto->id_usuario_asignador) ? (int)$objeto->id_usuario_asignador : null;
     $limite = isset($objeto->limite) ? (int)$objeto->limite : null;
 
-    if (!$idRegla) {
-        return ['success' => false, 'message' => 'Debe enviar id_regla'];
-    }
-
+   
     // obtener la regla
     $sqlRegla = "SELECT * FROM reglas_autotriage WHERE id = $idRegla AND activo = 1";
     $reglaRes = $this->enlace->ExecuteSQL($sqlRegla);
-    if (!is_array($reglaRes) || count($reglaRes) == 0) {
-        return ['success' => false, 'message' => "La regla con ID $idRegla no existe o está inactiva"];
-    }
+    
     $regla = $reglaRes[0];
 
     // multiplicadores por nivel de prioridad (1=Normal,2=Alta,3=Urgente)
@@ -351,7 +345,7 @@ public function asignacionAutomaticaBatch($objeto)
         2 => 1.5,
         3 => 2.0
     ];
-
+        
     // obtener tickets pendientes (posible limite)
     $sqlTickets = "SELECT * FROM ticket WHERE id_estado_actual = 4 ORDER BY fecha_creacion ASC";
     if ($limite && $limite > 0) {

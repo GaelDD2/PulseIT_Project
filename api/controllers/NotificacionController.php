@@ -58,5 +58,25 @@ class notificacion
         }
     }
 
+
+    //PUT marcar como atendida 
+    //  
+    public function marcarAtendida()
+    {
+        try {
+            $request = new Request();
+            $response = new Response();
+
+            $inputJSON = $request->getJSON();
+            $model = new NotificacionModel();
+
+            $result = $model->marcarAtendida($inputJSON);
+
+            $response->toJSON($result);
+        } catch (Exception $e) {
+            handleException($e);
+        }
+    }
+
   
 }

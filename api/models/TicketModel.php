@@ -255,7 +255,7 @@ public function DetalleTicket($idTicket) {
                 break;
         
         default:
-          # code...
+          
           break;
       }
       
@@ -477,7 +477,7 @@ public function asignacionAutomaticaBatch($objeto)
             'componentCarga' => $mejorTecnico->componentCarga,
             'puntaje_final' => $mejorTecnico->puntaje_final
         ];
-        $observJson = addslashes(json_encode($observData));
+        $observ= "Se asigna automaticamente el ticket al técnico"." ".$mejorTecnico->nombre." "."ya que obtuvo el mejor puntaje";
 
         // -------------- Aplicar cambios en BD --------------
         // Insert asignacion
@@ -494,7 +494,7 @@ public function asignacionAutomaticaBatch($objeto)
                 $idRegla,
                 'automatico',
                 $puntajeEsc,
-                '$observJson',
+                '$observ',
                 1
             )
         ";
@@ -509,7 +509,7 @@ public function asignacionAutomaticaBatch($objeto)
                 $ticketId, 4, 1,
                 " . ($idUsuarioAsignador ? $idUsuarioAsignador : 0) . ",
                 NOW(),
-                '$observJson',
+                '$observ',
                 $idAsignacion,
                 1
             )
@@ -533,9 +533,9 @@ public function asignacionAutomaticaBatch($objeto)
         ");
 
         // Notificación cliente
-        $msgCli = addslashes(json_encode([
-            'mensaje' => "Tu ticket #$ticketId ha sido asignado al técnico {$mejorTecnico->nombre}"
-        ]));
+        $msgCli = 
+            "Tu ticket #$ticketId ha sido asignado al técnico".$mejorTecnico->nombre
+        ;
         $this->enlace->executeSQL_DML("
             INSERT INTO notificacion (id_usuario, tipo_id, id_usuario_origen, contenido)
             VALUES ({$idSolicitante}, 2, " . ($idUsuarioAsignador ? $idUsuarioAsignador : "NULL") . ", '$msgCli')

@@ -95,7 +95,7 @@ export function UpdateEstado() {
       if (TicketSchema.isValid()) { 
         //Verificar datos del formulario 
         console.log(dataForm) 
-        //Crear ticket en el API 
+        //Crear ticket en el API  
         const response = await TicketService.updateEstado(dataForm); 
         if (response.data) { 
           
@@ -120,13 +120,13 @@ export function UpdateEstado() {
            let contenido = "";
            switch (parseInt(estado)) {
             case 2:
-             contenido = "Ticket puesto en proceso";
+             contenido = `Ticket #${idTicket} puesto en proceso`;
               break;
               case 5:
-             contenido = "El Ticket se ha resuelto";
+             contenido = `Ticket #${idTicket} se ha resuelto`;
               break;
               case 3:
-             contenido = "Ticket ha sido cerrado en proceso";
+             contenido = `Ticket #${idTicket} ha sido cerrado`;
               break;
             
            

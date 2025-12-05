@@ -79,6 +79,28 @@ class ticket
        }
    }
 
+   //PUT asignar
+   // localhost:81/PulseIT/api/ticket/asignarTecnicoM
+
+   public function updateEstado()
+   {
+       try {
+           $request = new Request();
+           $response = new Response();
+           //Obtener json enviado
+           $inputJSON = $request->getJSON();
+           //Instancia del modelo
+           $model = new TicketModel();
+           //Acción del modelo a ejecutar
+           $result = $model->updateEstado($inputJSON);
+           //Dar respuesta
+           $response->toJSON($result);
+       } catch (Exception $e) {
+           $response->toJSON($result);
+           handleException($e);
+       }
+   }
+
    // PUT asignación automática
 // localhost:81/PulseIT/api/ticket/asignacionAutomatica
 public function asignacionAutomatica()

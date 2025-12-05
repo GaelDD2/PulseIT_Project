@@ -56,4 +56,20 @@ class UsuarioModel
 }
 
 
+        public function updateUltimoIngreso($objeto)
+        {
+           
+            $sql = "UPDATE usuario SET 
+            ultimo_ingreso=now()
+            WHERE id = $objeto->id_usuario";
+            
+            $cResults = $this->enlace->executeSQL_DML($sql);
+
+            $sqlGet = "SELECT * from usuario
+            WHERE id = $objeto->id_usuario";
+            return $this->enlace->ExecuteSQL($sqlGet)[0];
+        
+        }
+
+
 }

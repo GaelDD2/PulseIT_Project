@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import ticketIMG from "../../assets/ticket.png";
 import { Mail } from "lucide-react";
+import { useTranslation } from 'react-i18next';
 
 import {
     Layers,
@@ -32,7 +33,7 @@ ListCardTickets.propTypes = {
 
 export function ListCardTickets({ data }) {
     const idRol = localStorage.getItem("idRol");
-    
+    const { t } = useTranslation();
     // Función para determinar el texto y comportamiento del botón
     const getActionButton = (item) => {
         // Primero verificamos la condición que aplica a múltiples roles (Cerrar Ticket)
@@ -44,7 +45,8 @@ export function ListCardTickets({ data }) {
                     className="bg-purple-600 text-white hover:bg-purple-700"
                 >
                     <Link to={`/tickets/updateEstado/${item.id}/3`}>
-                          Cerrar Ticket
+                          
+                          {t('process.nameClose')}
                         </Link>
                 </Button>
             );
@@ -61,7 +63,7 @@ export function ListCardTickets({ data }) {
                             className="bg-primary text-white hover:bg-primary/90"
                         >
                            <Link to={`/tickets/updateEstado/${item.id}/2`}>
-                          Resolver Ticket
+                           {t('process.nameResolve')}
                         </Link>
                         </Button>
                     );
@@ -73,7 +75,7 @@ export function ListCardTickets({ data }) {
                             className="bg-green-600 text-white hover:bg-green-700"
                         >
                         <Link to={`/tickets/updateEstado/${item.id}/5`}>
-                          Finalizar Ticket
+                        {t('process.nameFinalize')}
                         </Link>
                       </Button>
                     );
@@ -91,7 +93,7 @@ export function ListCardTickets({ data }) {
                     className="bg-blue-600 text-white hover:bg-blue-700"
                 >
                     <Link to={`/tecnicosAsignaciones/${item.id}`}>
-                          Asignar
+                       {t('process.nameAssign')}
                         </Link>
                 </Button>
             );
@@ -123,14 +125,14 @@ export function ListCardTickets({ data }) {
                             <ChartNoAxesColumnIncreasing
                                 className={`h-4 w-4 text-${prioridadColores[item.prioridad]}`}
                             />
-                            <span>Prioridad: {prioridadTitulo[item.prioridad]}</span>
+                            <span>{t('tickets.detail.priority')}: {prioridadTitulo[item.prioridad]}</span>
                         </div>
                     </CardHeader>
 
                     <CardContent className="flex justify-between items-center pt-2 border-t">
                         <Button variant="outline" size="sm" asChild>
                             <Link to={`/tickets/detail/${item.id}`}>
-                                <Info className="h-4 w-4 mr-1" /> Ver Detalle
+                                <Info className="h-4 w-4 mr-1" /> {t('common.moreInfo')}
                             </Link>
                         </Button>
                         

@@ -25,9 +25,11 @@ import ImagesService from "@/services/ImagesService";
 import { CustomMultiSelect } from "../ui/custom/custom-multiple-select";
 import { CustomInputField } from "../ui/custom/custom-input-field";
 import NotificacionService from "@/services/NotificacionService";
+import { useTranslation } from 'react-i18next';
 
 
 export function UpdateEstado() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const correoUsuario = localStorage.getItem("correo");
 
@@ -157,10 +159,10 @@ export function UpdateEstado() {
 
   return (
     <Card className="p-6 max-w-5xl mx-auto">
-        <h2 className="text-2xl font-bold mb-6">Cambiar estado</h2>
+        <h2 className="text-2xl font-bold mb-6">{t('tickets.update.changeState')}</h2>
         {/* Usuario del cambio */}
         <div className="mt-2">
-          <Label className="text-sm font-medium">Usuario Modificador:</Label>
+          <Label className="text-sm font-medium">{t('tickets.update.UserText')} </Label>
           <p className="text-sm mt-1">
             {correoUsuario }
           </p>
@@ -170,11 +172,11 @@ export function UpdateEstado() {
          
           {/* Observaciones */}
           <div>
-            <Label htmlFor="observacion">Observaciones</Label>
+            <Label htmlFor="observacion">{t('tickets.update.Observations')} </Label>
             <Controller
               name="observacion"
               control={control}
-              render={({ field }) => <Textarea {...field} placeholder="Observaciones a considerar" />}
+              render={({ field }) => <Textarea {...field} placeholder= {t('tickets.update.ObservationText')} />}
             />
             {errors.observacion && <p className="text-sm text-red-500">{errors.observacion.message}</p>}
           </div>
@@ -184,7 +186,7 @@ export function UpdateEstado() {
         {/* Evidencias */}
         <div className="mb-6">
           <Label htmlFor="image" className="block mb-1 text-sm font-medium">
-            Evidencias
+          {t('tickets.update.Evidence')}
           </Label>
 
           <div
@@ -193,7 +195,7 @@ export function UpdateEstado() {
           >
             {previewURLs.length === 0 && (
               <p className="text-sm text-muted-foreground">
-                Haz clic o selecciona una o varias imágenes (jpg, png, 5MB máx.)
+                {t('tickets.update.EvidenceText')}
               </p>
             )}
 
@@ -234,11 +236,11 @@ export function UpdateEstado() {
               onClick={() => navigate(-1)}
             >
               <ArrowLeft className="w-4 h-4" />
-              Regresar
+              {t('common.back')}
             </Button>
             <Button type="submit" className="flex-1">
               <Save className="w-4 h-4" />
-              Guardar
+              {t('common.save')}
             </Button>
           </div>
         </form>

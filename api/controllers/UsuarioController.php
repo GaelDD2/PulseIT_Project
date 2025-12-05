@@ -19,4 +19,25 @@ class usuario
         }
     }
 
+        //PUT Actualizar ultimo ingreso
+        // localhost:81/PulseIT/api/usuario/updateIngreso
+        public function update()
+    {
+        try {
+            $request = new Request();
+            $response = new Response();
+            //Obtener json enviado
+            $inputJSON = $request->getJSON();
+            //Instancia del modelo
+            $model = new UsuarioModel();
+            //Acción del modelo a ejecutar
+            $result = $model->updateUltimoIngreso($inputJSON);
+            //Dar respuesta
+            $response->toJSON($result);
+        } catch (Exception $e) {
+            $response->toJSON($result);
+            handleException($e);
+        }
+    }
+
 }

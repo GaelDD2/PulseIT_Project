@@ -19,9 +19,10 @@ import {
   Star,
 } from "lucide-react";
 import ticketIMG from "../../assets/ticket.png";
-
+import { useTranslation } from 'react-i18next';
 export function TicketDetail() {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const { id } = useParams();
   const [ticket, setData] = useState(null);
   const [error, setError] = useState(null);
@@ -59,7 +60,7 @@ export function TicketDetail() {
   if (loading) return <LoadingGrid count={1} type="grid" />;
   if (error) return <ErrorAlert title="Error al cargar detalle" message={error} />;
 
-  const t = ticket.data;
+  const ti = ticket.data;
 
   return (
     <div className="max-w-6xl mx-auto py-10 px-6 text-white ">
@@ -71,8 +72,8 @@ export function TicketDetail() {
           className="w-20 h-20 rounded-lg shadow-lg bg-white/10 p-2"
         />
         <div>
-          <h1 className="text-4xl font-extrabold tracking-tight text-accent-foreground">{t.titulo}</h1>
-          <p className="text-accent-foreground/70">{t.descripcion}</p>
+          <h1 className="text-4xl font-extrabold tracking-tight text-accent-foreground">{ti.titulo}</h1>
+          <p className="text-accent-foreground/70">{ti.descripcion}</p>
         </div>
       </div>
 
@@ -82,28 +83,28 @@ export function TicketDetail() {
           <div className="flex items-center gap-3">
             <User className="text-secondary h-5 w-5" />
             <div>
-              <p className="text-sm text-white/60">Solicitante</p>
-              <p className="font-semibold">{t.solicitante}</p>
+              <p className="text-sm text-white/60">{t('tickets.detail.user')}</p>
+              <p className="font-semibold">{ti.solicitante}</p>
             </div>
           </div>
 
           <div className="flex items-center gap-3">
             <Calendar className="text-secondary h-5 w-5" />
             <div>
-              <p className="text-sm text-white/60">Fecha de creación</p>
-              <p className="font-semibold">{t.fecha_creacion}</p>
+              <p className="text-sm text-white/60">{t('tickets.detail.createdDate')}</p>
+              <p className="font-semibold">{ti.fecha_creacion}</p>
             </div>
           </div>
 
           <div className="flex items-center gap-3">
             <AlertCircle className="text-secondary h-5 w-5" />
             <div>
-              <p className="text-sm text-white/60">Estado</p>
+              <p className="text-sm text-white/60">{t('tickets.detail.state')}</p>
               <Badge
                 variant="secondary"
                 className="text-white bg-blue-700/60 px-3 py-1 rounded-full"
               >
-                {t.estado}
+                {ti.estado}
               </Badge>
             </div>
           </div>
@@ -111,35 +112,35 @@ export function TicketDetail() {
           <div className="flex items-center gap-3">
             <FileText className="text-secondary h-5 w-5" />
             <div>
-              <p className="text-sm text-white/60">Categoría</p>
-              <p className="font-semibold">{t.categoria}</p>
+              <p className="text-sm text-white/60">{t('tickets.detail.category')}</p>
+              <p className="font-semibold">{ti.categoria}</p>
             </div>
           </div>
 
           <div className="flex items-center gap-3">
             <Clock className="text-secondary h-5 w-5" />
             <div>
-              <p className="text-sm text-white/60">SLA Respuesta</p>
-              <p className="font-semibold">{t.sla_respuesta_calculado}</p>
+              <p className="text-sm text-white/60">{t('tickets.detail.SLARespuesta')}</p>
+              <p className="font-semibold">{ti.sla_respuesta_calculado}</p>
             </div>
           </div>
 
           <div className="flex items-center gap-3">
             <Clock className="text-secondary h-5 w-5" />
             <div>
-              <p className="text-sm text-white/60">SLA Resolución</p>
-              <p className="font-semibold">{t.sla_resolucion_calculado}</p>
+              <p className="text-sm text-white/60">{t('tickets.detail.SLAResolucion')}</p>
+              <p className="font-semibold">{ti.sla_resolucion_calculado}</p>
             </div>
           </div>
 
           <div className="flex items-center gap-3">
             <CheckCircle
-              className={`h-5 w-5 ${prioridadColores[t.prioridad] || "text-white"}`}
+              className={`h-5 w-5 ${prioridadColores[ti.prioridad] || "text-white"}`}
             />
             <div>
-              <p className="text-sm text-white/60">Prioridad</p>
+              <p className="text-sm text-white/60">{t('tickets.detail.priority')}</p>
               <p className="font-semibold">
-                {prioridadTitulo[t.prioridad] || "Sin definir"}
+                {prioridadTitulo[ti.prioridad] || "Sin definir"}
               </p>
             </div>
           </div>
@@ -147,14 +148,14 @@ export function TicketDetail() {
       </Card>
 
       {/* Historial */}
-      {t.historial && t.historial.length > 0 && (
+      {ti.historial && ti.historial.length > 0 && (
         <div className="mt-10">
           <h2 className="text-2xl font-semibold mb-4 flex items-center gap-2 text-accent-foreground">
-            <MessageSquare className="text-accent-foreground h-5 w-5" /> Historial del Ticket
+            <MessageSquare className="text-accent-foreground h-5 w-5" /> {t('tickets.detail.history')}
           </h2>
 
           <div className="space-y-4">
-            {t.historial.map((h, index) => (
+            {ti.historial.map((h, index) => (
               <Card key={index} className="bg-blue-950/70 border-none shadow-md">
                 <CardContent className="p-4">
                   <div>
@@ -167,7 +168,7 @@ export function TicketDetail() {
                     {/* Mostrar evidencias solo si existen */}
                     {h.evidencias && h.evidencias.length > 0 && (
                       <div className="mt-3 flex flex-wrap gap-3">
-                        <p className="font-semibold text-white">Evidencias:</p>
+                        <p className="font-semibold text-white">{t('tickets.detail.evidence')}:</p>
                    
                       
                         {h.evidencias.map((img, i) => (
@@ -189,13 +190,13 @@ export function TicketDetail() {
       )}
 
       {/* Valoración */}
-      {t.valoracion && t.valoracion.length > 0 && (
+      {ti.valoracion && ti.valoracion.length > 0 && (
         <div className="mt-10">
           <h2 className="text-2xl font-semibold mb-4 flex items-center gap-2 text-accent-foreground">
-            <Star className="text-yellow-400 h-7 w-7" /> Valoración del Usuario
+            <Star className="text-yellow-400 h-7 w-7" /> {t('tickets.detail.valoracion')}
           </h2>
 
-          {t.valoracion.map((v, index) => (
+          {ti.valoracion.map((v, index) => (
             <Card key={index} className="bg-blue-950/70 border-none shadow-md">
               <CardContent className="p-6 flex flex-col md:flex-row justify-between items-start md:items-center">
                 <div>
@@ -223,7 +224,7 @@ export function TicketDetail() {
         className="flex items-center gap-2 bg-destructive text-white hover:bg-accent/90 mt-10"
       >
         <ArrowLeft className="w-4 h-4" />
-        Regresar
+        {t('common.back')}
       </Button>
     </div>
   );

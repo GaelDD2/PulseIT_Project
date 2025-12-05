@@ -11,11 +11,13 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { AutoAssignDialog } from "./AutoAsignDialog";
+import { useTranslation } from 'react-i18next';
 
 
 
 
 export function ListTickets() {
+  const { t } = useTranslation();
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -31,7 +33,8 @@ export function ListTickets() {
           onClick={() => setOpenAssignDialog(true)}   // <<<<< ABRE EL MODAL
         >
           <ContactRound className="h-4 w-4 mr-1" />
-          Asignar Tickets Automáticamente
+          
+          {t('tickets.buttomAssign')}
         </Button>
         );
     }
@@ -64,7 +67,7 @@ export function ListTickets() {
   return (
     <div className="mx-auto max-w-5xl p-6">
       <h2 className="text-3xl font-bold mb-6 text-center text-primary">
-        Lista de Tickets
+      {t('tickets.listTicket')}
       </h2>
       {getButtom()}
       

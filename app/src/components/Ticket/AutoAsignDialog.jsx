@@ -130,7 +130,7 @@ export function AutoAssignDialog({ open, onClose, rules, onConfirm }    ) {
           <X className="w-4 h-4" />
         </button>
 
-        <h2 className="text-2xl font-bold mb-4">Asignación Automática de tickets</h2>
+        <h2 className="text-2xl font-bold mb-4"> {t('tickets.autoATittle')}</h2>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           {/* Regla */}
@@ -142,7 +142,7 @@ export function AutoAssignDialog({ open, onClose, rules, onConfirm }    ) {
                       render={({ field }) => (
                           <Select onValueChange={field.onChange} value={field.value}>
                               <SelectTrigger className="w-full">
-                                  <SelectValue placeholder={t('categories.placeholders.selectSLA')} />
+                                  <SelectValue placeholder={t('tickets.placeholders.selectRule')} />
                               </SelectTrigger>
                               <SelectContent>
                                   {dataRegla.map((regla) => (
@@ -161,10 +161,10 @@ export function AutoAssignDialog({ open, onClose, rules, onConfirm }    ) {
 
           <div className="flex justify-end gap-2 mt-2">
             <Button type="button" variant="ghost" onClick={() => onClose?.()} disabled={loading}>
-              Cancelar
+            {t('common.cancel')}
             </Button>
             <Button type="submit" disabled={loading}>
-              {loading ? "Procesando..." : "Aceptar"}
+            {t('common.save')}
             </Button>
           </div>
         </form>

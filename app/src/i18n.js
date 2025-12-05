@@ -40,6 +40,13 @@ const translationES = {
     techinicians: "Lista de Tecnicos",
 
   },
+  process: {
+    nameClose: "Cerrar Ticket",
+    nameResolve: "Resolver Ticket",
+    nameFinalize: "Finalizar Ticket",
+    nameAssign: "Asignar",
+
+  },
 
   home: {
     title: "PulseIT",
@@ -148,6 +155,31 @@ tickets: {
     high: "Alta",
     urgent: "Urgente"
 },
+update: {
+  changeState: "Actualizar estado",
+  UserText: "Usuario modificador:",
+  Observations: "Observaciones",
+  ObservationText: "Observaciones a considerar",
+  Evidence: "Evidencias",
+  EvidenceText:"Haz click or selecciona una o más images (jpg, png, 5MB max.)",
+  
+},
+
+detail: {
+  user: "Solicitante  ",
+  priority: "Prioridad",
+  createdDate: "Fecha de creación",
+  SLARespuesta: "SLA Respuesta",
+  SLAResolucion: "SLA Resolución",
+  state: "Estado",
+  history:"Historial del Ticket",
+  category:"Categoría",
+  evidence:"Evidencias",
+  valoracion:"Valoración del Usuario",
+
+    
+  
+},
     title: "Título",
     description: "Descripción",
     requestingUser: "Usuario Solicitante",
@@ -158,7 +190,8 @@ tickets: {
         title: "Ingrese el título",
         description: "Descripción breve",
         selectTag: "Seleccione una etiqueta",
-        selectPriority: "Seleccione la prioridad"
+        selectPriority: "Seleccione la prioridad",
+        selectRule:"Seleccione una regla",
     },
     noCategory: "Sin categoría",
     errorLoadingCategory: "Error al cargar",
@@ -172,7 +205,9 @@ tickets: {
   },
 
   rule:"Reglas Autotriage",
-
+  buttomAssign:"Asignar Tickets Automáticamente",
+  listTicket:"Lista de Tickets",
+  autoATittle:"Asignación automática de tickets",
 },
 technicians: {
   create: "Crear Técnico",
@@ -238,7 +273,7 @@ const translationEN = {
     moreInfo: "More info",
     response: "resp",  
     resolution: "res", 
-    
+    acept:"",
     errorLoading: "Error loading",
     date: "Date",
     hours: "hrs",
@@ -259,6 +294,13 @@ const translationEN = {
     categoriesSLA: "Categories and SLA",
     assignmentRules: "Assignment Rules",
     techinicians: "Techinicians",
+  },
+  process: {
+    nameClose: "Close Ticket",
+    nameResolve: "Resolve Ticket",
+    nameFinalize: "Finalize Ticket",
+    nameAssign: "Assign",
+
   },
 
   
@@ -369,6 +411,31 @@ tickets: {
       pending: "Pending",
       resolved: "Resolved"
   },
+
+  update: {
+    changeState: "Change state",
+    UserText: "Modifier user:",
+    Observations: "Observations",
+    ObservationText: "Observations to consider",
+    Evidence: "Evidence",
+    EvidenceText:"Click or select one or more images (jpg, png, 5MB max.)",
+    
+},
+detail: {
+  user: "Applicant",
+  priority: "Priority",
+  createdDate: "Creation date",
+  SLARespuesta: "SLA Response",
+  SLAResolucion: "SLA Resolution",
+  state: "State",
+  history:"Ticket History",
+  category:"Category",
+  evidence:"Evidence",
+  valoracion:"User Rating",
+
+    
+  
+},
   myTickets: "My tickets",
   createTicket: "Create Ticket",
   priority: {
@@ -387,7 +454,8 @@ tickets: {
         title: "Enter title",
         description: "Brief description",
         selectTag: "Select a tag",
-        selectPriority: "Select priority"
+        selectPriority: "Select priority",
+        selectRule:"Select an autotriage rule",
     },
     noCategory: "No category",
     errorLoadingCategory: "Error loading",
@@ -400,6 +468,9 @@ tickets: {
         create: "Error creating ticket"
     },
     rule:"Autotriage Rules",
+    buttomAssign:"Automatically Assign Tickets",
+    listTicket:"Tickets",
+    autoATittle:"Automatic ticket assignment",
 
 },
 validation: {

@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import PulseITLogo from "../../assets/PulseITLogo.png";
 import { useTranslation } from 'react-i18next'; 
+import NotificacionService from "@/services/NotificacionService";
 
 export function Login() {
   const { t } = useTranslation(); // <- NUEVO
@@ -24,18 +25,33 @@ export function Login() {
 
       if (response.data.success && response.data.data) {
         console.log(response.data);
+        
 
         const { id, id_rol, nombre, correo } = response.data.data;
         localStorage.setItem("idUsuario", id);
         localStorage.setItem("idRol", id_rol);
         localStorage.setItem("nombre", nombre);
         localStorage.setItem("correo", correo);
+        
+        const datosUser = {
+         
+          id_usuario: parseInt(id)
+        };
+        const responseIngreso= await UsuarioService.updateIngreso(datosUser);
+        console.log(responseIngreso);
+        const formDataNoti = new FormData();
+          formDataNoti.append("id_usuario", id);
+          formDataNoti.append("tipo_id", 4);
+          formDataNoti.append("id_usuario_origen", 5);
+          formDataNoti.append("contenido", `Hola,${responseIngreso.data.data.nombre}, PulseIT le informa de un inicio de sesión exitoso el ${responseIngreso.data.data.ultimo_ingreso} `);
+          formDataNoti.append("atendida", 0);
+          await NotificacionService.createNotificacion(formDataNoti);
 
         navigate("/home");
       } else {
         setError(t('login.errors.invalidCredentials')); // <- TRADUCIDO
       }
-    } catch (err) {
+    } catch (error) {
       setError(t('login.errors.serverError')); // <- TRADUCIDO
     }
   };

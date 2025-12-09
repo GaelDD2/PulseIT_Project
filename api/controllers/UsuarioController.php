@@ -40,4 +40,23 @@ class usuario
         }
     }
 
+    //POST crear Tecnicos
+    // localhost:81/PulseIT/api/usuario/createUsuario
+    public function createUsuario()
+    {
+        try {
+            $request = new Request();
+            $response = new Response();
+
+            $inputJSON = $request->getJSON();
+            $model = new UsuarioModel();
+
+            $result = $model->createUsuario($inputJSON);
+
+            $response->toJSON($result);
+        } catch (Exception $e) {
+            handleException($e);
+        }
+    }
+
 }

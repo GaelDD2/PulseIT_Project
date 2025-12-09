@@ -48,6 +48,11 @@ const translationES = {
 
   },
 
+  user: {
+    created:"Usuario Creado exitosamente"
+
+  },
+
   home: {
     title: "PulseIT",
     subtitle: "Registra, asigna y controla tickets de soporte técnico con eficiencia.",
@@ -300,6 +305,11 @@ const translationEN = {
     nameResolve: "Resolve Ticket",
     nameFinalize: "Finalize Ticket",
     nameAssign: "Assign",
+
+  },
+
+  user: {
+    created:"User Created Succesfully"
 
   },
 

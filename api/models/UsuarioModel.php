@@ -71,5 +71,32 @@ class UsuarioModel
         
         }
 
+        public function createUsuario($objeto)
+        {
+            $idRol = 1; // ID del rol de técnico
+    
+            // Encriptar contraseña 
+            $nombre = $objeto->nombre;
+            $correo = $objeto->correo;
+            $contrasena = $objeto->contrasena;
+            $contrasenaHash = password_hash($contrasena, PASSWORD_DEFAULT);
+            
+    
+            // Insertar en usuario
+            $sql = "INSERT INTO usuario 
+            (correo, contrasena_hash, nombre, id_rol, ultimo_ingreso, activo)
+            VALUES 
+            ('$correo', '$contrasenaHash', '$nombre', $idRol, NOW(), 1 )";
+            $idUsuario = $this->enlace->executeSQL_DML_last($sql);
+    
+            
+    
+            // Retornar datos creados
+            $sqlGet = "SELECT id, nombre, correo
+                   FROM usuario 
+                   WHERE id = $idUsuario";
+            return $this->enlace->ExecuteSQL($sqlGet)[0];
+        }
+
 
 }

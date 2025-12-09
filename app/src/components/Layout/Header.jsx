@@ -86,6 +86,7 @@ export default function Header() {
     { title: t('header.categoriesSLA'), href: "/categorias" }, // <- MODIFICADO
     { title: t('header.assignmentRules'), href: "/reglas" }, // <- MODIFICADO
     { title: "Dashboard", href: "/dashboard" },
+    { title: "Usuarios", href: "/users" },
   ];
 
   const tecnicoItems = [

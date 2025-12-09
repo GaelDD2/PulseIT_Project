@@ -18,6 +18,12 @@ class UsuarioService {
 
     })
   }
+
+  createUser(User) {
+    return axios.post(`${BASE_URL}/createUsuario`, User, {
+      headers: { "Content-Type": "application/json" }
+    });
+  }
 }
 
 export default new UsuarioService();

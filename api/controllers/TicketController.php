@@ -121,5 +121,24 @@ public function asignacionAutomatica()
     }
 }
 
+//POST crear Tickets
+    // localhost:81/PulseIT/api/ticket/valoracion
+    public function valoracion()
+    {
+        try {
+            $request = new Request();
+            $response = new Response();
+
+            $inputJSON = $request->getJSON();
+            $model = new TicketModel();
+
+            $result = $model->valoracion($inputJSON);
+
+            $response->toJSON($result);
+        } catch (Exception $e) {
+            handleException($e);
+        }
+    }
+
 
 }

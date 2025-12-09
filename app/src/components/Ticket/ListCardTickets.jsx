@@ -13,6 +13,7 @@ import {
     ChartNoAxesColumnIncreasing,
     Goal,
     CircleChevronRight,
+    Star
 } from "lucide-react";
 
 const prioridadColores = {
@@ -94,6 +95,21 @@ export function ListCardTickets({ data }) {
                 >
                     <Link to={`/tecnicosAsignaciones/${item.id}`}>
                        {t('process.nameAssign')}
+                        </Link>
+                </Button>
+            );
+        }
+
+
+        if (idRol === "1" && item.estado === "Cerrado") {
+            return (
+                <Button 
+                    variant="default" 
+                    size="sm" 
+                    className="bg-yellow-400 text-white hover:bg-blue-700"
+                >
+                    <Link to={`/valoracion/${item.id}`}>
+                    <Star className="h-4 w-4 text-black" /> 
                         </Link>
                 </Button>
             );

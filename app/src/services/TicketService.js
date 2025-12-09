@@ -49,6 +49,12 @@ class TicketService {
     })
   }
 
+  valoracionTicket(Ticket) {
+    return axios.post(`${BASE_URL}/valoracion`, Ticket, {
+      headers: { "Content-Type": "application/json" }
+    });
+  }
+
   
 
 }

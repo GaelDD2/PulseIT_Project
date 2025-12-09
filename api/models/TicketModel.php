@@ -561,6 +561,24 @@ public function asignacionAutomaticaBatch($objeto)
     return ['success' => true, 'assigned' => count($resultados), 'asignaciones' => $resultados];
 }
 
+public function valoracion($objeto){
+    $idTicket = $objeto->id_ticket;
+    $idUsuario = $objeto->id_usuario;
+    $puntuacion = $objeto->puntuacion;
+    $comentario = $objeto->comentario;
+    
+
+    $sql = "INSERT INTO valoracion (id_ticket,id_usuario,puntuacion,comentario,fecha_creacion)
+    VALUES ($idTicket,$idUsuario,$puntuacion,'$comentario',now())";
+    $idValoracion = $this->enlace->executeSQL_DML_last($sql);
+
+    $sqlGet = "SELECT *
+               FROM valoracion 
+               WHERE id = $idValoracion";
+    return $this->enlace->ExecuteSQL($sqlGet)[0];
+
+}
+
 
 
 

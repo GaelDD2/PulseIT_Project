@@ -27,6 +27,7 @@ import { I18nextProvider } from 'react-i18next';  // <- Ya la tienes
 import i18n from './i18n';  // <- Ya la tienes
 import MenuUsers from './components/Usuario/MenuUsers'
 import { CreateUsuario } from './components/Usuario/CreateUsuario'
+import { ValoracionTicket } from './components/Ticket/ValoracionTicket'
 
 const rutas = createBrowserRouter([
   { path: "/", element: <Login /> }, 
@@ -53,6 +54,7 @@ const rutas = createBrowserRouter([
       { path: "AsignarTecnicoManual/:idTicket/:idTecnico", element: <AsignarTecnicoManual /> },
       { path: "users", element: <MenuUsers /> },
       { path: "users/createUser", element: <CreateUsuario /> },
+      { path: "valoracion/:idTicket", element: <ValoracionTicket /> },
 
     ],
   },

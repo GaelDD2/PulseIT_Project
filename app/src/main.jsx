@@ -28,6 +28,7 @@ import i18n from './i18n';  // <- Ya la tienes
 import MenuUsers from './components/Usuario/MenuUsers'
 import { CreateUsuario } from './components/Usuario/CreateUsuario'
 import { ValoracionTicket } from './components/Ticket/ValoracionTicket'
+import { ListUsuarios } from './components/Usuario/ListUsuarios'
 
 const rutas = createBrowserRouter([
   { path: "/", element: <Login /> }, 
@@ -55,6 +56,7 @@ const rutas = createBrowserRouter([
       { path: "users", element: <MenuUsers /> },
       { path: "users/createUser", element: <CreateUsuario /> },
       { path: "valoracion/:idTicket", element: <ValoracionTicket /> },
+      { path: "usuarios", element: <ListUsuarios /> },
 
     ],
   },

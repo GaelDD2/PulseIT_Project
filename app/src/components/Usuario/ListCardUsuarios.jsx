@@ -1,0 +1,40 @@
+import { Card, CardHeader, CardContent, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Mail, Info } from "lucide-react";
+import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
+import UserPhoto from "../../assets/usuario (2).png";
+
+ListCardUsuarios.propTypes = {
+  data: PropTypes.array.isRequired,
+};
+
+import { useTranslation } from 'react-i18next';
+
+export function ListCardUsuarios({ data }) {
+  const { t } = useTranslation();
+
+  return (
+    <div className="grid gap-6 p-4 sm:grid-cols-2 lg:grid-cols-3">
+      {data.map((item, index) => (
+        <Card key={index} className="flex flex-col justify-between">
+          <CardHeader>
+            <img
+              src={UserPhoto}
+              alt={t('technicians.photoAlt')}
+              className="w-24 h-24 mx-auto rounded-full object-cover"
+            />
+            <CardTitle className="text-lg font-semibold text-primary">
+              {item.nombre}
+            </CardTitle>
+            <p className="text-sm text-muted-foreground flex items-center gap-2">
+              <Mail className="h-4 w-4 text-secondary" /> {item.correo}
+            </p>
+          </CardHeader>
+
+          
+        </Card>
+      ))}
+    </div>
+  );
+}

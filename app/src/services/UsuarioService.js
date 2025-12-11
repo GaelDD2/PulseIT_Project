@@ -10,6 +10,10 @@ class UsuarioService {
 
   }
 
+  getAll() {
+    return axios.get(BASE_URL);
+  }
+
   updateIngreso(Usuario) {
     return axios({
       method: 'put',

@@ -59,4 +59,22 @@ class usuario
         }
     }
 
+    //GET Obtener Tecnicos
+    // localhost:81/PulseIT/api/usuario
+    public function index()
+    {
+        try {
+            $response = new Response();
+            //Instancia del modelo
+            $model = new UsuarioModel;
+            //Acción del modelo a ejecutar
+            $result = $model->allUsuarios();
+            //Dar respuesta
+            $response->toJSON($result);
+        } catch (Exception $e) {
+            $response->toJSON($result);
+            handleException($e);
+        }
+    }
+
 }

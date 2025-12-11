@@ -53,7 +53,7 @@ export function ListCardTickets({ data }) {
             );
         }
 
-        // Luego verificamos por rol específico
+        
         if (idRol === "2") {
             switch (item.estado) {
                 case "Asignado":
@@ -101,19 +101,7 @@ export function ListCardTickets({ data }) {
         }
 
 
-        if (idRol === "1" && item.estado === "Cerrado") {
-            return (
-                <Button 
-                    variant="default" 
-                    size="sm" 
-                    className="bg-yellow-400 text-white hover:bg-blue-700"
-                >
-                    <Link to={`/valoracion/${item.id}`}>
-                    <Star className="h-4 w-4 text-black" /> 
-                        </Link>
-                </Button>
-            );
-        }
+        
 
         return null;
     };
